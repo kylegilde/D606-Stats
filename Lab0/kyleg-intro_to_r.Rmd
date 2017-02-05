@@ -120,9 +120,6 @@ This command will only show the number of boys baptized each year.
 
 1.  What command would you use to extract just the counts of girls baptized? Try
     it!
-```{r girls}
-arbuthnot$girls
-```
 
 Notice that the way R has printed these data is different. When we looked at the
 complete data frame, we saw 82 rows, one on each line of the display. These data
@@ -168,7 +165,6 @@ toggle between plots and help files using the tabs at the top of that panel.
 
 2.  Is there an apparent trend in the number of girls baptized over the years?  
     How would you describe it?
-**There is a trend. The number of birthdays dives during the English Civil Ware period and doesn't recover until a few years after the war ended. Thereafter, it trends upward.**
 
 Now, suppose we want to plot the total number of baptisms.  To compute this, we 
 could use the fact that R is really just a big calculator. We can type in 
@@ -234,12 +230,6 @@ If you use the up and down arrow keys, you can scroll through your previous
 commands, your so-called command history. You can also access it by clicking on 
 the history tab in the upper right panel.  This will save you a lot of typing in
 the future.
-**There appears to be the slightest trend downward over the years.**
-```{r prop boys}
-arbuthnot$prop.boys <- arbuthnot$boys / (arbuthnot$boys + arbuthnot$girls)
-plot(arbuthnot$year, arbuthnot$prop.boy, type = "l")
-```
-
 
 Finally, in addition to simple mathematical operators like subtraction and 
 division, you can ask R to make comparisons like greater than, `>`, less than,
@@ -296,8 +286,6 @@ names(my.present)
 ```{r scale}
 tail(arbuthnot, 10)
 tail(my.present, 10)
-mean(arbuthnot$boys + arbuthnot$girls)
-mean(my.present$boys + my.present$girls)
 ```
 
 -   Make a plot that displays the boy-to-girl ratio for every year in the data 
@@ -306,8 +294,11 @@ mean(my.present$boys + my.present$girls)
     response.
     Arbuthnot's observation of more boy's
 ```{r }
-my.present$prop.boys <- my.present$boys / (my.present$boys + my.present$girls )
-plot(x = my.present$year, y = my.present$prop.boys)
+s <- seq(min(my.present$boys), max(my.present$boys), by = 10)
+fx <- function(x) x
+plot(x = my.present$boys, y = my.present$girls)
+lines(s, fx(s),type = "l")
+#sum(my.present$boys/my.present$girls > 1)
 
 ```
 
@@ -315,11 +306,6 @@ plot(x = my.present$year, y = my.present$prop.boys)
     refer to the help files or the R reference card 
     [http://cran.r-project.org/doc/contrib/Short-refcard.pdf](http://cran.r-project.org/doc/contrib/Short-refcard.pdf)
     to find helpful commands.
-    
-```{r}
-subset(my.present$year, my.present$boys + my.present$girls == max(my.present$boys + my.present$girls))
-plot(my.present$year, my.present$boys + my.present$girls)
-```
 
 These data come from a report by the Centers for Disease Control 
 [http://www.cdc.gov/nchs/data/nvsr/nvsr53/nvsr53_20.pdf](http://www.cdc.gov/nchs/data/nvsr/nvsr53/nvsr53_20.pdf). 
