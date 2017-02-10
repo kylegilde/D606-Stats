@@ -1,0 +1,219 @@
+---
+title: "606 HW Week 02"
+author: "Kyle Gilde"
+date: "February 9, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(prob)
+```
+
+## Week 2 Homework
+
+[Open Stats 3](https://drive.google.com/file/d/0B-DHaDEbiOGkc1RycUtIcUtIelE/view)
+
+Practice: 2.5, 2.7, 2.19, 2.29, 2.43
+Graded: 2.6, 2.8, 2.20, 2.30, 2.38, 2.44
+
+
+####2.5 Coin flips. If you flip a fair coin 10 times, what is the probability of
+
+(a) getting all tails?
+(b) getting all heads?
+(c) getting at least one tails?
+
+```{r 5}
+dbinom(0, 10, .5)
+dbinom(10, 10, .5)
+pbinom(1, 10, .5)
+
+```
+
+
+####2.6 Dice rolls. If you roll a pair of fair dice, what is the probability of
+
+(a) getting a sum of 1?
+(b) getting a sum of 5?
+(c) getting a sum of 12?
+```{r 6}
+sample.space <- rolldie(2)
+sample.space$sum <- sample.space$X1 + sample.space$X2
+possibilities <- nrow(sample.space)
+
+sum(sample.space$sum==1)/possibilities
+sum(sample.space$sum==5)/possibilities
+sum(sample.space$sum==12)/possibilities
+```
+
+
+####2.7 Swing voters. 
+
+A 2012 Pew Research survey asked 2,373 randomly sampled registered voters their political a liation (Republican, Democrat, or Independent) and whether or not they identify as swing voters. 35% of respondents identified as Independent, 23% identified as swing voters, and 11% identified as both.58
+
+(a) Are being Independent and being a swing voter disjoint, i.e. mutually exclusive?
+(b) Draw a Venn diagram summarizing the variables and their associated probabilities.
+(c) What percent of voters are Independent but not swing voters?
+(d) What percent of voters are Independent or swing voters?
+(e) What percent of voters are neither Independent nor swing voters?
+(f) Is the event that someone is a swing voter independent of the event that someone is a political Independent?
+
+####2.8 Poverty and language. 
+The American Community Survey is an ongoing survey that provides data every year to give communities the current information they need to plan investments and services. The 2010 American Community Survey estimates that 14.6% of Americans live below the poverty line, 20.7% speak a language other than English (foreign language) at home, and 4.2% fall into both categories.59
+
+(a) Are living below the poverty line and speaking a foreign language at home disjoint?
+(b) Draw a Venn diagram summarizing the variables and their associated probabilities.
+(c) What percent of Americans live below the poverty line and only speak English at home?
+(d) What percent of Americans live below the poverty line or speak a foreign language at home?
+(e) What percent of Americans live above the poverty line and only speak English at home?
+(f) Is the event that someone lives below the poverty line independent of the event that the person speaks a foreign language at home?
+
+####2.19 Burger preferences. 
+
+A 2010 SurveyUSA poll asked 500 Los Angeles residents, "What is the best hamburger place in Southern California? Five Guys Burgers? In-N-Out Burger? Fat Burger? Tommy's Hamburgers? Umami Burger? Or somewhere else?" The distribution of responses by gender is shown below.64
+
+Gender
+
+Male Female Total
+
+Five Guys Burgers 5 6 11
+
+In-N-Out Burger 162 181 343
+
+Best Fat Burger 10 12 22
+
+hamburger Tommy's Hamburgers 27 27 54
+
+place Umami Burger 5 1 6
+
+Other 26 20 46
+
+Not Sure 13 5 18
+
+Total 248 252 500
+
+(a) Are being female and liking Five Guys Burgers mutually exclusive?
+
+(b) What is the probability that a randomly chosen male likes In-N-Out the best?
+
+(c) What is the probability that a randomly chosen female likes In-N-Out the best?
+
+(d) What is the probability that a man and a woman who are dating both like In-N-Out the best?
+
+Note any assumption you make and evaluate whether you think that assumption is reasonable.
+
+(e) What is the probability that a randomly chosen person likes Umami best or that person is
+
+female?
+
+64SurveyUSA, Results of SurveyUSA News Poll #17718, data collected on December 2, 2010.
+
+
+
+####2.20 Assortative mating.
+Assortative mating is a nonrandom mating pattern where individuals with similar genotypes and/or phenotypes mate with one another more frequently than what would be expected under a random mating pattern. Researchers studying this topic collected data on eye colors of 204 Scandinavian men and their female partners. The table below summarizes the results. For simplicity, we only include heterosexual relationships in this exercise.65
+
+Partner (female)
+
+Blue Brown Green Total
+
+Blue 78 23 13 114
+
+Self (male) Brown 19 23 12 54
+
+Green 11 9 16 36
+
+Total 108 55 41 204
+
+(a) What is the probability that a randomly chosen male respondent or his partner has blue eyes?
+(b) What is the probability that a randomly chosen male respondent with blue eyes has a partner with blue eyes?
+(c) What is the probability that a randomly chosen male respondent with brown eyes has a partner with blue eyes? What about the probability of a randomly chosen male respondent with green eyes having a partner with blue eyes?
+(d) Does it appear that the eye colors of male respondents and their partners are independent?
+
+Explain your reasoning.
+
+####2.29 Chips in a bag. Imagine you have a bag containing 5 red, 3 blue, and 2 orange chips.
+
+(a) Suppose you draw a chip and it is blue. If drawing without replacement, what is the probability the next is also blue?
+(b) Suppose you draw a chip and it is orange, and then you draw a second chip without replacement. What is the probability this second chip is blue?
+(c) If drawing without replacement, what is the probability of drawing two blue chips in a row?
+(d) When drawing without replacement, are the draws independent? Explain.
+
+####2.30 Books on a bookshelf. 
+
+The table below shows the distribution of books on a bookcase
+
+based on whether they are nonfiction or fiction and hardcover or paperback.
+
+Format
+
+Hardcover Paperback Total
+
+Type Fiction 13 59 72
+
+Nonfiction 15 8 23
+
+Total 28 67 95
+
+(a) Find the probability of drawing a hardcover book first then a paperback fiction book second
+
+when drawing without replacement.
+
+(b) Determine the probability of drawing a fiction book first and then a hardcover book second,
+
+when drawing without replacement.
+
+(c) Calculate the probability of the scenario in part (b), except this time complete the calculations
+
+under the scenario where the first book is placed back on the bookcase before randomly drawing
+
+the second book.
+
+(d) The final answers to parts (b) and (c) are very similar. Explain why this is the case.
+
+####2.43 Cat weights. The histogram shown below represents the weights (in kg) of 47 female and
+
+97 male cats.68
+
+(a) What fraction of these cats weigh less than
+
+2.5 kg?
+
+(b) What fraction of these cats weigh between
+
+2.5 and 2.75 kg?
+
+(c) What fraction of these cats weigh between
+
+2.75 and 3.5 kg?
+
+
+####2.44 Income and gender. The relative frequency table below displays the distribution of
+
+annual total personal income (in 2009 inflation-adjusted dollars) for a representative sample of
+
+96,420,486 Americans. These data come from the American Community Survey for 2005-2009.
+
+This sample is comprised of 59% males and 41% females.69
+
+(a) Describe the distribution of total personal income.
+
+(b) What is the probability that a randomly chosen US
+
+resident makes less than $50,000 per year?
+
+(c) What is the probability that a randomly chosen US
+
+resident makes less than $50,000 per year and is female?
+
+Note any assumptions you make.
+
+(d) The same data source indicates that 71.8% of females
+
+make less than $50,000 per year. Use this value to
+
+determine whether or not the assumption you made in
+
+part (c) is valid.
