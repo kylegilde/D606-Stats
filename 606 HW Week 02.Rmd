@@ -13,7 +13,7 @@ library(prob)
 
 ## Week 2 Homework
 
-[Open Stats 3](https://drive.google.com/file/d/0B-DHaDEbiOGkc1RycUtIcUtIelE/view)
+[Open Stats 3](https://drive.google.com/file/d/0B-DHaDEbiOGkc1RycUtIcUtIelE/view) 
 
 Practice: 2.5, 2.7, 2.19, 2.29, 2.43
 Graded: 2.6, 2.8, 2.20, 2.30, 2.38, 2.44
@@ -61,14 +61,38 @@ A 2012 Pew Research survey asked 2,373 randomly sampled registered voters their 
 (f) Is the event that someone is a swing voter independent of the event that someone is a political Independent?
 
 ####2.8 Poverty and language. 
-The American Community Survey is an ongoing survey that provides data every year to give communities the current information they need to plan investments and services. The 2010 American Community Survey estimates that 14.6% of Americans live below the poverty line, 20.7% speak a language other than English (foreign language) at home, and 4.2% fall into both categories.59
+The American Community Survey is an ongoing survey that provides data every year to give communities the current information they need to plan investments and services.
 
-(a) Are living below the poverty line and speaking a foreign language at home disjoint?
-(b) Draw a Venn diagram summarizing the variables and their associated probabilities.
+The 2010 American Community Survey estimates that 
++ 14.6% of Americans live below the poverty line, 
++ 20.7% speak a language other than English (foreign language) at home, 
++ and 4.2% fall into both categories.
+
+
+
+(a) Are living below the poverty line and speaking a foreign language at home disjoint? No
+(b) Draw a Venn diagram summarizing the variables and their associated probabilities.   
+  
 (c) What percent of Americans live below the poverty line and only speak English at home?
 (d) What percent of Americans live below the poverty line or speak a foreign language at home?
 (e) What percent of Americans live above the poverty line and only speak English at home?
 (f) Is the event that someone lives below the poverty line independent of the event that the person speaks a foreign language at home?
+```{r 8}
+poverty <- .146
+other.language <- .207
+both <-.042
+
+c <- poverty - both #c
+d <- poverty + other.language - both #d
+e <- 1 - d
+f <- "No"
+
+c;d;e;f
+
+```
+
+
+
 
 ####2.19 Burger preferences. 
 
