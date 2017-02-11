@@ -21,7 +21,9 @@ Practice: 2.5, 2.7, 2.19, 2.29, 2.43
 Graded: 2.6, 2.8, 2.20, 2.30, 2.38, 2.44
 
 
-####2.5 Coin flips. If you flip a fair coin 10 times, what is the probability of
+####2.5 Coin flips. 
+
+If you flip a fair coin 10 times, what is the probability of
 
 (a) getting all tails?
 (b) getting all heads?
@@ -35,7 +37,9 @@ pbinom(1, 10, .5, lower.tail = F)
 ```
 
 
-####2.6 Dice rolls. If you roll a pair of fair dice, what is the probability of
+####2.6 Dice rolls. 
+
+If you roll a pair of fair dice, what is the probability of
 
 (a) getting a sum of 1?
 (b) getting a sum of 5?
