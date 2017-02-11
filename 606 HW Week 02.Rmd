@@ -9,11 +9,13 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(prob)
+#library(png)
+#library(RCurl)
 ```
 
 ## Week 2 Homework
 
-[Open Stats 3](https://drive.google.com/file/d/0B-DHaDEbiOGkc1RycUtIcUtIelE/view) 
+[OpenIntro Statistics 3rd ed.](https://drive.google.com/file/d/0B-DHaDEbiOGkc1RycUtIcUtIelE/view) 
 
 Practice: 2.5, 2.7, 2.19, 2.29, 2.43
 Graded: 2.6, 2.8, 2.20, 2.30, 2.38, 2.44
@@ -28,7 +30,7 @@ Graded: 2.6, 2.8, 2.20, 2.30, 2.38, 2.44
 ```{r 5}
 dbinom(0, 10, .5)
 dbinom(10, 10, .5)
-pbinom(1, 10, .5)
+pbinom(1, 10, .5, lower.tail = F)
 
 ```
 
@@ -48,18 +50,6 @@ sum(sample.space$sum==5)/possibilities
 sum(sample.space$sum==12)/possibilities
 ```
 
-
-####2.7 Swing voters. 
-
-A 2012 Pew Research survey asked 2,373 randomly sampled registered voters their political a liation (Republican, Democrat, or Independent) and whether or not they identify as swing voters. 35% of respondents identified as Independent, 23% identified as swing voters, and 11% identified as both.58
-
-(a) Are being Independent and being a swing voter disjoint, i.e. mutually exclusive?
-(b) Draw a Venn diagram summarizing the variables and their associated probabilities.
-(c) What percent of voters are Independent but not swing voters?
-(d) What percent of voters are Independent or swing voters?
-(e) What percent of voters are neither Independent nor swing voters?
-(f) Is the event that someone is a swing voter independent of the event that someone is a political Independent?
-
 ####2.8 Poverty and language. 
 The American Community Survey is an ongoing survey that provides data every year to give communities the current information they need to plan investments and services.
 
@@ -68,88 +58,33 @@ The 2010 American Community Survey estimates that
 + 20.7% speak a language other than English (foreign language) at home, 
 + and 4.2% fall into both categories.
 
-
-
-(a) Are living below the poverty line and speaking a foreign language at home disjoint? No
+(a) Are living below the poverty line and speaking a foreign language at home disjoint? 
 (b) Draw a Venn diagram summarizing the variables and their associated probabilities.   
-  
 (c) What percent of Americans live below the poverty line and only speak English at home?
 (d) What percent of Americans live below the poverty line or speak a foreign language at home?
 (e) What percent of Americans live above the poverty line and only speak English at home?
 (f) Is the event that someone lives below the poverty line independent of the event that the person speaks a foreign language at home?
+
+
 ```{r 8}
 poverty <- .146
 other.language <- .207
 both <-.042
 
-c <- poverty - both #c
-d <- poverty + other.language - both #d
+a <- "No"
+#my.url <- getURLContent("https://raw.githubusercontent.com/kylegilde/D606-Stats/master/venn1.PNG")
+b <- "I couldn't figure out how to print an image inside the R code. See below"
+c <- poverty - both 
+d <- poverty + other.language - both 
 e <- 1 - d
 f <- "No"
 
-c;d;e;f
-
+a;b;c;d;e;f
 ```
-
-
-
-
-####2.19 Burger preferences. 
-
-A 2010 SurveyUSA poll asked 500 Los Angeles residents, "What is the best hamburger place in Southern California? Five Guys Burgers? In-N-Out Burger? Fat Burger? Tommy's Hamburgers? Umami Burger? Or somewhere else?" The distribution of responses by gender is shown below.64
-
-Gender
-
-Male Female Total
-
-Five Guys Burgers 5 6 11
-
-In-N-Out Burger 162 181 343
-
-Best Fat Burger 10 12 22
-
-hamburger Tommy's Hamburgers 27 27 54
-
-place Umami Burger 5 1 6
-
-Other 26 20 46
-
-Not Sure 13 5 18
-
-Total 248 252 500
-
-(a) Are being female and liking Five Guys Burgers mutually exclusive?
-
-(b) What is the probability that a randomly chosen male likes In-N-Out the best?
-
-(c) What is the probability that a randomly chosen female likes In-N-Out the best?
-
-(d) What is the probability that a man and a woman who are dating both like In-N-Out the best?
-
-Note any assumption you make and evaluate whether you think that assumption is reasonable.
-
-(e) What is the probability that a randomly chosen person likes Umami best or that person is
-
-female?
-
-64SurveyUSA, Results of SurveyUSA News Poll #17718, data collected on December 2, 2010.
-
-
+![b.](https://raw.githubusercontent.com/kylegilde/D606-Stats/master/venn1.PNG)
 
 ####2.20 Assortative mating.
-Assortative mating is a nonrandom mating pattern where individuals with similar genotypes and/or phenotypes mate with one another more frequently than what would be expected under a random mating pattern. Researchers studying this topic collected data on eye colors of 204 Scandinavian men and their female partners. The table below summarizes the results. For simplicity, we only include heterosexual relationships in this exercise.65
-
-Partner (female)
-
-Blue Brown Green Total
-
-Blue 78 23 13 114
-
-Self (male) Brown 19 23 12 54
-
-Green 11 9 16 36
-
-Total 108 55 41 204
+Assortative mating is a nonrandom mating pattern where individuals with similar genotypes and/or phenotypes mate with one another more frequently than what would be expected under a random mating pattern. Researchers studying this topic collected data on eye colors of 204 Scandinavian men and their female partners. The table below summarizes the results. For simplicity, we only include heterosexual relationships in this exercise.
 
 (a) What is the probability that a randomly chosen male respondent or his partner has blue eyes?
 (b) What is the probability that a randomly chosen male respondent with blue eyes has a partner with blue eyes?
@@ -157,6 +92,14 @@ Total 108 55 41 204
 (d) Does it appear that the eye colors of male respondents and their partners are independent?
 
 Explain your reasoning.
+```{r 20}
+
+a <- (114 + 108 - 78)/204
+b <- 78/114
+c <- 19/54
+d <- "No, it appears that the eye colors of the male respondents and their partners are NOT independent. For each eye-color subset of males, it is more likely that the partners share that eye color than any of the other colors."
+a;b;c;d
+```
 
 ####2.29 Chips in a bag. Imagine you have a bag containing 5 red, 3 blue, and 2 orange chips.
 
@@ -165,79 +108,90 @@ Explain your reasoning.
 (c) If drawing without replacement, what is the probability of drawing two blue chips in a row?
 (d) When drawing without replacement, are the draws independent? Explain.
 
+```{r 29}
+red <- 5
+blue <- 3
+orange <- 2
+total <- red+blue+orange
+
+(blue -1)/(total -1)
+blue/(total - 1)
+blue/total * (blue - 1)/(total - 1)
+
+```
+
+
 ####2.30 Books on a bookshelf. 
 
-The table below shows the distribution of books on a bookcase
+The table below shows the distribution of books on a bookcase based on whether they are nonfiction or fiction and hardcover or paperback.
 
-based on whether they are nonfiction or fiction and hardcover or paperback.
+Type      Hardcover Paperback Total
 
-Format
+Fiction   13        59        72
 
-Hardcover Paperback Total
+Nonfiction 15       8         23
 
-Type Fiction 13 59 72
+Total     28        67        95
 
-Nonfiction 15 8 23
-
-Total 28 67 95
-
-(a) Find the probability of drawing a hardcover book first then a paperback fiction book second
-
-when drawing without replacement.
-
-(b) Determine the probability of drawing a fiction book first and then a hardcover book second,
-
-when drawing without replacement.
-
-(c) Calculate the probability of the scenario in part (b), except this time complete the calculations
-
-under the scenario where the first book is placed back on the bookcase before randomly drawing
-
-the second book.
-
+(a) Find the probability of drawing a hardcover book first then a paperback fiction book second when drawing without replacement.
+(b) Determine the probability of drawing a fiction book first and then a hardcover book second, when drawing without replacement.
+(c) Calculate the probability of the scenario in part (b), except this time complete the calculations 
+under the scenario where the first book is placed back on the bookcase before randomly drawing the second book.
 (d) The final answers to parts (b) and (c) are very similar. Explain why this is the case.
 
-####2.43 Cat weights. The histogram shown below represents the weights (in kg) of 47 female and
+```{r}
+books <- matrix( c(13,59,15,8), 2,2, byrow = T)
+ 
+a <- sum(books[,1])/sum(books) * books[1,2]/(sum(books)-1)
+b <- books[1,1]/sum(books) * sum(books[,1] - 1)/(sum(books)-1) + books[1,2]/sum(books) * sum(books[,1])/(sum(books)-1)
+c <- sum(books[1,])/sum(books) * sum(books[,1])/sum(books)
+d <- "In this scenario, drawing books w/ and w/o replacement has only the tiniest effect on the overall probability" 
 
-97 male cats.68
+a;b;c;d
+```
 
-(a) What fraction of these cats weigh less than
+####2.44 Income and gender. 
 
-2.5 kg?
+The relative frequency table below displays the distribution of annual total personal income (in 2009 inflation-adjusted dollars) for a representative sample of 96,420,486 Americans. These data come from the American Community Survey for 2005-2009. 
 
-(b) What fraction of these cats weigh between
+Income                Total
 
-2.5 and 2.75 kg?
+$1 to $9,999 or loss  2.2%
 
-(c) What fraction of these cats weigh between
+$10,000 to $14,999    4.7%
 
-2.75 and 3.5 kg?
+$15,000 to $24,999    15.8%
 
+$25,000 to $34,999    18.3%
 
-####2.44 Income and gender. The relative frequency table below displays the distribution of
+$35,000 to $49,999    21.2%
 
-annual total personal income (in 2009 inflation-adjusted dollars) for a representative sample of
+$50,000 to $64,999    13.9%
 
-96,420,486 Americans. These data come from the American Community Survey for 2005-2009.
+$65,000 to $74,999    5.8%
 
-This sample is comprised of 59% males and 41% females.69
+$75,000 to $99,999    8.4%
+
+$100,000 or more      9.7%
+
+This sample is comprised of 59% males and 41% females.
 
 (a) Describe the distribution of total personal income.
+(b) What is the probability that a randomly chosen US resident makes less than $50,000 per year?
+(c) What is the probability that a randomly chosen US resident makes less than $50,000 per year and is female? Note any assumptions you make.
+(d) The same data source indicates that 71.8% of females make less than $50,000 per year. Use this value to determine whether or not the assumption you made in part (c) is valid.
 
-(b) What is the probability that a randomly chosen US
+```{r 44}
+perc <-	c(0.022,	0.047,	0.158,	0.183,	0.212,	0.139,	0.058,	0.084,	0.097)
+m <- .59
+f <- .41
 
-resident makes less than $50,000 per year?
+a <- "It's distributed vaguely normally, except that there is a lot more kurtosis in the right tail than the left tail."
+b <- sum(perc[1:5])
+c <- b * f
+print("You have to assume that the the proportion of females is evenly distributed accoss all income brackets")
+d <- "That the female population is disproportionately distributed in the less than $50K brackets makes my previous assumption and calcalution incorrect."  
+a;b;c;d
 
-(c) What is the probability that a randomly chosen US
+```
 
-resident makes less than $50,000 per year and is female?
-
-Note any assumptions you make.
-
-(d) The same data source indicates that 71.8% of females
-
-make less than $50,000 per year. Use this value to
-
-determine whether or not the assumption you made in
-
-part (c) is valid.
