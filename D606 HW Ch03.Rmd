@@ -8,15 +8,6 @@ output:
     highlight: github
 ---
 
-<style>
-.lightgreen table {
-  background-color:#eff8e5;
-.beige {
-  background-color:beige;  
-}
-</style>
-<div class = "beige">
-
 ##OpenIntro Statistics
 
 Practice: 3.1 (see normalPlot), 3.3, 3.17 (use qqnormsim from lab 3), 3.21, 3.37, 3.41
@@ -35,7 +26,7 @@ knitr::opts_chunk$set(#echo=FALSE,
 #https://cran.r-project.org/web/packages/prettydoc/vignettes/
 #https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
 
-load.packages <- c("RCurl", "knitr","stringr","prettydoc")
+load.packages <- c("DATA606")
 
 
 ipak <- function(pkg){
@@ -46,13 +37,74 @@ ipak <- function(pkg){
     sapply(pkg, require, character.only = TRUE)
 }
 ipak(load.packages)
+
+```
+
+
+
+##3.2 Area under the curve, Part II. 
+
+What percent of a standard normal distribution N(?? = 0,= 1) is found in each region? Be sure to draw a graph.
+
+(a) Z > -1.13 (b) Z < 0.18 (c) Z > 8 (d) |Z| < 0.5
+```{r 3.2}
+normalPlot(bounds=c(-1.13, Inf))
+normalPlot(bounds=c(-Inf, .18))
+normalPlot(bounds=c(8, Inf))
+normalPlot(bounds=c(-.5,.5))
+```
+##3.4 Triathlon times, Part I. 
+
+In triathlons, it is common for racers to be placed into age and gender groups. Friends Leo and Mary both completed the Hermosa Beach Triathlon, where Leo competed in the Men, Ages 30 - 34 group while Mary competed in the Women, Ages 25 - 29 group. Leo completed the race in 1:22:28 (4948 seconds), while Mary completed the race in 1:31:53 (5513 seconds). Obviously Leo finished faster, but they are curious about how they did within their respective groups. Can you help them? Here is some information on the performance 
+of their groups:
+
+. The finishing times of the Men, Ages 30 - 34 group has a mean of 4313 seconds with a standard deviation of 583 seconds.
+
+. The finishing times of the Women, Ages 25 - 29 group has a mean of 5261 seconds with a standard deviation of 807 seconds.
+
+. The distributions of finishing times for both groups are approximately Normal.
+
+Remember: a better performance corresponds to a faster finish.
+
+(a) Write down the short-hand for these two normal distributions. 
+
+(b) What are the Z-scores for Leo's and Mary's finishing times? What do these Z-scores tell you?
+
+```{r}
+leo <- 4948
+mary <- 5513
+
+male.mu <- 4313
+male.sd <- 583
+
+female.mu <- 5261
+female.sd <- 807
+
+leo.z <- (leo - male.mu)/male.sd
+mary.z <- (mary - female.mu)/female.sd
+
+leo.z; mary.z
+
+print("Mary's z-score is relatively closer to her group's mean than Leo's.")
 ```
 
 
-##Load the data & take a look at it
-```{r load.data}
+(c) Did Leo or Mary rank better in their respective groups? Explain your reasoning.
+**Since her z-score is less than Leo's **
 
-my.data <- getURLContent("https://raw.githubusercontent.com/kylegilde/D607-Data-Acquistion/master/data-sets/tournamentinfo.txt")
-writeLines(str_sub(my.data, 1, 811))
+
+(d) What percent of the triathletes did Leo finish faster than in his group?
+
+(e) What percent of the triathletes did Mary finish faster than in her group?
+
+(f) If the distributions of finishing times are not nearly normal, would your answers to parts
+
+(b) - (e) change? Explain your reasoning.
+
+```{r }
+
+
 
 ```
+
+

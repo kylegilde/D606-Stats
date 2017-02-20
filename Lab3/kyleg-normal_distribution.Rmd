@@ -45,6 +45,10 @@ fdims <- subset(bdims, sex == 0)
 
 1.  Make a histogram of men's heights and a histogram of women's heights.  How 
     would you compare the various aspects of the two distributions?
+```{r 1}
+hist(mdims$hgt)
+hist(fdims$hgt)
+```
 
 ## The normal distribution
 
