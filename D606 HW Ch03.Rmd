@@ -26,7 +26,7 @@ knitr::opts_chunk$set(#echo=FALSE,
 #https://cran.r-project.org/web/packages/prettydoc/vignettes/
 #https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
 
-load.packages <- c("DATA606")
+load.packages <- c("DATA606","prob")
 
 
 ipak <- function(pkg){
@@ -39,8 +39,6 @@ ipak <- function(pkg){
 ipak(load.packages)
 
 ```
-
-
 
 ##3.2 Area under the curve, Part II. 
 
@@ -67,6 +65,7 @@ of their groups:
 Remember: a better performance corresponds to a faster finish.
 
 (a) Write down the short-hand for these two normal distributions. 
+**N(mu=4313, sigma=583), N(mu=5261,807)**
 
 (b) What are the Z-scores for Leo's and Mary's finishing times? What do these Z-scores tell you?
 
@@ -90,21 +89,134 @@ print("Mary's z-score is relatively closer to her group's mean than Leo's.")
 
 
 (c) Did Leo or Mary rank better in their respective groups? Explain your reasoning.
-**Since her z-score is less than Leo's **
-
+**Since her z-score is less than Leo's, Mary performed better vis-a-vis her group than Leo performed in relation to his group.**
 
 (d) What percent of the triathletes did Leo finish faster than in his group?
-
-(e) What percent of the triathletes did Mary finish faster than in her group?
-
-(f) If the distributions of finishing times are not nearly normal, would your answers to parts
-
-(b) - (e) change? Explain your reasoning.
-
-```{r }
-
-
-
+```{r}
+pnorm(leo, male.mu, male.sd, lower.tail = F)
 ```
 
 
+(e) What percent of the triathletes did Mary finish faster than in her group?
+```{r}
+pnorm(mary, female.mu, female.sd, lower.tail = F)
+```
+
+(f) If the distributions of finishing times are not nearly normal, would your answers to parts (b) - (e) change? Explain your reasoning.
+**Yes, the entire z-score is premised on a normal distribution.  We wouldn't know how them performed relative to the group unless we knew all of the group times.**
+
+
+ 
+
+
+##3.18 Heights of female college students. 
+
+Below are heights of 25 female college students.
+
+(a) The mean height is 61.52 inches with a standard deviation of 4.58 inches. Use this information to determine if the heights approximately follow the 68-95-99.7% Rule.
+**It's a close approximation.**
+```{r}
+heights <- c(54,	55,	56,	56,	57,	58,	58,	59,	60,	60,	60,	61,	61,	62,	62,	63,	63,	63,	64,	65,	65,	67,	67,	69,	73)
+
+M <- 61.52
+std <- 4.58
+
+sd.1 <- c(M - std, M + std)
+sd.2 <- c(M - 2*std, M + 2*std)
+sd.3 <- c(M - 3*std, M + 3*std)
+
+b.w <- function(x, ends) x >= ends[1] & x <= ends[2]
+# function source: http://www.talkstats.com/showthread.php/28194-Between-Operator
+
+sum(b.w(heights, sd.1))/length(heights)
+sum(b.w(heights, sd.2))/length(heights)
+sum(b.w(heights, sd.3))/length(heights)
+```
+
+
+(b) Do these data appear to follow a normal distribution? Explain your reasoning using the graphs provided below.
+
+**They do follow the 68-95-99.7 rule, and they form a petty straight line on a qqplot.**
+```{r}
+qqnorm(heights)
+qqline(heights)
+```
+##3.22 Defective rate. 
+A machine that produces a special type of transistor (a component of computers) has a 2% defective rate. The production is considered a random process where each transistor is independent of the others. 
+
+(a) What is the probability that the 10th transistor produced is the first with a defect?
+```{r}
+#?????????????????????
+p <- .02
+n1.10 <- dbinom(1, 10, p)
+
+(1-n1.10)^9 * n1.10
+```
+
+(b) What is the probability that the machine produces no defective transistors in a batch of 100?
+```{r}
+dbinom(0, 100, p)
+```
+
+(c) On average, how many transistors would you expect to be produced before the first with a
+defect? What is the standard deviation?
+**50**
+```{r}
+n <- 1/p
+n
+sqrt(p*n*(1-p))
+```
+
+
+(d) Another machine that also produces transistors has a 5% defective rate where each transistor is produced independent of the others. On average how many transistors would you expect to be produced with this machine before the first with a defect? What is the standard deviation?
+
+
+```{r}
+p <- .05
+n <- 1/p
+n
+sqrt(p*n*(1-p))
+```
+
+(e) Based on your answers to parts (c) and (d), how does increasing the probability of an event affect the mean and standard deviation of the wait time until success?
+
+**The mean is not affected, and the standard deviation decreases.**
+
+##3.38 Male children. 
+While it is often assumed that the probabilities of having a boy or a girl are the same, the actual probability of having a boy is slightly higher at 0.51. Suppose a couple plans to have 3 kids.
+
+(a) Use the binomial model to calculate the probability that two of them will be boys.
+```{r}
+p <- .51
+dbinom(2, 3, p)
+```
+
+(b) Write out all possible orderings of 3 children, 2 of whom are boys. Use these scenarios to calculate the same probability from part (a) but using the addition rule for disjoint outcomes. Confirm that your answers from parts (a) and (b) match.
+```{r}
+my.set <- c("b","b","g")
+sample.space <- unique(permn(my.set))
+sample.space
+
+length(sample.space)
+combn(2,3, replace=T)
+nsamp(2,3, replace=T)
+
+```
+
+(c) If we wanted to calculate the probability that a couple who plans to have 8 kids will have 3 boys, briefly describe why the approach from part (b) would be more tedious than the
+approach from part (a).
+
+
+##3.42 Serving in volleyball. 
+
+A not-so-skilled volleyball player has a 15% chance of making the serve, which involves hitting the ball so it passes over the net on a trajectory such that it will land in the opposing team's court. Suppose that her serves are independent of each other.
+
+(a) What is the probability that on the 10th try she will make her 3rd successful serve?
+```{r}
+p <- .15
+dbinom(2, 9, p) * .15
+```
+
+(b) Suppose she has made two successful serves in nine attempts. What is the probability that her 10th serve will be successful?
+**.15**
+(c) Even though parts (a) and (b) discuss the same scenario, the probabilities you calculated should be different. Can you explain the reason for this discrepancy?
