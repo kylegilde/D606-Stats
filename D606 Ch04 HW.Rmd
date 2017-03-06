@@ -18,13 +18,14 @@ knitr::opts_chunk$set(#echo=FALSE,
                       warning=FALSE, 
                       message=FALSE,
                       tidy=F,
+                      collapse = T,
                       #comment = "",
                       dev="png", 
                       dev.args=list(type="cairo"))
 #https://cran.r-project.org/web/packages/prettydoc/vignettes/
 #https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
 
-load.packages <- c("prettydoc","knitr")
+load.packages <- c("prettydoc", "knitr", "DATA606")
 
 ipak <- function(pkg){
     #FUNCTION SOURCE: https://gist.github.com/stevenworthington/3178163
@@ -135,34 +136,125 @@ min_months <- 21
 xbar <- 30.69
 s <- 4.31
 max_months <- 39
+H0 <- 32
 
 sign_level <- .10
-
 se <- s/sqrt(n)
-cv <- qnorm(.05)
+pvalue <- pnorm(xbar, H0, se)
 
-
+paste("pvalue =", pvalue)
 ```
 
 (c) Interpret the p-value in context of the hypothesis test and the data.
 
 (d) Calculate a 90% confidence interval for the average age at which gifted children first count to 10 successfully.
+```{r}
+cv <- abs(qnorm(sign_level))
+me <- cv * se
+xbar - me
+xbar + me
+
+```
 
 (e) Do your results from the hypothesis test and the confidence interval agree? Explain.
 
-##Which airline & city had the best on-time arrival rate?
+####4.26 Gifted children, Part II. 
+Exercise 4.24 describes a study on gifted children. In this study, along with variables on the children, the researchers also collected data on the mother's and father's IQ of the 36 randomly sampled gifted children. The histogram below shows the distribution of mother's IQ. Also provided are some sample statistics.
+
+n 36
+
+min 101
+
+mean 118.2
+
+sd 6.5
+
+max 131
+
+(a) Perform a hypothesis test to evaluate if these data provide convincing evidence that the average
+
+IQ of mothers of gifted children is di???erent than the average IQ for the population at large,
+
+which is 100. Use a significance level of 0.10.
+
+(b) Calculate a 90% confidence interval for the average IQ of mothers of gifted children.
+
+(c) Do your results from the hypothesis test and the confidence interval agree? Explain.
 ```{r}
 
 
 ```
 
-##Which airline had the better on-time arrival rate?
-```{r analysis, tidy=F}
+####4.34 CLT. 
+Define the term "sampling distribution" of the mean, and describe how the shape, center, and spread of the sampling distribution of the mean change as sample size increases.
+```{r }
 
 ```
 
-##Let's rank the cities by their overall on-time arrival rates.
+####4.40 CFLBs. 
+A manufacturer of compact fluorescent light bulbs advertises that the distribution of the lifespans of these light bulbs is nearly normal with a mean of 9,000 hours and a standard deviation of 1,000 hours.
+
+(a) What is the probability that a randomly chosen light bulb lasts more than 10,500 hours?
+
+(b) Describe the distribution of the mean lifespan of 15 light bulbs.
+
+(c) What is the probability that the mean lifespan of 15 randomly chosen light bulbs is more than
+
+10,500 hours?
+
+(d) Sketch the two distributions (population and sampling) on the same scale.
+
+(e) Could you estimate the probabilities from parts (a) and (c) if the lifespans of light bulbs had a skewed distribution?
 ```{r}
 
 ```
+####4.48 Same observation, different sample size. 
+Suppose you conduct a hypothesis test based on a sample where the sample size is n = 50, and arrive at a p-value of 0.08. You then refer back to your notes and discover that you made a careless mistake, the sample size should have been n = 500. Will your p-value increase, decrease, or stay the same? Explain.
 
+#Practice Problems
+####4.23 Nutrition labels. 
+The nutrition label on a bag of potato chips says that a one ounce (28 gram) serving of potato chips has 130 calories and contains ten grams of fat, with three grams of saturated fat. A random sample of 35 bags yielded a sample mean of 134 calories with a standard deviation of 17 calories. Is there evidence that the nutrition label does not provide an accurate measure of calories in the bags of potato chips? We have verified the independence, sample size, and skew conditions are satisfied.
+```{r practice4.23}
+H0 <- 130
+n <- 35
+xbar <- 134
+s <- 17
+
+se <- s/sqrt(n)
+zscore <- (xbar - H0) / se
+pvalue <- (1 - pnorm(zscore)) * 2
+pvalue 
+
+normalPlot(H0, se, bounds=c(xbar - 8, xbar), tails = T)
+
+```
+
+####4.25 Waiting at an ER, Part III. 
+The hospital administrator mentioned in Exercise 4.13 randomly selected 64 patients and measured the time (in minutes) between when they checked in to the ER and the time they were first seen by a doctor. The average time is 137.5 minutes and the standard deviation is 39 minutes. She is getting grief from her supervisor on the basis that the wait times in the ER has increased greatly from last year's average of 127 minutes. However, she claims that the increase is probably just due to chance.
+
+(a) Are conditions for inference met? Note any assumptions you must make to proceed.
+
+(b) Using a significance level of $\alpha$ = 0.05, is the change in wait times statistically significant? Use a two-sided test since it seems the supervisor had to inspect the data before she suggested an increase occurred.
+
+```{r}
+H0 <- 127
+n <- 64
+xbar <- 137.5
+s <- 39
+alpha <- .05
+
+se <- s/sqrt(n)
+zscore <- (xbar - H0) / se
+pvalue <- (1 - pnorm(zscore)) * 2
+pvalue 
+
+ifelse(pvalue < alpha, "Reject the null hypothesis", "Fail to reject the null hypothesis")
+
+normalPlot(bounds=c(-zscore, zscore), tails = T)
+
+```
+
+
+(c) Would the conclusion of the hypothesis test change if the significance level was changed to
+
+??? = 0.01?
