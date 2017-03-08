@@ -129,7 +129,6 @@ Researchers investigating characteristics of gifted children collected data from
 $H_{0}: \mu_{gifted}=32$ 
 $H_{A}:  \mu_{gifted}<32$
 
-
 ```{r }
 n <- 36
 min_months <- 21
@@ -137,26 +136,26 @@ xbar <- 30.69
 s <- 4.31
 max_months <- 39
 H0 <- 32
-
-sign_level <- .10
 se <- s/sqrt(n)
+sign_level <- .1
+
 pvalue <- pnorm(xbar, H0, se)
 
 paste("pvalue =", pvalue)
 ```
 
 (c) Interpret the p-value in context of the hypothesis test and the data.
+**Because the p-value is less than the significance level, we reject the null hypothesis that gifted children learn to count to 10 at the same age of the general population.**
 
 (d) Calculate a 90% confidence interval for the average age at which gifted children first count to 10 successfully.
 ```{r}
 cv <- abs(qnorm(sign_level))
 me <- cv * se
-xbar - me
-xbar + me
-
+c(xbar - me, xbar + me)
 ```
 
 (e) Do your results from the hypothesis test and the confidence interval agree? Explain.
+**No, they agree. The general average is outside of the 90% confidence interval for the gifted children. Likewise, the small p-value indicates that gifted average is more extreme than the .1 significance level**
 
 ####4.26 Gifted children, Part II. 
 Exercise 4.24 describes a study on gifted children. In this study, along with variables on the children, the researchers also collected data on the mother's and father's IQ of the 36 randomly sampled gifted children. The histogram below shows the distribution of mother's IQ. Also provided are some sample statistics.
@@ -224,6 +223,7 @@ se <- s/sqrt(n)
 zscore <- (xbar - H0) / se
 pvalue <- (1 - pnorm(zscore)) * 2
 pvalue 
+pnorm(xbar, H0, se, lower.tail = F) * 2
 
 normalPlot(H0, se, bounds=c(xbar - 8, xbar), tails = T)
 
