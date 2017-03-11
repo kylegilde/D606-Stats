@@ -1,5 +1,7 @@
 ---
 title: 'Foundations for statistical inference - Sampling distributions'
+author: "Kyle Gilde"
+date: "Mar. 11, 2017"
 output:
   html_document:
     css: ./lab.css

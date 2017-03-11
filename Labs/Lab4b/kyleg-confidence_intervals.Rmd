@@ -1,5 +1,7 @@
 ---
 title: 'Foundations for statistical inference - Confidence intervals'
+author: "Kyle Gilde"
+date: "Mar. 11, 2017"
 output:
   html_document:
     css: ./lab.css
@@ -42,9 +44,16 @@ samp <- sample(population, 60)
 1.  Describe the distribution of your sample. What would you say is the 
 "typical" size within your sample? Also state precisely what you interpreted 
 "typical" to mean.
+**My sample appears to have a positive skew. The typical values of this sample are the mean and median: 1599 and 1546, respectively.**
+```{r}
+summary(samp)
+hist(samp)
+```
 
 2.  Would you expect another student's distribution to be identical to yours? 
 Would you expect it to be similar? Why or why not?
+
+**It would not be identical, but it would likely be similar. They would be similar because they are both drawn from the same population, but they would not be identical due to random sampling.**
 
 ## Confidence intervals
 
@@ -54,6 +63,7 @@ sample using,
 
 ```{r sample-mean, eval=TRUE}
 sample_mean <- mean(samp)
+sample_mean
 ```
 
 Return for a moment to the question that first motivated this lab: based on 
@@ -84,9 +94,13 @@ There are a few conditions that must be met for this interval to be valid.
 distributed and have standard error $s / \sqrt{n}$. What conditions must be 
 met for this to be true?
 
+**The sample observations must be independent. The sample size is large or at least 30. The population distribution is not strongly skewed, but this condition can be relaxed with a large sample size**
+
 ## Confidence levels
 
 4.  What does "95% confidence" mean? If you're not sure, see Section 4.2.2.
+
+**We are 95% confident that the population parameter is within the interval.**
 
 In this case we have the luxury of knowing the true population mean since we 
 have data on the entire population. This value can be calculated using the 
@@ -100,12 +114,23 @@ mean(population)
 Ames? If you are working on this lab in a classroom, does your neighbor's 
 interval capture this value? 
 
+**Yes, the CI contains the population mean**
+
 6.  Each student in your class should have gotten a slightly different 
 confidence interval. What proportion of those intervals would you expect to 
-capture the true population mean? Why? If you are working in this lab in a 
+capture the true population mean?
+
+**95%**
+
+Why? 
+
+**The correct interpretation of a CI is that if we were to take repeated samples from the same population and the 95% CI calculated for each, 95% of them would contain the population mean.**
+
+If you are working in this lab in a 
 classroom, collect data on the intervals created by other students in the 
 class and calculate the proportion of intervals that capture the true 
 population mean.
+
 
 Using R, we're going to recreate many samples to learn more about how sample 
 means and confidence intervals vary from one sample to another. *Loops* come 
@@ -162,12 +187,20 @@ c(lower_vector[1], upper_vector[1])
     the true population mean? Is this proportion exactly equal to the 
     confidence level? If not, explain why.
 
-    ```{r plot-ci, eval=TRUE}
-    plot_ci(lower_vector, upper_vector, mean(population))
-    ```
+```{r plot-ci, eval=TRUE}
+plot_ci(lower_vector, upper_vector, mean(population))
+47/50
+print("No, it's not exactly equal to the confidence level. Setting aside the obvious that no whole number divided by 50 will yeild .95, the .95 proportion is an expected value, and the law of large numbers indicates that as the sample size increases, the proportion will approach the expected value.")
+```
 
 -   Pick a confidence level of your choosing, provided it is not 95%. What is 
     the appropriate critical value?
+**.9**
+```{r}
+cv <- qnorm(.95)
+cv
+```
+
 
 -   Calculate 50 confidence intervals at the confidence level you chose in the 
     previous question. You do not need to obtain new samples, simply calculate 
@@ -176,6 +209,15 @@ c(lower_vector[1], upper_vector[1])
     calculate the proportion of intervals that include the true population 
     mean. How does this percentage compare to the confidence level selected for
     the intervals?
+```{r}
+lower_vector <- samp_mean - cv * samp_sd / sqrt(n) 
+upper_vector <- samp_mean + cv * samp_sd / sqrt(n)
+
+plot_ci(lower_vector, upper_vector, mean(population))
+43/50
+print("It's close to the confidence level, but it is a few percentage points off.")
+
+```
 
 <div id="license">
 This is a product of OpenIntro that is released under a [Creative Commons 
