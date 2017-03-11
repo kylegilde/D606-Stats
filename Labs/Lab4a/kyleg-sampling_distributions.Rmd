@@ -48,6 +48,8 @@ hist(area)
 
 1.  Describe this population distribution.
 
+**It's right-skewed. The mean is greater than the median because of the right-skew**
+
 ## The unknown sampling distribution
 
 In this lab we have access to the entire population, but this is rarely the 
@@ -70,6 +72,16 @@ home sales.
 
 2.  Describe the distribution of this sample. How does it compare to the 
     distribution of the population?
+    
+    **The sample histogram doesn't look very much like the population. The means are nearly the same, but the sample median is actually greater than sample mean because the sample contains a disproportionate number of low values.**
+    
+    
+```{r}
+summary(samp1)
+hist(samp1)
+```
+
+
 
 If we're interested in estimating the average living area in homes in Ames 
 using the sample, our best single guess is the sample mean.
@@ -88,6 +100,13 @@ population.
     mean of `samp2` compare with the mean of `samp1`?  Suppose we took two 
     more samples, one of size 100 and one of size 1000. Which would you think 
     would provide a more accurate estimate of the population mean?
+    
+    **It's farther away from the population mean than the 1st sample statistic. The mean for the sample of 1000 would be the most accurate**
+    
+```{r}
+samp2 <- sample(area, 50)
+mean(samp2)
+```
 
 Not surprisingly, every time we take another random sample, we get a different 
 sample mean.  It's useful to get a sense of just how much variability we 
@@ -124,6 +143,10 @@ the mean of each sample, and store each result in a vector called
     distribution, and be sure to specifically note its center.  Would you 
     expect the distribution to change if we instead collected 50,000 sample 
     means?
+    
+    **There are 5000 vectors**
+    **We have a very normal-looking histogram centered on 1500.**
+    **I would expect that it would look even normal**
 
 ## Interlude: The `for` loop
 
@@ -200,6 +223,16 @@ initialized at the outset.
     `sample_means_small` into the console and press enter).  How many elements 
     are there in this object called `sample_means_small`? What does each 
     element represent?
+    **There are 100 elements in the vector.**
+    **Each element represents the mean of each of the 100 samples.**
+```{r}
+sample_means_small <- rep(0, 100)
+for (i in 1:100){
+  samp <- sample(area, 50)
+  sample_means_small[i] <- mean(samp)
+}
+print(sample_means_small)
+```
 
 ## Sample size and the sampling distribution
 
@@ -263,6 +296,7 @@ to `xlimits` for each histogram, we ensure that all three histograms will be
 plotted with the same limits on the x-axis.
 
 6.  When the sample size is larger, what happens to the center?  What about the spread?
+**The center becomes closer to the population mean, and the spread has less variance.**
 
 * * *
 ## On your own
@@ -272,14 +306,32 @@ Ames.  Now you'll try to estimate the mean home price.
 
 -   Take a random sample of size 50 from `price`. Using this sample, what is 
     your best point estimate of the population mean?
+    
+```{r}
+my_samp <- sample(price, 50)
+mean(my_samp)
+```
 
 -   Since you have access to the population, simulate the sampling 
     distribution for $\bar{x}_{price}$ by taking 5000 samples from the 
-    population of size 50 and computing 5000 sample means.  Store these means 
-    in a vector called `sample_means50`. Plot the data, then describe the 
-    shape of this sampling distribution. Based on this sampling distribution, 
-    what would you guess the mean home price of the population to be? Finally, 
-    calculate and report the population mean.
+    population of size 50 and computing 5000 sample means.  
+    Store these means in a vector called `sample_means50`. 
+    Plot the data, then describe the shape of this sampling distribution. 
+    Based on this sampling distribution, what would you guess the mean home price of the population to be? 
+    Finally, calculate and report the population mean.
+    
+```{r}
+n <- 5000
+sample_means50 <- rep(NA, n)
+for (i in 1:n){
+  samp <- sample(price, 50)
+  sample_means50[i] <- mean(samp)
+}
+hist(sample_means50)
+print("The sampling distribution looks nearly normal, and the sampling mean appears to be approximately 180,000")
+mean(price)
+
+```
 
 -   Change your sample size from 50 to 150, then compute the sampling 
     distribution using the same method as above, and store these means in a 
@@ -287,11 +339,22 @@ Ames.  Now you'll try to estimate the mean home price.
     distribution, and compare it to the sampling distribution for a sample 
     size of 50.  Based on this sampling distribution, what would you guess to 
     be the mean sale price of homes in Ames?
+```{r}
+n <- 5000
+sample_means150 <- rep(NA, n)
+for (i in 1:n){
+  samp <- sample(price, 150)
+  sample_means150[i] <- mean(samp)
+}
+hist(sample_means150)
+print("This sampling distribution looks nearly normal, and it appears to have less variance than the previous sampling distribution. The sampling mean appears to be approximately 180,000")
 
+
+```
 -   Of the sampling distributions from 2 and 3, which has a smaller spread?  If
     we're concerned with making estimates that are more often close to the 
     true value, would we prefer a distribution with a large or small spread?
-
+**#3 has the smaller spread. We would prefer distributions w/ smaller spread.**
 <div id="license">
 This is a product of OpenIntro that is released under a [Creative Commons 
 Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
