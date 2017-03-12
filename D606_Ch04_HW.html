@@ -12,8 +12,9 @@
 
 <meta name="author" content="Kyle Gilde" />
 
+<meta name="date" content="2017-03-11" />
 
-<title>D607 Project 2 - Tidy Data</title>
+<title>D606 Stats HW CH04</title>
 
 
 
@@ -69,9 +70,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <header>
 <div class="inner">
-<h1 class="title toc-ignore">D607 Project 2 - Tidy Data</h1>
+<h1 class="title toc-ignore">D606 Stats HW CH04</h1>
 <h3 class="author">Kyle Gilde</h3>
-<h3 class="date">Mar. 4, 2017</h3>
+<h3 class="date">Mar. 11, 2017</h3>
 </div>
 </header>
 
@@ -133,19 +134,18 @@ ipak &lt;-<span class="st"> </span>function(pkg){
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="fl">177.8</span> -<span class="st"> </span><span class="fl">163.8</span>
 ## [1] 14</code></pre></div>
 <ol start="3" style="list-style-type: lower-alpha">
-<li>Is a person who is 1m 80cm (180 cm) tall considered unusually tall? <strong>This person is not unusually tall because his/her height has a z-score of less than one and is within one standard deviation of the mean. For a normal distribution, approximately 34% of the sample is at least this extreme.</strong> And is a person who is 1m 55cm (155cm) considered unusually short? Explain your reasoning. <strong>This person is more unusally short because her z-score of -1.71 is further away from the mean. Only 9% of the sample is at least this extreme</strong></li>
+<li>Is a person who is 1m 80cm (180 cm) tall considered unusually tall? <strong>This person is not unusually tall because his/her height has a z-score of less than one and is within one standard deviation of the mean. In a normal distribution, approximately 34% of the sample is at least this extreme.</strong></li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">v1 &lt;-<span class="st"> </span><span class="dv">180</span>
-v2 &lt;-<span class="st"> </span><span class="dv">155</span>
 xbar &lt;-<span class="st"> </span><span class="fl">171.1</span>
 s &lt;-<span class="st"> </span><span class="fl">9.4</span>
-
 <span class="co">#person 1 zscore</span>
 (v1 -<span class="st"> </span>xbar)/s
 ## [1] 0.9468085
 <span class="kw">pnorm</span>(v1, xbar, s, <span class="dt">lower.tail =</span> F) *<span class="st"> </span><span class="dv">2</span>
-## [1] 0.3437364
-
+## [1] 0.3437364</code></pre></div>
+<p>And is a person who is 1m 55cm (155cm) considered unusually short? Explain your reasoning. <strong>This person is more unusally short because her z-score of -1.71 is further away from the mean. Only 9% of the sample is at least this extreme</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">v2 &lt;-<span class="st"> </span><span class="dv">155</span>
 <span class="co">#person 2 zscore</span>
 (v2 -<span class="st"> </span>xbar)/s
 ## [1] -1.712766
@@ -202,25 +202,23 @@ xbar &lt;-<span class="st"> </span><span class="fl">30.69</span>
 s &lt;-<span class="st"> </span><span class="fl">4.31</span>
 max_months &lt;-<span class="st"> </span><span class="dv">39</span>
 H0 &lt;-<span class="st"> </span><span class="dv">32</span>
-
-sign_level &lt;-<span class="st"> </span>.<span class="dv">10</span>
 se &lt;-<span class="st"> </span>s/<span class="kw">sqrt</span>(n)
+sign_level &lt;-<span class="st"> </span>.<span class="dv">1</span>
+
 pvalue &lt;-<span class="st"> </span><span class="kw">pnorm</span>(xbar, H0, se)
 
 <span class="kw">paste</span>(<span class="st">&quot;pvalue =&quot;</span>, pvalue)
 ## [1] &quot;pvalue = 0.0341012990635018&quot;</code></pre></div>
 <ol start="3" style="list-style-type: lower-alpha">
-<li><p>Interpret the p-value in context of the hypothesis test and the data.</p></li>
+<li><p>Interpret the p-value in context of the hypothesis test and the data. <strong>Because the p-value is less than the significance level, we reject the null hypothesis that gifted children learn to count to 10 at the same age of the general population.</strong></p></li>
 <li><p>Calculate a 90% confidence interval for the average age at which gifted children first count to 10 successfully.</p></li>
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>(sign_level))
 me &lt;-<span class="st"> </span>cv *<span class="st"> </span>se
-xbar -<span class="st"> </span>me
-## [1] 29.76942
-xbar +<span class="st"> </span>me
-## [1] 31.61058</code></pre></div>
+<span class="kw">c</span>(xbar -<span class="st"> </span>me, xbar +<span class="st"> </span>me)
+## [1] 29.76942 31.61058</code></pre></div>
 <ol start="5" style="list-style-type: lower-alpha">
-<li>Do your results from the hypothesis test and the confidence interval agree? Explain.</li>
+<li>Do your results from the hypothesis test and the confidence interval agree? Explain. <strong>No, they agree. The general average is outside of the 90% confidence interval for the gifted children. Likewise, the small p-value indicates that gifted average is more extreme than the .1 significance level</strong></li>
 </ol>
 </div>
 <div id="gifted-children-part-ii." class="section level4">
@@ -261,11 +259,12 @@ xbar +<span class="st"> </span>me
 </div>
 <div id="same-observation-different-sample-size." class="section level4">
 <h4>4.48 Same observation, different sample size.</h4>
-<p>Suppose you conduct a hypothesis test based on a sample where the sample size is n = 50, and arrive at a p-value of 0.08. You then refer back to your notes and discover that you made a careless mistake, the sample size should have been n = 500. Will your p-value increase, decrease, or stay the same? Explain.</p>
 </div>
+<div id="suppose-you-conduct-a-hypothesis-test-based-on-a-sample-where-the-sample-size-is-n-50-and-arrive-at-a-p-value-of-0.08.-you-then-refer-back-to-your-notes-and-discover-that-you-made-a-careless-mistake-the-sample-size-should-have-been-n-500.-will-your-p-value-increase-decrease-or-stay-the-same-explain." class="section level2">
+<h2>Suppose you conduct a hypothesis test based on a sample where the sample size is n = 50, and arrive at a p-value of 0.08. You then refer back to your notes and discover that you made a careless mistake, the sample size should have been n = 500. Will your p-value increase, decrease, or stay the same? Explain.</h2>
 </div>
-<div id="practice-problems" class="section level1">
-<h1>Practice Problems</h1>
+<div id="practice-problems" class="section level2">
+<h2>#Practice Problems</h2>
 <div id="nutrition-labels." class="section level4">
 <h4>4.23 Nutrition labels.</h4>
 <p>The nutrition label on a bag of potato chips says that a one ounce (28 gram) serving of potato chips has 130 calories and contains ten grams of fat, with three grams of saturated fat. A random sample of 35 bags yielded a sample mean of 134 calories with a standard deviation of 17 calories. Is there evidence that the nutrition label does not provide an accurate measure of calories in the bags of potato chips? We have verified the independence, sample size, and skew conditions are satisfied.</p>
@@ -278,6 +277,8 @@ se &lt;-<span class="st"> </span>s/<span class="kw">sqrt</span>(n)
 zscore &lt;-<span class="st"> </span>(xbar -<span class="st"> </span>H0) /<span class="st"> </span>se
 pvalue &lt;-<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span><span class="kw">pnorm</span>(zscore)) *<span class="st"> </span><span class="dv">2</span>
 pvalue 
+## [1] 0.1639167
+<span class="kw">pnorm</span>(xbar, H0, se, <span class="dt">lower.tail =</span> F) *<span class="st"> </span><span class="dv">2</span>
 ## [1] 0.1639167
 
 <span class="kw">normalPlot</span>(H0, se, <span class="dt">bounds=</span><span class="kw">c</span>(xbar -<span class="st"> </span><span class="dv">8</span>, xbar), <span class="dt">tails =</span> T)</code></pre></div>
@@ -311,6 +312,7 @@ pvalue
 <li>Would the conclusion of the hypothesis test change if the significance level was changed to</li>
 </ol>
 <p>??? = 0.01?</p>
+</div>
 </div>
 </div>
     </section>
