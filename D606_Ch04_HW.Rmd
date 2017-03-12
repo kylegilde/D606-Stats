@@ -132,6 +132,7 @@ Researchers investigating characteristics of gifted children collected data from
 (b) Suppose you read online that children first count to 10 successfully when they are 32 months old, on average. Perform a hypothesis test to evaluate if these data provide convincing evidence that the average age at which gifted children first count to 10 successfully is less than the general average of 32 months. Use a significance level of 0.10.
 
 $H_{0}: \mu_{gifted}=32$ 
+
 $H_{A}:  \mu_{gifted}<32$
 
 ```{r }
