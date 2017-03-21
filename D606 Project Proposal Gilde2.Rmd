@@ -1,0 +1,159 @@
+---
+title: "D606 Project Proposal"
+author: "Kyle Gilde"
+date: "March 19, 2017"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+##Load Packages
+```{r include=FALSE, cache=FALSE}
+# DO NOT REMOVE
+# THIS IS FOR SETTING SOME PLOTTING PARAMETERS SO THAT YOUR PLOTS DON'T TAKE UP TOO MUCH SPACE
+# IF YOU WOULD LIKE TO CHANGE THESE, SEE HELP FILES ON THE par() FUNCTION
+# OR ASK FOR HELP
+## set global chunk options
+library(knitr)
+opts_chunk$set(fig.path='figure/manual-', cache.path='cache/manual-', fig.align='center', fig.show='hold', par=TRUE)
+## tune details of base graphics (http://yihui.name/knitr/hooks)
+knit_hooks$set(par=function(before, options, envir){
+if (before && options$fig.show!='none') par(mar=c(4,4,.2,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3)
+})
+
+#create vector with all needed packages
+load_packages <- c("psych","prettydoc", "stringr", "dplyr", "tidyr", "foreign", "pdftools", "leaps", "MASS")
+
+#see if we need to install any of them
+new.pkg <- load_packages[!(load_packages %in% installed.packages()[, "Package"])]
+if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE, warn.conflicts = FALSE)
+
+#require
+t(t(sapply(load_packages, require, character.only = TRUE, quietly = TRUE,  warn.conflicts = FALSE)))
+#CODE SOURCE DOCUMENTATION: https://gist.github.com/stevenworthington/3178163
+```
+
+##Load Data
+```{r}
+url_data <- "https://www.cdc.gov/brfss/annual_data/2015/files/LLCP2015XPT.zip"
+
+# Commented out to avoid re-downloading this large file
+# temp <- tempfile(fileext = ".zip")
+# download.file(url_data, temp)
+# brfss_data <- read.xport(unzip(temp))
+glimpse(brfss_data)
+
+
+url_variable_pdf <- "https://www.cdc.gov/brfss/annual_data/2015/pdf/codebook15_llcp.pdf"
+variable_pdf <- pdf_text(url_variable_pdf)
+
+#str_sub(variable_pdf,1,1000)
+#writeLines(str_sub(variable_pdf, 1,50))
+sas_names <- variable_pdf %>% 
+  str_extract_all("SAS Variable Name: \\w{2,9}") %>% 
+  unlist() %>% 
+  str_replace("SAS Variable Name: ","") 
+
+descriptions <- variable_pdf %>% 
+  str_extract_all("Description:.{1,200}\\r\\n") %>% 
+  unlist() %>% 
+  str_replace("Description: ","") %>% 
+  str_trim() 
+length(descriptions)
+
+variable_info <- data.frame(sas_names, descriptions)
+kable(variable_info)
+kable(filter(variable_info, sas_names %in% c("_DRNKWEK","_FRUTSUM","_VEGESUM", "ADTHINK", "ADENERGY", "ADPLEASR", "WEIGHT2", "SEX", "DROCDY3_", "AVEDRNK2", "GENHLTH")))
+
+
+# AVEDRNK2 <- During the past 30 days, on the days when you drank, about how many drinks did you drink on the average? 
+# 
+# ALCDAY5 <- During the past 30 days, how many days per week or per month did you have at least one drink of any alcoholic beverage such as beer, wine, a malt beverage or liquor?
+# 
+# DROCDY3_ <- Drink-occasions-per-day 1 - 899 Notes: ALCDAY5 <= 231
+# 
+# _DRNKWEK = AVEDRNK2*DROCDY3_*7
+
+
+
+my_variables <- brfss_data %>% 
+  filter(GENHLTH < 6) %>% 
+  mutate(BMI = X_BMI5/100) %>% 
+  dplyr::select(BMI, GENHLTH) %>% 
+  rename(reported_general_health = GENHLTH) %>%  
+  na.omit() 
+ 
+X_BMI5CAT 
+  #%>% select(-X_VEGESUM, -X_FRUTSUM)
+
+plot(my_variables$BMI, my_variables$reported_general_health)
+boxplot(my_variables$BMI ~ my_variables$reported_general_health)
+
+reg1 <- regsubsets(GENHLTH ~ X_DRNKWEK+X_FRUTSUM + X_VEGESUM+ + WEIGHT2+ SEX+ DROCDY3_+ AVEDRNK2 +X_BMI5+ X_BMI5CAT, data = brfss_data, nvmax = 1)
+
+summary(reg1)
+head(my_variables, 18)
+ADTHINK+ ADENERGY+ ADPLEASR
+hist(t2) 
+  
+plot(my_variables$drinks_per_week,my_variables$reported_general_health)  
+
+describe(my_variables)
+glimpse(brfss_data)
+#https://www.cdc.gov/brfss/annual_data/2015/pdf/codebook15_llcp.pdf
+#https://www.cdc.gov/brfss/annual_data/2015/pdf/2015_calculated_variables_version4.pdf
+
+```
+
+### Research question 
+
+**You should phrase your research question in a way that matches up with the scope of inference your dataset allows for.**
+
+
+
+### Cases 
+
+**What are the cases, and how many are there?**
+
+
+
+### Data collection 
+
+**Describe the method of data collection.**
+
+
+
+### Type of study 
+
+**What type of study is this (observational/experiment)?**
+
+
+
+### Data Source 
+
+**If you collected the data, state self-collected. If not, provide a citation/link.**
+
+
+
+
+### Response 
+
+**What is the response variable, and what type is it (numerical/categorical)?**
+
+
+
+### Explanatory 
+
+**What is the explanatory variable, and what type is it (numerical/categorival)?**
+
+
+
+### Relevant summary statistics 
+
+**Provide summary statistics relevant to your research question. For example, if you’re comparing means across groups provide means, SDs, sample sizes of each group. This step requires the use of R, hence a code chunk is provided below. Insert more code chunks as needed.**
+
+```{r}
+
+```
+
