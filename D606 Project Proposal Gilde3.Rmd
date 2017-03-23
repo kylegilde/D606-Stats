@@ -70,7 +70,7 @@ Is the Body Mass Index predictive of the self-reported level of general health?
 
 The cases are adult U.S. residents, specifically "non-institutionalized adults who reside in each of the states and selected U.S. territories." There are 441,456 cases in the 2015 survey, and 404,030 of the cases gave measurable responses for the 2 selected variables.
 
-Citation: [](https://www.cdc.gov/brfss/annual_data/2015/pdf/2015moduleanalysis.pdf)
+Citation: (https://www.cdc.gov/brfss/annual_data/2015/pdf/2015moduleanalysis.pdf)
 
 ```{r cases}
 nrow(brfss_data)
@@ -92,10 +92,10 @@ This is an observational study.
 
 **If you collected the data, state self-collected. If not, provide a citation/link.**
 
-The CDC facilitated the study, and the data can be obtained in the following zip file: [](https://www.cdc.gov/brfss/annual_data/2015/files/LLCP2015XPT.zip)
+The CDC facilitated the study, and the data can be obtained in the following zip file: (https://www.cdc.gov/brfss/annual_data/2015/files/LLCP2015XPT.zip)
 
 The data, survey overview, codebook, calculated variable explanations and other related materials can be found at the following site:
-[](https://www.cdc.gov/brfss/annual_data/annual_2015.html)
+(https://www.cdc.gov/brfss/annual_data/annual_2015.html)
 
 ### Response 
 
@@ -131,7 +131,7 @@ Obese	        | ???30.00
 
 The BRFSS calculated the BMI by converting the reported heights and weights to meters and kilograms and then dividing the weight by the square of the height.
 
-Citation: [](http://apps.who.int/bmi/index.jsp?introPage=intro_3.html)
+Citation: (http://apps.who.int/bmi/index.jsp?introPage=intro_3.html)
 
 ### Relevant summary statistics 
 
