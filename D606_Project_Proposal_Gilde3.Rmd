@@ -1,0 +1,150 @@
+---
+title: "D606 Project Proposal"
+author: "Kyle Gilde"
+date: "March 19, 2017"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+```{r include=FALSE, cache=FALSE}
+# DO NOT REMOVE
+# THIS IS FOR SETTING SOME PLOTTING PARAMETERS SO THAT YOUR PLOTS DON'T TAKE UP TOO MUCH SPACE
+# IF YOU WOULD LIKE TO CHANGE THESE, SEE HELP FILES ON THE par() FUNCTION
+# OR ASK FOR HELP
+## set global chunk options
+library(knitr)
+opts_chunk$set(fig.path='figure/manual-', cache.path='cache/manual-', fig.align='center', fig.show='hold', par=TRUE)
+## tune details of base graphics (http://yihui.name/knitr/hooks)
+knit_hooks$set(par=function(before, options, envir){
+if (before && options$fig.show!='none') par(mar=c(4,4,.2,.1),cex.lab=.95,cex.axis=.9,mgp=c(2,.7,0),tcl=-.3)
+})
+
+```
+
+##Data Preparation
+```{r thedata}
+
+#create vector with all needed packages
+load_packages <- c("psych","prettydoc", "dplyr", "tidyr", "foreign", "knitr", "ggplot2")
+
+install_load <- function(pkg){
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE)
+}
+
+install_load(load_packages)
+#CODE SOURCE DOCUMENTATION: https://gist.github.com/stevenworthington/3178163
+
+url_data <- "https://www.cdc.gov/brfss/annual_data/2015/files/LLCP2015XPT.zip"
+
+# Commented out to avoid re-downloading this large file
+temp <- tempfile(fileext = ".zip")
+download.file(url_data, temp)
+brfss_data <- read.xport(unzip(temp))
+unlink(temp)
+# glimpse(brfss_data)
+
+my_variables <- brfss_data %>% 
+  filter(GENHLTH < 6) %>% 
+  mutate(BMI = X_BMI5/100) %>% 
+  dplyr::select(BMI, GENHLTH) %>% 
+  rename(reported_general_health = GENHLTH) %>%  
+  na.omit() 
+
+# X_BMI5CAT not used
+```
+
+### Research question 
+
+**You should phrase your research question in a way that matches up with the scope of inference your dataset allows for.**
+
+Is the Body Mass Index predictive of the self-reported level of general health?
+
+### Cases 
+
+**What are the cases, and how many are there?**
+
+The cases are adult U.S. residents, specifically "non-institutionalized adults who reside in each of the states and selected U.S. territories." There are 441,456 cases in the 2015 survey, and 404,030 of the cases gave measurable responses for the 2 selected variables.
+
+Citation: [](https://www.cdc.gov/brfss/annual_data/2015/pdf/2015moduleanalysis.pdf)
+
+```{r cases}
+nrow(brfss_data)
+nrow(my_variables)
+```
+### Data collection 
+
+**Describe the method of data collection.**
+
+The data were collected as a collaborative project between the U.S. states, territories and the Centers for Disease Control and Prevention (CDC) in their Behavioral Rick Factor Surveillance System (BRFSS) telephone survey. In 2011, the survey started sampling both landline and cellular phone numbers.
+
+### Type of study 
+
+**What type of study is this (observational/experiment)?**
+
+This is an observational study.
+
+### Data Source 
+
+**If you collected the data, state self-collected. If not, provide a citation/link.**
+
+The CDC facilitated the study, and the data can be obtained in the following zip file: [](https://www.cdc.gov/brfss/annual_data/2015/files/LLCP2015XPT.zip)
+
+The data, survey overview, codebook, calculated variable explanations and other related materials can be found at the following site:
+[](https://www.cdc.gov/brfss/annual_data/annual_2015.html)
+
+### Response 
+
+**What is the response variable, and what type is it (numerical/categorical)?**
+
+The response variable is the self-reported description of the respondent's general health. It is an ordinal categorical variable.
+
+Would you say that in general your health is:
+
+Value	| Value Label
+----- | ----------
+1	    | Excellent
+2	    | Very good
+3	    | Good
+4	    | Fair
+5	    | Poor
+
+### Explanatory 
+
+**What is the explanatory variable, and what type is it (numerical/categorival)?**
+
+The explanatory variable is the Body Mass Index. The World Health Organization (WHO) describes the BMI as a "simple index of weight-for-height that is commonly used to classify underweight, overweight and obesity in adults." 
+
+
+The WHO groups the BMI values into 4 primary classes:
+
+Class         | BMI Range
+------------- | -----------
+Underweight	  | <18.50
+Normal range	| 18.50 - 24.99
+Overweight	  | 25.00 - 29.99
+Obese	        | ???30.00
+
+The BRFSS calculated the BMI by converting the reported heights and weights to meters and kilograms and then dividing the weight by the square of the height.
+
+Citation: [](http://apps.who.int/bmi/index.jsp?introPage=intro_3.html)
+
+### Relevant summary statistics 
+
+**Provide summary statistics relevant to your research question. For example, if you're comparing means across groups provide means, SDs, sample sizes of each group. This step requires the use of R, hence a code chunk is provided below. Insert more code chunks as needed.**
+
+```{r summaries}
+options(scipen=999)
+kable(t(round(describe(my_variables), 4)))
+
+ggplot(my_variables, aes(x=BMI)) + geom_histogram()
+
+ggplot(my_variables, aes(x=reported_general_health)) + geom_bar()
+  
+boxplot(my_variables$BMI ~ my_variables$reported_general_health)
+```
+
