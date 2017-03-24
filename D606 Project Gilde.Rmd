@@ -1,0 +1,61 @@
+---
+---
+title: "D607 Wk07 HW - Parsing HTML, XML & JSON"
+author: "Kyle Gilde"
+date: "Mar. 14, 2017"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+#Load Packages
+```{r setup} 
+knitr::opts_chunk$set(warning=FALSE, 
+                      message=FALSE,
+                      tidy=F,
+                      #comment = "",
+                      dev="png", 
+                      dev.args=list(type="cairo"))
+#https://cran.r-project.org/web/packages/prettydoc/vignettes/
+#https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
+
+#create vector with all needed packages
+load_packages <- c("RCurl","prettydoc", "stringr", "dplyr", "knitr", "janitor", "XML", "tidyr", "RJSONIO")
+
+#see if we need to install any of them
+new.pkg <- load_packages[!(load_packages %in% installed.packages()[, "Package"])]
+if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE, warn.conflicts = FALSE)
+
+#require
+t(t(sapply(load_packages, require, character.only = TRUE, quietly = TRUE,  warn.conflicts = FALSE)))
+#CODE SOURCE DOCUMENTATION: https://gist.github.com/stevenworthington/3178163
+```
+
+```{r echo=FALSE}
+# load data
+
+```
+
+
+### Part 1 - Introduction:
+
+
+### Part 2 - Data:
+
+
+### Part 3 - Exploratory data analysis:
+
+
+### Part 4 - Inference:
+
+
+### Part 5 - Conclusion: 
+
+
+### References:
+
+
+### Appendix (optional):
+
+Remove this section if you don't have an appendix
