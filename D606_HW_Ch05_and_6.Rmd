@@ -37,9 +37,8 @@ install_load(load_packages)
 
 #Chapter 5 - Inference for Numerical Data
 Practice: 5.5, 5.13, 5.19, 5.31, 5.45
+
 Graded: 5.6, 5.14, 5.20, 5.32, 5.48
-
-
 
 ####5.6 Working backwards, Part II. 
 A 90% confidence interval for a population mean is (65, 77). The population distribution is approximately normal and the population standard deviation is unknown. This confidence interval is based on a simple random sample of 25 observations. Calculate the sample mean, the margin of error, and the sample standard deviation.
@@ -64,24 +63,6 @@ s <- se * sqrt(n)
 xbar
 me
 s
-```
-
-
-####5.13 Car insurance savings. 
-A market researcher wants to evaluate car insurance savings at a competing company. Based on past studies he is assuming that the standard deviation of savings is \$100. He wants to collect data such that he can get a margin of error of no more than $10 at a 95% confidence level. How large of a sample should he collect?
-
-```{r}
-#givens
-sigma <- 100
-ci <- .95
-me <- 10
-
-#calcs
-cv <- abs(qnorm((1 - ci) / 2))
-se <- me / cv
-n <- (sigma / se) ^ 2
-
-ceiling(n)
 ```
 
 ####5.14 SAT scores. 
@@ -124,111 +105,187 @@ n <- (sigma / se) ^ 2
 ceiling(n)
 ```
 
-####5.19 Global warming, Part I. 
-Is there strong evidence of global warming? Let's consider a small scale example, comparing how temperatures have changed in the US from 1968 to 2008. The daily high temperature reading on January 1 was collected in 1968 and 2008 for 51 randomly selected locations in the continental US. Then the difference between the two readings (temperature in 2008 - temperature in 1968) was calculated for each of the 51 different locations. The average of these 51 values was 1.1 degrees with a standard deviation of 4.9 degrees. We are interested in determining whether these data provide strong evidence of temperature warming in the continental 
-US.
-(a) Is there a relationship between the observations collected in 1968 and 2008? Or are the observations in the two groups independent? Explain.
-**No, they have a special correspondence since the same locations were used in both samples. Consequently, we should use the t-distribution.**
-(b) Write hypotheses for this research in symbols and in words.
-
-$H_{0}: \mu_{diff}=0$ 
-$H_{A}:  \mu_{gifted}>0$
-
-(c) Check the conditions required to complete this test.
-(d) Calculate the test statistic and find the p-value.
-(e) What do you conclude? Interpret your conclusion in context.
-(f) What type of error might we have made? Explain in context what the error means.
-(g) Based on the results of this hypothesis test, would you expect a confidence interval for the
-average difference between the temperature measurements from 1968 and 2008 to include 0?
-Explain your reasoning.
 
 ####5.20 High School and Beyond, Part I. 
 The National Center of Education Statistics conducted a survey of high school seniors, collecting test data on reading, writing, and several other subjects. Here we examine a simple random sample of 200 students from this survey. Side-by-side box plots of reading and writing scores as well as a histogram of the differences in scores are shown below.
 
 (a) Is there a clear difference in the average reading and writing scores?
+**No, not necessarily. In the box plots, the medians are not too far apart, and the IQRs overlap each other. In the historam, the distribution of the score differences is centered around 0.**
+
 (b) Are the reading and writing scores of each student independent of each other?
-(c) Create hypotheses appropriate for the following research question: is there an evident difference
-in the average scores of students in the reading and writing exam?
+**No, these are paired data since each student took the both tests. For each observation in one group, there is exactly one specially-corresponding observation in the other group.**
+
+(c) Create hypotheses appropriate for the following research question: is there an evident difference in the average scores of students in the reading and writing exam?
+$H_{0}: \mu_{diff}=0$ 
+$H_{A}:  \mu_{diff}\neq0$
+
 (d) Check the conditions required to complete this test.
-(e) The average observed difference in scores is ¯xreadwrite
-= 0.545,
-and the standard deviation
++ The observations are a simple random sample of less than 10% of the population.
++ The sample size is at least 30.
++ Per the histogram, the distribution is not strongly skewed.
+
+(e) The average observed difference in scores is ¯xreadwrite = 0.545, and the standard deviation
 of the differences is 8.887 points. Do these data provide convincing evidence of a difference
 between the average scores on the two exams?
+```{r}
+xbar <- .545
+s <- 8.887
+n <- 200
+df <- n - 1
+se <- s / sqrt(n)
+null_hyp <- 0
+
+t_score <- (xbar - null_hyp) / se
+
+pt(t_score, df, lower.tail = F) * 2
+
+print("No, because p = .39, we fail to reject the null hypothesis. The sample's average difference in scores do not provide convincing evidence that there is a diffenence in scores")
+```
+
+
 (f) What type of error might we have made? Explain what the error means in the context of the
 application.
+**We may have made a Type 2 error. Because we didn't find evidence of a difference, we would have made a Type 2 error if the alternative hypothesis, that there is a difference, is true.**
+
 (g) Based on the results of this hypothesis test, would you expect a confidence interval for the
 average difference between the reading and writing scores to include 0? Explain your reasoning.
+**Yes, $\bar{x}$ had a large p-value if 0 was population mean. Conversely, 0 is going to be within the confidence interval constructed around $\bar{x}$.**
 
-5.31 Chicken diet and weight, Part I. Chicken farming is a multi-billion dollar industry,
-and any methods that increase the growth rate of young chicks can reduce consumer costs while
-increasing company profits, possibly by millions of dollars. An experiment was conducted to
-measure and compare the effectiveness of various feed supplements on the growth rate of chickens.
-Newly hatched chicks were randomly allocated into six groups, and each group was given a different
-feed supplement. Below are some summary statistics from this data set along with box plots
-showing the distribution of weights by feed type.41 Weight (in grams)
-casein horsebean linseed meatmeal soybean sunflower
+####5.32 Fuel eciency of manual and automatic cars, Part I. 
 
-Mean SD n
-casein 323.58 64.43 12
-horsebean 160.20 38.63 10
-linseed 218.75 52.24 12
-meatmeal 276.91 64.90 11
-soybean 246.43 54.13 14
-sunflower 328.92 48.84 12
-(a) Describe the distributions of weights of chickens that were fed linseed and horsebean.
-(b) Do these data provide strong evidence that the average weights of chickens that were fed
-linseed and horsebean are different? Use a 5% significance level.
-(c) What type of error might we have committed? Explain.
-(d) Would your conclusion change if we used ff = 0.01?
+Each year the US Environmental Protection Agency (EPA) releases fuel economy data on cars manufactured in that year. Below are summary statistics on fuel efficiency (in miles/gallon) from random samples of cars with manual and automatic transmissions manufactured in 2012. 
+
+Do these data provide strong evidence of a difference between the average fuel efficiency of cars with manual and automatic transmissions in terms of their average city mileage? Assume that conditions for inference are satisfied.
+
+      Automatic Manual
+Mean  16.12     19.85
+SD    3.58      4.51
+n     26        26
+```{r}
+#givens
+n1 <- 26
+n2 <- n1
+xbar1 <- 16.12
+xbar2 <- 19.85
+xbar_diff <- xbar2 - xbar1
+s1 <- 3.58
+s2 <- 4.51
+alpha <- .05
+null_hyp <- 0
+
+#calculations
+se_diff <- sqrt(s1^2/n1 + s2^2/n2)
+df_diff <- min(n1, n2) - 1
+t_score <- (xbar_diff - null_hyp) / se_diff
+pvalue <- pt(t_score, df_diff, lower.tail = F) * 2
+
+#conclusions
+paste("p-value = ", pvalue)
+ifelse(pvalue < alpha, "Reject the null hypothesis", "Fail to reject the null hypothesis")
+```
 
 
-5.32 Fuel eciency of manual and automatic cars, Part I. 
+####5.45 Coffee, depression, and physical activity. 
 
-Each year the US Environmental
-Protection Agency (EPA) releases fuel economy data on cars manufactured in that year.
-Below are summary statistics on fuel eciency
-(in miles/gallon) from random samples of cars with
-manual and automatic transmissions manufactured in 2012. Do these data provide strong evidence
-of a difference between the average fuel eciency
-of cars with manual and automatic transmissions
-in terms of their average city mileage? Assume that conditions for inference are satisfied.42
+Caffeine is the world's most widely used stimulant, with approximately 80% consumed in the form of coffee. Participants in a study investigating the relationship between coffee consumption and exercise were asked to report the number of hours they spent per week on moderate (e.g., brisk walking) and vigorous (e.g., strenuous sports and jogging) exercise. Based on these data the researchers estimated the total hours of metabolic equivalent tasks (MET) per week, a value always greater than 0. The table below gives summary statistics of MET for women in this study based on the amount of coffee consumed.
 
-5.45 Coffee, depression, and physical activity. 
-Caffeine is the world's most widely used stimulant, with approximately 80% consumed in the form of coffee. Participants in a study investigating the relationship between coffee consumption and exercise were asked to report the number of hours they spent per week on moderate (e.g., brisk walking) and vigorous (e.g., strenuous sports and jogging) exercise. Based on these data the researchers estimated the total hours of metabolic equivalent tasks (MET) per week, a value always greater than 0. The table below gives summary statistics of MET for women in this study based on the amount of coffee consumed.46
-
-Caffeinated coffee consumption
-
-(a) Write the hypotheses for evaluating if the average physical activity level varies among the
-different levels of coffee consumption.
+(a) Write the hypotheses for evaluating if the average physical activity level varies among the different levels of coffee consumption.
 (b) Check conditions and describe any assumptions you must make to proceed with the test.
+
 (c) Below is part of the output associated with this test. Fill in the empty cells.
-Df Sum Sq Mean Sq F value Pr(>F)
+
+
+ na        | Df      | Sum Sq     | Mean Sq   | F-value   | Pr(>F)
+---------- | ------- | ---------- | --------- | --------- | ------
+coffee     | 4       | 10508      | 2627      | 5.213345  | 0.0003
+Residuals  | 50,734  | 25,564,819 | 503.8991  |           |
+Total      | 50,738  | 25,575,327 |           |           |
+
+```{r}
+k <- 5 #groups
+n <- 50739 #total sample
+
+DF_G <- k - 1
+DF_E <- n - k
+DF_T <- DF_G + DF_E
+
+DF_G;DF_E;DF_T
+
+SSE <- 25564819
+SST <- 25575327
+SSG <- SST - SSE
+SSG
+
+MSG <- SSG / DF_G
+MSG
+MSE <- SSE / DF_E
+MSE
+
+fvalue <- MSG / MSE
+fvalue
+
+pf(fvalue, DF_G, DF_E, lower.tail = F)
+```
+
 (d) What is the conclusion of the test?
 
-5.48 Work hours and education. 
-The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents.47 Using ANOVA, we can consider educational attainment levels for all 1,172 respondents at once. Below are the distributions of hours worked by educational attainment and relevant summary statistics that will be helpful in carrying out this analysis.
-Educational attainment 
+####5.48 Work hours and education. 
+The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents. Using ANOVA, we can consider educational attainment levels for all 1,172 respondents at once. Below are the distributions of hours worked by educational attainment and relevant summary statistics that will be helpful in carrying out this analysis.
 
-Less than HS HS Jr Coll Bachelor's Graduate Total
-Mean 38.67 39.6 41.39 42.55 40.85 40.45
-SD 15.81 14.97 18.1 13.62 15.51 15.17
-n 121 546 97 253 155 1,172
-Hours worked per week
-Less than HS HS Jr Coll Bachelor's Graduate
-0
-20
-40
-60
-80
-(a) Write hypotheses for evaluating whether the average number of hours worked varies across the
-five groups.
+(a) Write hypotheses for evaluating whether the average number of hours worked varies across the five groups.
+
+**$H_{0}:$ The population mean of each group is equal to the others** 
+
+**$H_{A}:$ At least one pair of means is different**
+
 (b) Check conditions and describe any assumptions you must make to proceed with the test.
+**We are given very little information about the conditions. We are going to have to assume the following:**
+
++ The observations were collected by a simple random sample. It is obviously less than 10% of the population.
++ All of the group sample sizes are rather large so we can relax the normality assumption.
++ We can't be completely certain that the variance in the groups are about equal. The SDs are similiar except for Jr Coll. 
+
 (c) Below is part of the output associated with this test. Fill in the empty cells.
-Df Sum Sq Mean Sq F value Pr(>F)
-degree XXXXX XXXXX 501.54 XXXXX 0.0682
-Residuals XXXXX 267,382 XXXXX
-Total XXXXX XXXXX
+
+ na        | Df      | Sum Sq     | Mean Sq   | F-value   | Pr(>F)
+---------- | ------- | ---------- | --------- | --------- | ------
+degree     | 4       | 2006.16    | 501.54    | 2.188992  | 0.0682
+Residuals  | 1167    | 267382     | 229.1191  |           |
+Total      | 1171    | 269388.2   |           |           |
+
+```{r}
+#givens
+k <- 5 #groups
+n <- 1172 #total sample
+SSE <- 267382
+MSG <- 501.54
+
+#calcs
+DF_G <- k - 1
+DF_E <- n - k
+DF_T <- DF_G + DF_E
+DF_G;DF_E;DF_T
+
+SSG <- DF_G * MSG
+SSG
+
+SST <- SSG + SSE
+SST
+
+MSE <- SSE / DF_E
+MSE
+
+fvalue <- MSG / MSE
+fvalue
+
+
+pf(fvalue, DF_G, DF_E, lower.tail = F)
+```
+
+(d) What is the conclusion of the test?
+
+**Since the p-value is greater than .05, we are failing to reject the null hypothesis. The data are not convincing evidence that at least one of pair of means is different.** 
+
 
 #Chapter 6 - Inference for Categorical Data
 Practice: 6.5, 6.11, 6.27, 6.43, 6.47
@@ -428,3 +485,92 @@ xbar
 s
 ```
 
+####5.13 Car insurance savings. 
+A market researcher wants to evaluate car insurance savings at a competing company. Based on past studies he is assuming that the standard deviation of savings is \$100. He wants to collect data such that he can get a margin of error of no more than $10 at a 95% confidence level. How large of a sample should he collect?
+
+```{r}
+#givens
+sigma <- 100
+ci <- .95
+me <- 10
+
+#calcs
+cv <- abs(qnorm((1 - ci) / 2))
+se <- me / cv
+n <- (sigma / se) ^ 2
+
+ceiling(n)
+```
+
+####5.19 Global warming, Part I. 
+Is there strong evidence of global warming? Let's consider a small scale example, comparing how temperatures have changed in the US from 1968 to 2008. The daily high temperature reading on January 1 was collected in 1968 and 2008 for 51 randomly selected locations in the continental US. Then the difference between the two readings (temperature in 2008 - temperature in 1968) was calculated for each of the 51 different locations. The average of these 51 values was 1.1 degrees with a standard deviation of 4.9 degrees. We are interested in determining whether these data provide strong evidence of temperature warming in the continental 
+US.
+(a) Is there a relationship between the observations collected in 1968 and 2008? Or are the observations in the two groups independent? Explain.
+**They have a special correspondence since the same locations were used in both samples. Consequently, we should use the t-distribution.**
+(b) Write hypotheses for this research in symbols and in words.
+
+$H_{0}: \mu_{diff}=0$ 
+$H_{A}:  \mu_{diff}>0$
+
+(c) Check the conditions required to complete this test.
+
+(d) Calculate the test statistic and find the p-value.
+```{r}
+s <- 4.9
+xbar <- 1.1
+n <- 51
+df <- n - 1
+se <- s / sqrt(n)
+t_score <- (xbar - 0) / se
+
+pt(t_score, df, lower.tail = F)
+
+```
+
+(e) What do you conclude? Interpret your conclusion in context.
+(f) What type of error might we have made? Explain in context what the error means.
+(g) Based on the results of this hypothesis test, would you expect a confidence interval for the
+average difference between the temperature measurements from 1968 and 2008 to include 0?
+Explain your reasoning.
+
+####5.31 Chicken diet and weight, Part I. 
+Chicken farming is a multi-billion dollar industry, and any methods that increase the growth rate of young chicks can reduce consumer costs while increasing company profits, possibly by millions of dollars. 
+
+An experiment was conducted to measure and compare the effectiveness of various feed supplements on the growth rate of chickens. Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Below are some summary statistics from this data set along with box plots showing the distribution of weights by feed type.
+
+          Mean    SD      n
+horsebean 160.20  38.63   10
+linseed   218.75  52.24   12
+
+
+(a) Describe the distributions of weights of chickens that were fed linseed and horsebean.
+**The horsebean distribution has a much lower median, lower IQR, and narrower IQR than the linseed distribution, which has a much higher median, higher IQR and wider IQR. The IQRs do not overlap.** 
+
+(b) Do these data provide strong evidence that the average weights of chickens that were fed
+linseed and horsebean are different? Use a 5% significance level.
+```{r}
+#givens
+n1 <- 10
+n2 <- 12
+xbar1 <- 160.2
+xbar2 <- 218.75
+xbar_diff <- xbar2 - xbar1
+s1 <- 38.63
+s2 <- 52.24
+sign_level <- .05
+null_hyp <- 0
+
+#calculations
+se_diff <- sqrt(s1^2/n1 + s2^2/n2)
+df_diff <- min(n1, n2) - 1
+t_score <- (xbar_diff - null_hyp) / se_diff
+pvalue <- pt(t_score, df_diff, lower.tail = F) * 2
+
+#conclusions
+paste("p-value = ", pvalue)
+ifelse(pvalue < sign_level, "Reject the null hypothesis", "Fail to reject the null hypothesis")
+```
+(c) What type of error might we have committed? Explain.
+**Type 1**
+(d) Would your conclusion change if we used $\alpha$ = 0.01?
+**yes**
