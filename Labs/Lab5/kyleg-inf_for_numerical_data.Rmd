@@ -22,6 +22,7 @@ Load the `nc` data set into our workspace.
 
 ```{r load-data, eval=TRUE}
 load("more/nc.RData")
+library(dplyr)
 ```
 
 We have observations on 13 different variables, some categorical and some 
@@ -45,6 +46,12 @@ variable         | description
 
 1.  What are the cases in this data set? How many cases are there in our sample?
 
+**The cases are births, and there are 1000 cases in the sample.**
+```{r}
+nrow(nc)
+```
+
+
 As a first step in the analysis, we should consider summaries of the data. This
 can be done using the `summary` command:
 
@@ -56,6 +63,24 @@ As you review the variable summaries, consider which variables are categorical
 and which are numerical. For numerical variables, are there outliers? If you 
 aren't sure or want to take a closer look at the data, make a graph.
 
+```{r}
+n <- "numerical"
+c <- "categorical"
+
+variables <- names(nc)
+variable_type <- c(n, n, c, n, c, n, c, n, n, c, c, c, c)
+
+v <- data.frame(variables, variable_type, stringsAsFactors = F)
+v
+num_v <- subset(v$variables, v$variable_type == n)
+
+nc %>% 
+  select(one_of(num_v)) %>% 
+  boxplot()
+
+print("Yes, all numerical variables have at least one outlier. Gained and Weeks have the most extreme ones.")
+```
+
 Consider the possible relationship between a mother's smoking habit and the 
 weight of her baby. Plotting the data is a useful first step because it helps 
 us quickly visualize trends, identify strong associations, and develop research
@@ -63,6 +88,13 @@ questions.
 
 2.  Make a side-by-side boxplot of `habit` and `weight`. What does the plot 
 highlight about the relationship between these two variables?
+
+```{r}
+boxplot(nc$weight ~ nc$habit)
+print("The median & IQR for birth weights are lower for mothers who are smokers.")
+
+```
+
 
 The box plots show how the medians of the two distributions compare, but we can
 also compare the means of the distributions using the following function to 
@@ -74,8 +106,7 @@ by(nc$weight, nc$habit, mean)
 ```
 
 There is an observed difference, but is this difference statistically 
-significant? In order to answer this question we will conduct a hypothesis test
-.
+significant? In order to answer this question we will conduct a hypothesis test.
 
 ## Inference
 
@@ -83,9 +114,23 @@ significant? In order to answer this question we will conduct a hypothesis test
 you will need to obtain sample sizes to check the conditions. You can compute 
 the group size using the same `by` command above but replacing `mean` with 
 `length`.
+**Are the sample observations independent? They were randomly sampled. However, we don't know with certainty that the sample consists of less than 10% of the population because the text doesn't specify.**
+**Are the groups independent of each other? Yes, they are mutually exclusive.**
+**The sample size is large. Yes, the sample size is much larger than 30.**
+```{r}
+by(nc$weight, nc$habit, length)
+```
+**Is the population distribution strongly skewed? The sample appears to be right skewed a little, and we don't know anything about the skewness of this particular population. However, weight is an attribute that tends to be normally distributed, and more importantly, the sample size is large, so we can relax this condition.** 
+```{r}
+hist(nc$weight)
+```
+
+
 
 4.  Write the hypotheses for testing if the average weights of babies born to 
 smoking and non-smoking mothers are different.
+$H_{0}: \mu_{diff}=0$ 
+$H_{A}:  \mu_{diff}\neq0$
 
 Next, we introduce a new function, `inference`, that we will use for conducting
 hypothesis tests and constructing confidence intervals. 
