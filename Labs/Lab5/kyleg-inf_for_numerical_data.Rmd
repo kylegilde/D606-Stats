@@ -129,8 +129,8 @@ hist(nc$weight)
 
 4.  Write the hypotheses for testing if the average weights of babies born to 
 smoking and non-smoking mothers are different.
-$H_{0}: \mu_{diff}=0$ 
-$H_{A}:  \mu_{diff}\neq0$
+$H_{0}: \mu_{nonsmoker} - \mu_{smoker} = 0$ 
+$H_{A}: \mu_{nonsmoker} - \mu_{smoker} \neq0$
 
 Next, we introduce a new function, `inference`, that we will use for conducting
 hypothesis tests and constructing confidence intervals. 
@@ -156,6 +156,10 @@ of inference can be `"theoretical"` or `"simulation"` based.
 5.  Change the `type` argument to `"ci"` to construct and record a confidence 
 interval for the difference between the weights of babies born to smoking and 
 non-smoking mothers.
+```{r}
+inference(y = nc$weight, x = nc$habit, est = "mean", type = "ci", null = 0, 
+          alternative = "twosided", method = "theoretical")
+```
 
 By default the function reports an interval for ($\mu_{nonsmoker} - \mu_{smoker}$)
 . We can easily change this order by using the `order` argument:
@@ -175,15 +179,43 @@ inference(y = nc$weight, x = nc$habit, est = "mean", type = "ci", null = 0,
 on a single population parameter, there is no explanatory variable, so you can 
 omit the `x` variable from the function.
 
+```{r}
+inference(y = nc$weeks, est = "mean", type = "ci" , 
+          alternative = "twosided", method = "theoretical")
+print("We are 95% confident that the population mean is between 38.1528 and 38.5165 weeks")
+
+```
+
 -   Calculate a new confidence interval for the same parameter at the 90% 
 confidence level. You can change the confidence level by adding a new argument 
 to the function: `conflevel = 0.90`.
+```{r}
+inference(y = nc$weeks, est = "mean", type = "ci" , conflevel = 0.90,
+          alternative = "twosided", method = "theoretical")
+```
+
 
 -   Conduct a hypothesis test evaluating whether the average weight gained by 
 younger mothers is different than the average weight gained by mature mothers.
+$H_{0}: \mu_{mature} - \mu_{younger} = 0$ 
+$H_{A}: \mu_{mature} - \mu_{younger} \neq0$
+
+**Since the p-value = .85, we fail to reject the null hypothesis.**
+
+```{r}
+inference(y = nc$weight, x = nc$mature, est = "mean", type = "ht", null = 0, 
+          alternative = "twosided", method = "theoretical")
+```
+
 
 -   Now, a non-inference task: Determine the age cutoff for younger and mature 
 mothers. Use a method of your choice, and explain how your method works.
+**The maximum age for younger moms is 34 and the minimum age for mature moms is 35. I used the `by` and `summary` functions to look at the minimum and maximum.**
+
+```{r}
+by(nc$mage, nc$mature, summary)
+```
+
 
 -   Pick a pair of numerical and categorical variables and come up with a 
 research question evaluating the relationship between these variables. 
@@ -191,6 +223,19 @@ Formulate the question in a way that it can be answered using a hypothesis test
 and/or a confidence interval. Answer your question using the `inference` 
 function, report the statistical results, and also provide an explanation in 
 plain language.
+
+**Is there difference in the average number of hospital visits during pregnancy for married and not married mothers?**
+
+$H_{0}: \mu_{nonsmoker} - \mu_{smoker} = 0$ 
+$H_{A}: \mu_{nonsmoker} - \mu_{smoker} \neq0$
+
+**Since the p-value is near zero, we reject the null hypothesis in favor of the alternative that there is a diffence in average visits of these groups.**
+
+```{r}
+inference(y = nc$visits, x = nc$marital, est = "mean", type = "ht", null = 0, 
+          alternative = "twosided", method = "theoretical")
+```
+
 
 <div id="license">
 This is a product of OpenIntro that is released under a [Creative Commons 

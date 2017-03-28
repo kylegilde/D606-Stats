@@ -24,11 +24,14 @@ knitr::opts_chunk$set(warning=FALSE,
 load_packages <- c("RCurl","prettydoc", "stringr", "dplyr", "knitr", "janitor", "XML", "tidyr", "RJSONIO")
 
 #see if we need to install any of them
-new.pkg <- load_packages[!(load_packages %in% installed.packages()[, "Package"])]
-if (length(new.pkg)) install.packages(new.pkg, dependencies = TRUE, warn.conflicts = FALSE)
+install_load <- function(pkg){
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE)
+}
 
-#require
-t(t(sapply(load_packages, require, character.only = TRUE, quietly = TRUE,  warn.conflicts = FALSE)))
+install_load(load_packages)
 #CODE SOURCE DOCUMENTATION: https://gist.github.com/stevenworthington/3178163
 ```
 

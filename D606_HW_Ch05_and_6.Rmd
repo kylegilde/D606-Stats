@@ -140,6 +140,7 @@ t_score <- (xbar - null_hyp) / se
 pt(t_score, df, lower.tail = F) * 2
 
 print("No, because p = .39, we fail to reject the null hypothesis. The sample's average difference in scores do not provide convincing evidence that there is a diffenence in scores")
+
 ```
 
 
