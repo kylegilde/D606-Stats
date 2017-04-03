@@ -1,34 +1,31 @@
 ---
 title: "D606 Chapter 5 & 6"
 author: "Kyle Gilde"
-date: "Mar. 14, 2017"
+date: "April 2, 2017"
 output: 
   prettydoc::html_pretty:
     theme: architect
     highlight: github
+    toc: true
 ---
 
 
 #Load Packages
-```{r setup} 
+```{r setup, echo = FALSE} 
 knitr::opts_chunk$set(warning=FALSE, 
                       message=FALSE,
-                      tidy=F,
-                      #comment = "",
-                      dev="png", 
-                      dev.args=list(type="cairo"))
-#https://cran.r-project.org/web/packages/prettydoc/vignettes/
-#https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
+                      tidy=TRUE
+                      )
 
 #create vector with all needed packages
-load_packages <- c("prettydoc", "stringr", "knitr")
+load_packages <- c("prettydoc", "knitr")
 
 #see if we need to install any of them
 install_load <- function(pkg){
   new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
   if (length(new.pkg)) 
     install.packages(new.pkg, dependencies = TRUE)
-  sapply(pkg, require, character.only = TRUE)
+  sapply(pkg, require, character.only = TRUE, quietly = TRUE)
 }
 
 install_load(load_packages)
@@ -87,7 +84,7 @@ ceiling(n)
 determine whether his sample should be larger or smaller than Raina's, and explain your
 reasoning.
 
-**Given a maximum ME of 25, the sample size is going to have to be larger. With a CI of .99, the critical value (CV) is going to increase. Since ME is SE * CV , the SE is going to need to be smaller to still get an ME of 25. Since SE is the SD divided by the square root of n, in order to get a smaller SE, the sample size will need larger.**
+**Given a maximum ME of 25, the sample size is going to have to be larger. With a CI of .99, the critical value (CV) is going to increase. Since ME is SE * CV , the SE is going to need to be smaller to still get an ME of 25. Since SE is the SD divided by the square root of n, in order to get a smaller SE, the sample size will need to be larger.**
 
 
 (c) Calculate the minimum required sample size for Luke.
@@ -110,14 +107,15 @@ ceiling(n)
 The National Center of Education Statistics conducted a survey of high school seniors, collecting test data on reading, writing, and several other subjects. Here we examine a simple random sample of 200 students from this survey. Side-by-side box plots of reading and writing scores as well as a histogram of the differences in scores are shown below.
 
 (a) Is there a clear difference in the average reading and writing scores?
-**No, not necessarily. In the box plots, the medians are not too far apart, and the IQRs overlap each other. In the historam, the distribution of the score differences is centered around 0.**
+**No, not necessarily. In the box plots, the medians are not too far apart, and the IQRs overlap each other. In the histogram, the distribution of the score differences is centered around 0.**
 
 (b) Are the reading and writing scores of each student independent of each other?
 **No, these are paired data since each student took the both tests. For each observation in one group, there is exactly one specially-corresponding observation in the other group.**
 
 (c) Create hypotheses appropriate for the following research question: is there an evident difference in the average scores of students in the reading and writing exam?
-$H_{0}: \mu_{diff}=0$ 
-$H_{A}:  \mu_{diff}\neq0$
+
+**$H_{0}: \mu_{diff}=0$**
+**$H_{A}:  \mu_{diff}\neq0$**
 
 (d) Check the conditions required to complete this test.
 + The observations are a simple random sample of less than 10% of the population.
@@ -289,181 +287,226 @@ pf(fvalue, DF_G, DF_E, lower.tail = F)
 
 
 #Chapter 6 - Inference for Categorical Data
+
 Practice: 6.5, 6.11, 6.27, 6.43, 6.47
+
 Graded: 6.6, 6.12, 6.20, 6.28, 6.44, 6.48
 
-6.5 Prop 19 in California. In a 2010 Survey USA poll, 70% of the 119 respondents between
-the ages of 18 and 34 said they would vote in the 2010 general election for Prop 19, which would
-change California law to legalize marijuana and allow it to be regulated and taxed. At a 95%
-confidence level, this sample has an 8% margin of error. Based on this information, determine if
-the following statements are true or false, and explain your reasoning.38
-(a) We are 95% confident that between 62% and 78% of the California voters in this sample
-support Prop 19.
-(b) We are 95% confident that between 62% and 78% of all California voters between the ages of
-18 and 34 support Prop 19.
-(c) If we considered many random samples of 119 California voters between the ages of 18 and
-34, and we calculated 95% confidence intervals for each, 95% of them will include the true
-population proportion of 18-34 year old Californians who support Prop 19.
-(d) In order to decrease the margin of error to 4%, we would need to quadruple (multiply by 4)
-the sample size.
-(e) Based on this confidence interval, there is sucient
-evidence to conclude that a majority of
-California voters between the ages of 18 and 34 support Prop 19.
+####6.6 2010 Healthcare Law. 
+On June 28, 2012 the U.S. Supreme Court upheld the much debated 2010 healthcare law, declaring it constitutional. A Gallup poll released the day after this decision indicates that 46% of 1,012 Americans agree with this decision. At a 95% confidence level, this sample has a 3% margin of error. Based on this information, determine if the following statements are true or false, and explain your reasoning.
 
-6.6 2010 Healthcare Law. On June 28, 2012 the U.S. Supreme Court upheld the much debated
-2010 healthcare law, declaring it constitutional. A Gallup poll released the day after this decision
-indicates that 46% of 1,012 Americans agree with this decision. At a 95% confidence level, this
-sample has a 3% margin of error. Based on this information, determine if the following statements
-are true or false, and explain your reasoning.39
-(a) We are 95% confident that between 43% and 49% of Americans in this sample support the
-decision of the U.S. Supreme Court on the 2010 healthcare law.
-(b) We are 95% confident that between 43% and 49% of Americans support the decision of the
-U.S. Supreme Court on the 2010 healthcare law.
-(c) If we considered many random samples of 1,012 Americans, and we calculated the sample
-proportions of those who support the decision of the U.S. Supreme Court, 95% of those sample
-proportions will be between 43% and 49%.
+(a) We are 95% confident that between 43% and 49% of Americans in this sample support the decision of the U.S. Supreme Court on the 2010 healthcare law.
+
+**False. A CI is constructed to estimate the population proportion.**
+
+(b) We are 95% confident that between 43% and 49% of Americans support the decision of the U.S. Supreme Court on the 2010 healthcare law.
+
+**True. This is a correct interpretation of a CI with a 3% ME.**
+
+(c) If we considered many random samples of 1,012 Americans, and we calculated the sample proportions of those who support the decision of the U.S. Supreme Court, 95% of those sample proportions will be between 43% and 49%. 
+
+**False. 95% of the CIs will contain the population proportion.**
+
 (d) The margin of error at a 90% confidence level would be higher than 3%
 
-6.11 Study abroad. A survey on 1,509 high school seniors who took the SAT and who completed
-an optional web survey between April 25 and April 30, 2007 shows that 55% of high school seniors
-are fairly certain that they will participate in a study abroad program in college.43
-(a) Is this sample a representative sample from the population of all high school seniors in the
-US? Explain your reasoning.
-(b) Let's suppose the conditions for inference are met. Even if your answer to part (a) indicated
-that this approach would not be reliable, this analysis may still be interesting to carry out
-(though not report). Construct a 90% confidence interval for the proportion of high school
-seniors (of those who took the SAT) who are fairly certain they will participate in a study
-abroad program in college, and interpret this interval in context.
-(c) What does "90% confidence" mean?
-(d) Based on this interval, would it be appropriate to claim that the majority of high school seniors
-are fairly certain that they will participate in a study abroad program in college?
-42Gallup World, More Than One in 10 "Suffering" Worldwide, data collected throughout 2011. 43studentPOLL, College-Bound Students' Interests in Study Abroad and Other International Learning
-Activities, January 2008.
+**False. For a 90% CI, the critical value descreases from 1.96 to 1.64. If the SE remains the same, this will decrease the ME.**
 
 
+####6.12 Legalization of marijuana, Part I. 
 
-6.12 Legalization of marijuana, Part I. The 2010 General Social Survey asked 1,259 US residents:
-"Do you think the use of marijuana should be made legal, or not?" 48% of the respondents
-said it should be made legal.44
+The 2010 General Social Survey asked 1,259 US residents: "Do you think the use of marijuana should be made legal, or not?" 48% of the respondents said it should be made legal.
+
 (a) Is 48% a sample statistic or a population parameter? Explain.
-(b) Construct a 95% confidence interval for the proportion of US residents who think marijuana
-should be made legal, and interpret it in the context of the data.
-(c) A critic points out that this 95% confidence interval is only accurate if the statistic follows a
-normal distribution, or if the normal model is a good approximation. Is this true for these
-data? Explain.
-(d) A news piece on this survey's findings states, "Majority of Americans think marijuana should
-be legalized." Based on your confidence interval, is this news piece's statement justified?
-6.13 Public option, Part I. A Washington Post article from 2009 reported that "support
-for a government-run health-care plan to compete with private insurers has rebounded from its
-summertime lows and wins clear majority support from the public." More specifically, the article
-says "seven in 10 Democrats back the plan, while almost nine in 10 Republicans oppose it. Independents
-divide 52 percent against, 42 percent in favor of the legislation." (6% responded with
-"other".) There were 819 Democrats, 566 Republicans and 783 Independents surveyed.45
-(a) A political pundit on TV claims that a majority of Independents oppose the health care public
-option plan. Do these data provide strong evidence to support this statement?
-(b) Would you expect a confidence interval for the proportion of Independents who oppose the
-public option plan to include 0.5? Explain.
 
-6.19 College smokers. We are interested in estimating the proportion of students at a university
-who smoke. Out of a random sample of 200 students from this university, 40 students smoke.
-(a) Calculate a 95% confidence interval for the proportion of students at this university who smoke,
-and interpret this interval in context. (Reminder: Check conditions.)
-(b) If we wanted the margin of error to be no larger than 2% at a 95% confidence level for the
-proportion of students who smoke, how big of a sample would we need?
+**Since it is the result of a survey, 48% is a sample statistic.**
 
-6.20 Legalize Marijuana, Part II. As discussed in Exercise 6.12, the 2010 General Social
-Survey reported a sample where about 48% of US residents thought marijuana should be made
-legal. If we wanted to limit the margin of error of a 95% confidence interval to 2%, about how
-many Americans would we need to survey ?
+(b) Construct a 95% confidence interval for the proportion of US residents who think marijuana should be made legal, and interpret it in the context of the data.
+```{r}
+#givens
+n <- 1259
+p_hat <- .48
+cL <- .95
+cv <- abs(qnorm((1 - cL)/2))
 
-6.27 Public Option, Part III. Exercise 6.13 presents the results of a poll evaluating support
-for the health care public option plan in 2009. 70% of 819 Democrats and 42% of 783 Independents
-support the public option.
-(a) Calculate a 95% confidence interval for the difference between (pD
-pI ) and interpret it in
-this context. We have already checked conditions for you.
-(b) True or false: If we had picked a random Democrat and a random Independent at the time
-of this poll, it is more likely that the Democrat would support the public option than the
-Independent.
+#calculations
+se <- sqrt(p_hat * (1 - p_hat) / n)
+me <- se * cv
+
+#CI values
+p_hat + me
+p_hat - me
+```
+**We are 95% confident that between 45% and 51% of US residents think that marijuana should be legal.**
+
+(c) A critic points out that this 95% confidence interval is only accurate if the statistic follows a normal distribution, or if the normal model is a good approximation. Is this true for these data? Explain.
+
+**Yes. It is true if observations are indedendent, which is a reasonable assumption given the organization. Also, the sample size is sufficiently large since there are more than 10 successes and failures.**
+
+(d) A news piece on this survey's findings states, "Majority of Americans think marijuana should be legalized." Based on your confidence interval, is this news piece's statement justified?
+
+**No, most of the confidence interval is below 50%.**
 
 
-6.28 Sleep deprivation, CA vs. OR, Part I. According to a report on sleep deprivation by the
-Centers for Disease Control and Prevention, the proportion of California residents who reported
-insucient
-rest or sleep during each of the preceding 30 days is 8.0%, while this proportion is
-8.8% for Oregon residents. These data are based on simple random samples of 11,545 California
-and 4,691 Oregon residents. Calculate a 95% confidence interval for the difference between the
-proportions of Californians and Oregonians who are sleep deprived and interpret it in context of
-the data.53
+####6.20 Legalize Marijuana, Part II. 
 
-6.43 Rock-paper-scissors. Rock-paper-scissors is a hand game played by two or more people
-where players choose to sign either rock, paper, or scissors with their hands. For your statistics
-class project, you want to evaluate whether players choose between these three options randomly,
-or if certain options are favored above others. You ask two friends to play rock-paper-scissors and
-count the times each option is played. The following table summarizes the data:
-Rock Paper Scissors
-43 21 35
-Use these data to evaluate whether players choose between these three options randomly, or if
-certain options are favored above others. Make sure to clearly outline each step of your analysis,
-and interpret your results in context of the data and the research question.
+As discussed in Exercise 6.12, the 2010 General Social Survey reported a sample where about 48% of US residents thought marijuana should be made legal. If we wanted to limit the margin of error of a 95% confidence interval to 2%, about how many Americans would we need to survey?
+
+```{r}
+max_me <- .02
+cL <- .95
+cv <- abs(qnorm((1 - cL)/2))
+max_p_hat <- .48
+
+se <- max_me / cv
+n <- max_p_hat * (1 - max_p_hat) / se^2
+ceiling(n)
+```
 
 
-6.44 Barking deer. Microhabitat factors associated with forage and bed sites of barking deer
-in Hainan Island, China were examined from 2001 to 2002. In this region woods make up 4.8%
-of the land, cultivated grass plot makes up 14.7%, and deciduous forests makes up 39.6%. Of the
-426 sites where the deer forage, 4 were categorized as woods, 16 as cultivated grassplot, and 61 as
-deciduous forests. The table below summarizes these data.62
+####6.28 Sleep deprivation, CA vs. OR, Part I. 
+
+According to a report on sleep deprivation by the Centers for Disease Control and Prevention, the proportion of California residents who reported insufficient rest or sleep during each of the preceding 30 days is 8.0%, while this proportion is 8.8% for Oregon residents. These data are based on simple random samples of 11,545 California and 4,691 Oregon residents. Calculate a 95% confidence interval for the difference between the proportions of Californians and Oregonians who are sleep deprived and interpret it in context of the data.
+
+```{r}
+#givens
+n1 <- 11545
+n2 <- 4691
+p_hat1 <- .08
+p_hat2 <- .088
+cL <- .95
+cv <- abs(qnorm((1 - cL)/2))
+
+#calculations
+p_hat_diff <- p_hat1 - p_hat2
+
+se <- sqrt(p_hat1 * (1 - p_hat1) / n1 + p_hat2 * (1 - p_hat2) / n2)
+me <- se * cv
+
+#CI values
+p_hat_diff
+CI <- c(p_hat_diff - me, p_hat_diff + me)
+CI
+print("We are 95% confident that the proportion of Californians who reported being sleep deprived is between 1.7% less than and 0.1% more than Oregon residents who reported the same.")
+```
+
+
+
+####6.44 Barking deer. 
+
+Microhabitat factors associated with forage and bed sites of barking deer in Hainan Island, China were examined from 2001 to 2002. 
+
+In this region woods make up 4.8% of the land, cultivated grass plot makes up 14.7%, and deciduous forests makes up 39.6%. Of the 426 sites where the deer forage, 4 were categorized as woods, 16 as cultivated grassplot, and 61 as deciduous forests. The table below summarizes these data.
+
 Woods Cultivated grassplot Deciduous forests Other Total
 4 16 61 345 426
-(a) Write the hypotheses for testing if barking deer prefer to forage
-in certain habitats over others.
+
+(a) Write the hypotheses for testing if barking deer prefer to forage in certain habitats over others.
+$H_{0}:$  The barking deer have no preference in certain habitats. The observed counts refect natural sampling fluctuation.
+$H_{A}:$ The barking deer prefer certain habitats over others.
+
 (b) What type of test can we use to answer this research question?
+
+**a chi-squared goodness of fitness test**
+
 (c) Check if the assumptions and conditions required for this test
 are satisfied.
-(d) Do these data provide convincing evidence that barking deer prefer
-to forage in certain habitats over others? Conduct an appropriate
-hypothesis test to answer this research question.
 
-6.47 Offshore drilling, Part III. The table below summarizes a data set we first encountered
-in Exercise 6.29 that examines the responses of a random sample of college graduates and nongraduates
-on the topic of oil drilling. Complete a chi-square test for these data to check whether
-there is a statistically significant difference in responses from college graduates and non-graduates.
-College Grad
-Yes No
-Support 154 132
-Oppose 180 126
-Do not know 104 131
-Total 438 389
+**We must assumed that the researchers attempted to collect cases that were independent of each other.**
+**Each scenario has at least 5 expected cases.**
+
+```{r}
+point_estimates <- c(4, 16, 61, 345)
+p <- c(.048, .147, .396)
+p <- c(p, 1 - sum(p))
+EC <- p * sum(point_estimates)
+EC
+EC >= 5
+```
 
 
-6.48 Coffee and Depression. Researchers conducted a study investigating the relationship
-between caffeinated coffee consumption and risk of depression in women. They collected data
-on 50,739 women free of depression symptoms at the start of the study in the year 1996, and
-these women were followed through 2006. The researchers used questionnaires to collect data on
-caffeinated coffee consumption, asked each individual about physician-diagnosed depression, and
-also asked about the use of antidepressants. The table below shows the distribution of incidences
-of depression by amount of caffeinated coffee consumption.63
-Caffeinated coffee consumption
-??? 1 2-6 1 2-3
-4
-cup/week cups/week cup/day cups/day cups/day Total
-Clinical Yes 670 373 905 564 95 2,607
-depression No 11,545 6,244 16,329 11,726 2,288 48,132
-Total 12,215 6,617 17,234 12,290 2,383 50,739
-(a) What type of test is appropriate for evaluating if there is an association between coffee intake
-and depression?
+(d) Do these data provide convincing evidence that barking deer prefer to forage in certain habitats over others? Conduct an appropriate hypothesis test to answer this research question.
+```{r}
+#manual chi-squared calc
+habitat <- c("Woods", "Cultivated grassplot", "Deciduous forests", "Other")
+
+my_df <- data.frame(habitat, point_estimates, p, expected_cases = EC, zvalues = (point_estimates - EC)/sqrt(EC))
+
+kable(my_df)
+
+xsq <- sum(my_df$zvalues^2)
+
+paste("chi-squared test statistic:", round(xsq, 2))
+
+#using r function
+a <- chisq.test(point_estimates, p = p)
+a
+a$p.value
+print("Since the p-value is near 0, we reject the null hypothesis that the barking deer have no habitat preferences.")
+
+
+```
+
+####6.48 Coffee and Depression. 
+Researchers conducted a study investigating the relationship between caffeinated coffee consumption and risk of depression in women. They collected data on 50,739 women free of depression symptoms at the start of the study in the year 1996, and these women were followed through 2006. The researchers used questionnaires to collect data on caffeinated coffee consumption, asked each individual about physician-diagnosed depression, and
+also asked about the use of antidepressants. The table below shows the distribution of incidences of depression by amount of caffeinated coffee consumption.
+
+(a) What type of test is appropriate for evaluating if there is an association between coffee intake and depression?
+
+**Since this is a bivariate contigency table, we will use the chi-square test of independence.**
+
 (b) Write the hypotheses for the test you identified in part (a).
+
+$H_{0}:$ The amount of coffee consumed has no difference in the incidences of depression.
+$H_{A}:$ The amount of coffee consumed has differences in the incidences of depression.
+
 (c) Calculate the overall proportion of women who do and do not suffer from depression.
-(d) Identify the expected count for the highlighted cell, and calculate the contribution of this cell
-to the test statistic, i.e. (Observed
-Expected)
-2/Expected.
-(e) The test statistic is 2
-= 20.93. What is the p-value?
+
+```{r}
+#create matrix
+values <-c(670, 373, 905, 564, 95, 11545, 6244, 16329, 11726, 2288)
+coldims <- c("<1 cup/week", "2-6  cups/week", "1 cup/day", "2-3 cups/day", ">= 4 cups/day")
+rowdims <- c("Depression", "nDepression")
+mdims <- list(rowdims, coldims)
+
+my_matrix <- matrix(values, 2, 5, byrow = TRUE, dimnames = mdims)
+
+
+
+sum(my_matrix[1, ])/sum(my_matrix)
+sum(my_matrix[2, ])/sum(my_matrix)
+```
+
+
+(d) Identify the expected count for the highlighted cell, and calculate the contribution of this cell to the test statistic, i.e. (Observed - Expected)^2/Expected.
+
+```{r}
+obs_value <- my_matrix[1, 2]
+EV <- sum(my_matrix[, 2]) * sum(my_matrix[1, ]) / sum(my_matrix)
+
+(obs_value - EV)^2/EV
+```
+
+
+(e) The test statistic is x^2 = 20.93. What is the p-value?
+```{r}
+my_chisq_test <- chisq.test(my_matrix)
+my_chisq_test$p.value
+
+# my_matrix
+# my_chisq_test$expected
+```
+
 (f) What is the conclusion of the hypothesis test?
-(g) One of the authors of this study was quoted on the NYTimes as saying it was "too early to
-recommend that women load up on extra coffee" based on just this study.64 Do you agree with
-this statement? Explain your reasoning.
+
+**Because we have a tiny p-value, we will reject the null hypothesis that there is no difference**
+
+(g) One of the authors of this study was quoted on the NYTimes as saying it was "too early to recommend that women load up on extra coffee" based on just this study. Do you agree with this statement? Explain your reasoning.
+
+**I agree with this statement for a few reasons**
+
++ Because the researchers didn't randomly assign the women into the treatment groups, the results of the study are generializiable to the population, but can only infer correlation and not causality. There may be a confounding variable not addressed in the study.
+
++ There may be other negative side affects to increasing coffee consumption, and there may be more effective ways to prevent depression, like exercise.
 
 #Practice
 ####5.5 Working backwards, Part I. 
@@ -575,3 +618,169 @@ ifelse(pvalue < sign_level, "Reject the null hypothesis", "Fail to reject the nu
 **Type 1**
 (d) Would your conclusion change if we used $\alpha$ = 0.01?
 **yes**
+
+####6.5 Prop 19 in California. 
+In a 2010 Survey USA poll, 70% of the 119 respondents between the ages of 18 and 34 said they would vote in the 2010 general election for Prop 19, which would change California law to legalize marijuana and allow it to be regulated and taxed. At a 95% confidence level, this sample has an 8% margin of error. Based on this information, determine if the following statements are true or false, and explain your reasoning.
+
+(a) We are 95% confident that between 62% and 78% of the California voters in this sample support Prop 19.
+
+**False. A CI is constructed to estimate the population proportion.**
+
+(b) We are 95% confident that between 62% and 78% of all California voters between the ages of 18 and 34 support Prop 19.
+
+**True**
+
+(c) If we considered many random samples of 119 California voters between the ages of 18 and 34, and we calculated 95% confidence intervals for each, 95% of them will include the true population proportion of 18-34 year old Californians who support Prop 19.
+
+**True, that is a correct interpretation of the CI.**
+
+(d) In order to decrease the margin of error to 4%, we would need to quadruple (multiply by 4) the sample size.
+**False. Assuming the same .7 proportion, we would need to more than quadruple it to 505.**
+```{r}
+max_me <- .04
+cL <- .95
+cv <- abs(qnorm((1 - cL)/2))
+max_p_hat <- .7
+
+se <- max_me / cv
+n <- max_p_hat * (1 - max_p_hat) / se^2
+ceiling(n)
+```
+
+(e) Based on this confidence interval, there is sufficient evidence to conclude that a majority of California voters between the ages of 18 and 34 support Prop 19.
+**True**
+####6.11 Study abroad. 
+
+A survey on 1,509 high school seniors who took the SAT and who completed an optional web survey between April 25 and April 30, 2007 shows that 55% of high school seniors are fairly certain that they will participate in a study abroad program in college. 
+
+(a) Is this sample a representative sample from the population of all high school seniors in the US? Explain your reasoning. **No**
+
+(b) Let's suppose the conditions for inference are met. Even if your answer to part (a) indicated that this approach would not be reliable, this analysis may still be interesting to carry out (though not report). Construct a 90% confidence interval for the proportion of high school seniors (of those who took the SAT) who are fairly certain they will participate in a study abroad program in college, and interpret this interval in context. 
+
+```{r}
+n <- 1509
+p_hat <- .55
+cL <- .9
+cv <- abs(qnorm((1 - cL)/2))
+
+se <- sqrt(p_hat * (1 - p_hat) / n)
+me <- se * cv
+
+p_hat + me
+p_hat - me
+```
+
+
+(c) What does "90% confidence" mean? 
+**We are 90% confident that the population proportion is within the confidence interval.**
+
+
+(d) Based on this interval, would it be appropriate to claim that the majority of high school seniors are fairly certain that they will participate in a study abroad program in college?
+
+**If we assume the conditions for inference are met, yes.**
+
+####6.19 College smokers. 
+
+We are interested in estimating the proportion of students at a university who smoke. Out of a random sample of 200 students from this university, 40 students smoke.
+
+(a) Calculate a 95% confidence interval for the proportion of students at this university who smoke, and interpret this interval in context. (Reminder: Check conditions.)
+
+```{r}
+#givens
+n <- 200
+p_hat <- .2
+cL <- .95
+cv <- abs(qnorm((1 - cL)/2))
+
+#calculations
+se <- sqrt(p_hat * (1 - p_hat) / n)
+me <- se * cv
+
+#CI values
+p_hat + me
+p_hat - me
+```
+
+
+(b) If we wanted the margin of error to be no larger than 2% at a 95% confidence level for the proportion of students who smoke, how big of a sample would we need?
+
+```{r}
+max_me <- .02
+cL <- .95
+cv <- abs(qnorm((1 - cL)/2))
+max_p_hat <- .2
+
+se <- max_me / cv
+n <- max_p_hat * (1 - max_p_hat) / se^2
+ceiling(n)
+
+```
+####6.27 Public Option, Part III. 
+Exercise 6.13 presents the results of a poll evaluating support for the health care public option plan in 2009. 70% of 819 Democrats and 42% of 783 Independents support the public option.
+
+(a) Calculate a 95% confidence interval for the difference between (pD
+pI ) and interpret it in this context. We have already checked conditions for you.
+```{r}
+#givens
+n1 <- 819
+n2 <- 783
+p_hat1 <- .7
+p_hat2 <- .42
+cL <- .95
+cv <- abs(qnorm((1 - cL)/2))
+
+#calculations
+p_hat_diff <- p_hat1 - p_hat2
+
+se <- sqrt(p_hat1 * (1 - p_hat1) / n1 + p_hat2 * (1 - p_hat2) / n2)
+me <- se * cv
+
+#CI values
+p_hat_diff
+c(p_hat_diff - me, p_hat_diff + me)
+```
+
+(b) True or false: If we had picked a random Democrat and a random Independent at the time of this poll, it is more likely that the Democrat would support the public option than the Independent.
+####6.43 Rock-paper-scissors. 
+
+Rock-paper-scissors is a hand game played by two or more people where players choose to sign either rock, paper, or scissors with their hands. For your statistics class project, you want to evaluate whether players choose between these three options randomly, or if certain options are favored above others. You ask two friends to play rock-paper-scissors and count the times each option is played. The following table summarizes the data:
+
+Rock Paper Scissors
+43 21 35
+
+Use these data to evaluate whether players choose between these three options randomly, or if certain options are favored above others. Make sure to clearly outline each step of your analysis, and interpret your results in context of the data and the research question.
+
+$H_{0}: \mu_{diff}=0$ 
+$H_{A}:  \mu_{diff}\neq0$
+
+```{r}
+pe <- c(43, 21, 35)
+pe_len <- length(pe)
+p <- c(rep(sum(pe)/pe_len, pe_len))
+
+my_df <- data.frame(pe, p, z = (pe - p)/sqrt(p))
+
+sum(my_df$z^2)
+
+chisq.test(pe)
+```
+
+
+####6.47 Offshore drilling, Part III. 
+
+The table below summarizes a data set we first encountered in Exercise 6.29 that examines the responses of a random sample of college graduates and nongraduates on the topic of oil drilling. Complete a chi-square test for these data to check whether there is a statistically significant difference in responses from college graduates and non-graduates.
+
+
+```{r}
+values <- c(154,132,180,126,104,131)
+rowdims <- c("Support", "Oppose", "Do not know")
+coldims <- c("Grad", "nGrad")
+mdims <- list(rowdims, coldims)
+
+
+my_matrix <- matrix(values, 3, 2, byrow = TRUE, dimnames = mdims)
+
+test <- chisq.test(my_matrix)
+test
+test$expected
+```

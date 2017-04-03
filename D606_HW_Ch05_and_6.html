@@ -12,7 +12,6 @@
 
 <meta name="author" content="Kyle Gilde" />
 
-<meta name="date" content="2017-03-14" />
 
 <title>D606 Chapter 5 &amp; 6</title>
 
@@ -72,67 +71,51 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="inner">
 <h1 class="title toc-ignore">D606 Chapter 5 &amp; 6</h1>
 <h3 class="author">Kyle Gilde</h3>
-<h3 class="date">Mar. 14, 2017</h3>
+<h3 class="date">April 2, 2017</h3>
 </div>
 </header>
 
 
+<div id="TOC" class="toc">
+<ul>
+<li><a href="#load-packages">Load Packages</a></li>
+<li><a href="#chapter-5---inference-for-numerical-data">Chapter 5 - Inference for Numerical Data</a></li>
+<li><a href="#chapter-6---inference-for-categorical-data">Chapter 6 - Inference for Categorical Data</a></li>
+<li><a href="#practice">Practice</a></li>
+</ul>
+</div>
 
 <div id="content-wrapper">
   <div class="inner clearfix">
     <section id="main-content">
 <div id="load-packages" class="section level1">
 <h1>Load Packages</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knitr::opts_chunk$<span class="kw">set</span>(<span class="dt">warning=</span><span class="ot">FALSE</span>, 
-                      <span class="dt">message=</span><span class="ot">FALSE</span>,
-                      <span class="dt">tidy=</span>F,
-                      <span class="co">#comment = &quot;&quot;,</span>
-                      <span class="dt">dev=</span><span class="st">&quot;png&quot;</span>, 
-                      <span class="dt">dev.args=</span><span class="kw">list</span>(<span class="dt">type=</span><span class="st">&quot;cairo&quot;</span>))
-<span class="co">#https://cran.r-project.org/web/packages/prettydoc/vignettes/</span>
-<span class="co">#https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf</span>
-
-<span class="co">#create vector with all needed packages</span>
-load_packages &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;prettydoc&quot;</span>, <span class="st">&quot;stringr&quot;</span>, <span class="st">&quot;knitr&quot;</span>)
-
-<span class="co">#see if we need to install any of them</span>
-install_load &lt;-<span class="st"> </span>function(pkg){
-  new.pkg &lt;-<span class="st"> </span>pkg[!(pkg %in%<span class="st"> </span><span class="kw">installed.packages</span>()[, <span class="st">&quot;Package&quot;</span>])]
-  if (<span class="kw">length</span>(new.pkg)) 
-    <span class="kw">install.packages</span>(new.pkg, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
-  <span class="kw">sapply</span>(pkg, require, <span class="dt">character.only =</span> <span class="ot">TRUE</span>)
-}
-
-<span class="kw">install_load</span>(load_packages)</code></pre></div>
-<pre><code>## Loading required package: prettydoc</code></pre>
-<pre><code>## Loading required package: stringr</code></pre>
-<pre><code>## Loading required package: knitr</code></pre>
-<pre><code>## prettydoc   stringr     knitr 
-##      TRUE      TRUE      TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#CODE SOURCE DOCUMENTATION: https://gist.github.com/stevenworthington/3178163</span></code></pre></div>
+<pre><code>## prettydoc     knitr 
+##      TRUE      TRUE</code></pre>
 </div>
 <div id="chapter-5---inference-for-numerical-data" class="section level1">
 <h1>Chapter 5 - Inference for Numerical Data</h1>
-<p>Practice: 5.5, 5.13, 5.19, 5.31, 5.45 Graded: 5.6, 5.14, 5.20, 5.32, 5.48</p>
+<p>Practice: 5.5, 5.13, 5.19, 5.31, 5.45</p>
+<p>Graded: 5.6, 5.14, 5.20, 5.32, 5.48</p>
 <div id="working-backwards-part-ii." class="section level4">
 <h4>5.6 Working backwards, Part II.</h4>
 <p>A 90% confidence interval for a population mean is (65, 77). The population distribution is approximately normal and the population standard deviation is unknown. This confidence interval is based on a simple random sample of 25 observations. Calculate the sample mean, the margin of error, and the sample standard deviation.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#givens</span>
-ci &lt;-<span class="st"> </span>.<span class="dv">9</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
+ci &lt;-<span class="st"> </span><span class="fl">0.9</span>
 ci_values &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">65</span>, <span class="dv">77</span>)
 n &lt;-<span class="st"> </span><span class="dv">25</span>
 df &lt;-<span class="st"> </span>n -<span class="st"> </span><span class="dv">1</span>
 
-<span class="co">#calcs</span>
-me &lt;-<span class="st"> </span>(ci_values[<span class="dv">2</span>] -<span class="st"> </span>ci_values[<span class="dv">1</span>]) /<span class="st"> </span><span class="dv">2</span>
+<span class="co"># calcs</span>
+me &lt;-<span class="st"> </span>(ci_values[<span class="dv">2</span>] -<span class="st"> </span>ci_values[<span class="dv">1</span>])/<span class="dv">2</span>
 xbar &lt;-<span class="st"> </span>ci_values[<span class="dv">1</span>] +<span class="st"> </span>me
-cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>((<span class="dv">1</span> -<span class="st"> </span>ci) /<span class="st"> </span><span class="dv">2</span>, df))
-          
-          
-se &lt;-<span class="st"> </span>me /<span class="st"> </span>cv
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>((<span class="dv">1</span> -<span class="st"> </span>ci)/<span class="dv">2</span>, df))
+
+
+se &lt;-<span class="st"> </span>me/cv
 s &lt;-<span class="st"> </span>se *<span class="st"> </span><span class="kw">sqrt</span>(n)
 
-<span class="co">#answers</span>
+<span class="co"># answers</span>
 xbar</code></pre></div>
 <pre><code>## [1] 71</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">me</code></pre></div>
@@ -146,34 +129,34 @@ xbar</code></pre></div>
 <ol style="list-style-type: lower-alpha">
 <li>Raina wants to use a 90% confidence interval. How large a sample should she collect?</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#givens</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
 sigma &lt;-<span class="st"> </span><span class="dv">250</span>
-ci &lt;-<span class="st"> </span>.<span class="dv">9</span>
+ci &lt;-<span class="st"> </span><span class="fl">0.9</span>
 me &lt;-<span class="st"> </span><span class="dv">25</span>
 
-<span class="co">#calcs</span>
-cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>ci) /<span class="st"> </span><span class="dv">2</span>))
-se &lt;-<span class="st"> </span>me /<span class="st"> </span>cv
-n &lt;-<span class="st"> </span>(sigma /<span class="st"> </span>se) ^<span class="st"> </span><span class="dv">2</span>
+<span class="co"># calcs</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>ci)/<span class="dv">2</span>))
+se &lt;-<span class="st"> </span>me/cv
+n &lt;-<span class="st"> </span>(sigma/se)^<span class="dv">2</span>
 
 <span class="kw">ceiling</span>(n)</code></pre></div>
 <pre><code>## [1] 271</code></pre>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Luke wants to use a 99% confidence interval. Without calculating the actual sample size, determine whether his sample should be larger or smaller than Raina’s, and explain your reasoning.</li>
 </ol>
-<p><strong>Given a maximum ME of 25, the sample size is going to have to be larger. With a CI of .99, the critical value (CV) is going to increase. Since ME is SE * CV , the SE is going to need to be smaller to still get an ME of 25. Since SE is the SD divided by the square root of n, in order to get a smaller SE, the sample size will need larger.</strong></p>
+<p><strong>Given a maximum ME of 25, the sample size is going to have to be larger. With a CI of .99, the critical value (CV) is going to increase. Since ME is SE * CV , the SE is going to need to be smaller to still get an ME of 25. Since SE is the SD divided by the square root of n, in order to get a smaller SE, the sample size will need to be larger.</strong></p>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>Calculate the minimum required sample size for Luke.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#givens</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
 sigma &lt;-<span class="st"> </span><span class="dv">250</span>
-ci &lt;-<span class="st"> </span>.<span class="dv">99</span>
+ci &lt;-<span class="st"> </span><span class="fl">0.99</span>
 me &lt;-<span class="st"> </span><span class="dv">25</span>
 
-<span class="co">#calcs</span>
-cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>ci) /<span class="st"> </span><span class="dv">2</span>))
-se &lt;-<span class="st"> </span>me /<span class="st"> </span>cv
-n &lt;-<span class="st"> </span>(sigma /<span class="st"> </span>se) ^<span class="st"> </span><span class="dv">2</span>
+<span class="co"># calcs</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>ci)/<span class="dv">2</span>))
+se &lt;-<span class="st"> </span>me/cv
+n &lt;-<span class="st"> </span>(sigma/se)^<span class="dv">2</span>
 
 <span class="kw">ceiling</span>(n)</code></pre></div>
 <pre><code>## [1] 664</code></pre>
@@ -182,9 +165,12 @@ n &lt;-<span class="st"> </span>(sigma /<span class="st"> </span>se) ^<span clas
 <h4>5.20 High School and Beyond, Part I.</h4>
 <p>The National Center of Education Statistics conducted a survey of high school seniors, collecting test data on reading, writing, and several other subjects. Here we examine a simple random sample of 200 students from this survey. Side-by-side box plots of reading and writing scores as well as a histogram of the differences in scores are shown below.</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Is there a clear difference in the average reading and writing scores? <strong>No, not necessarily. In the box plots, the medians are not too far apart, and the IQRs overlap each other. In the historam, the distribution of the score differences is centered around 0.</strong></p></li>
+<li><p>Is there a clear difference in the average reading and writing scores? <strong>No, not necessarily. In the box plots, the medians are not too far apart, and the IQRs overlap each other. In the histogram, the distribution of the score differences is centered around 0.</strong></p></li>
 <li><p>Are the reading and writing scores of each student independent of each other? <strong>No, these are paired data since each student took the both tests. For each observation in one group, there is exactly one specially-corresponding observation in the other group.</strong></p></li>
-<li><p>Create hypotheses appropriate for the following research question: is there an evident difference in the average scores of students in the reading and writing exam? <span class="math inline">\(H_{0}: \mu_{diff}=0\)</span> <span class="math inline">\(H_{A}: \mu_{diff}\neq0\)</span></p></li>
+<li><p>Create hypotheses appropriate for the following research question: is there an evident difference in the average scores of students in the reading and writing exam?</p></li>
+</ol>
+<p><strong><span class="math inline">\(H_{0}: \mu_{diff}=0\)</span></strong> <strong><span class="math inline">\(H_{A}: \mu_{diff}\neq0\)</span></strong></p>
+<ol start="4" style="list-style-type: lower-alpha">
 <li>Check the conditions required to complete this test.</li>
 </ol>
 <ul>
@@ -195,14 +181,14 @@ n &lt;-<span class="st"> </span>(sigma /<span class="st"> </span>se) ^<span clas
 <ol start="5" style="list-style-type: lower-alpha">
 <li>The average observed difference in scores is ¯xreadwrite = 0.545, and the standard deviation of the differences is 8.887 points. Do these data provide convincing evidence of a difference between the average scores on the two exams?</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xbar &lt;-<span class="st"> </span>.<span class="dv">545</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xbar &lt;-<span class="st"> </span><span class="fl">0.545</span>
 s &lt;-<span class="st"> </span><span class="fl">8.887</span>
 n &lt;-<span class="st"> </span><span class="dv">200</span>
 df &lt;-<span class="st"> </span>n -<span class="st"> </span><span class="dv">1</span>
-se &lt;-<span class="st"> </span>s /<span class="st"> </span><span class="kw">sqrt</span>(n)
+se &lt;-<span class="st"> </span>s/<span class="kw">sqrt</span>(n)
 null_hyp &lt;-<span class="st"> </span><span class="dv">0</span>
 
-t_score &lt;-<span class="st"> </span>(xbar -<span class="st"> </span>null_hyp) /<span class="st"> </span>se
+t_score &lt;-<span class="st"> </span>(xbar -<span class="st"> </span>null_hyp)/se
 
 <span class="kw">pt</span>(t_score, df, <span class="dt">lower.tail =</span> F) *<span class="st"> </span><span class="dv">2</span></code></pre></div>
 <pre><code>## [1] 0.3868365</code></pre>
@@ -219,7 +205,7 @@ t_score &lt;-<span class="st"> </span>(xbar -<span class="st"> </span>null_hyp) 
 <p>Do these data provide strong evidence of a difference between the average fuel efficiency of cars with manual and automatic transmissions in terms of their average city mileage? Assume that conditions for inference are satisfied.</p>
 <pre><code>  Automatic Manual</code></pre>
 <p>Mean 16.12 19.85 SD 3.58 4.51 n 26 26</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#givens</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
 n1 &lt;-<span class="st"> </span><span class="dv">26</span>
 n2 &lt;-<span class="st"> </span>n1
 xbar1 &lt;-<span class="st"> </span><span class="fl">16.12</span>
@@ -227,16 +213,16 @@ xbar2 &lt;-<span class="st"> </span><span class="fl">19.85</span>
 xbar_diff &lt;-<span class="st"> </span>xbar2 -<span class="st"> </span>xbar1
 s1 &lt;-<span class="st"> </span><span class="fl">3.58</span>
 s2 &lt;-<span class="st"> </span><span class="fl">4.51</span>
-alpha &lt;-<span class="st"> </span>.<span class="dv">05</span>
+alpha &lt;-<span class="st"> </span><span class="fl">0.05</span>
 null_hyp &lt;-<span class="st"> </span><span class="dv">0</span>
 
-<span class="co">#calculations</span>
+<span class="co"># calculations</span>
 se_diff &lt;-<span class="st"> </span><span class="kw">sqrt</span>(s1^<span class="dv">2</span>/n1 +<span class="st"> </span>s2^<span class="dv">2</span>/n2)
 df_diff &lt;-<span class="st"> </span><span class="kw">min</span>(n1, n2) -<span class="st"> </span><span class="dv">1</span>
-t_score &lt;-<span class="st"> </span>(xbar_diff -<span class="st"> </span>null_hyp) /<span class="st"> </span>se_diff
+t_score &lt;-<span class="st"> </span>(xbar_diff -<span class="st"> </span>null_hyp)/se_diff
 pvalue &lt;-<span class="st"> </span><span class="kw">pt</span>(t_score, df_diff, <span class="dt">lower.tail =</span> F) *<span class="st"> </span><span class="dv">2</span>
 
-<span class="co">#conclusions</span>
+<span class="co"># conclusions</span>
 <span class="kw">paste</span>(<span class="st">&quot;p-value = &quot;</span>, pvalue)</code></pre></div>
 <pre><code>## [1] &quot;p-value =  0.00288361481312234&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ifelse</span>(pvalue &lt;<span class="st"> </span>alpha, <span class="st">&quot;Reject the null hypothesis&quot;</span>, <span class="st">&quot;Fail to reject the null hypothesis&quot;</span>)</code></pre></div>
@@ -288,29 +274,31 @@ pvalue &lt;-<span class="st"> </span><span class="kw">pt</span>(t_score, df_diff
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k &lt;-<span class="st"> </span><span class="dv">5</span> <span class="co">#groups</span>
-n &lt;-<span class="st"> </span><span class="dv">50739</span> <span class="co">#total sample</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k &lt;-<span class="st"> </span><span class="dv">5</span>  <span class="co">#groups</span>
+n &lt;-<span class="st"> </span><span class="dv">50739</span>  <span class="co">#total sample</span>
 
 DF_G &lt;-<span class="st"> </span>k -<span class="st"> </span><span class="dv">1</span>
 DF_E &lt;-<span class="st"> </span>n -<span class="st"> </span>k
 DF_T &lt;-<span class="st"> </span>DF_G +<span class="st"> </span>DF_E
 
-DF_G;DF_E;DF_T</code></pre></div>
+DF_G</code></pre></div>
 <pre><code>## [1] 4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DF_E</code></pre></div>
 <pre><code>## [1] 50734</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DF_T</code></pre></div>
 <pre><code>## [1] 50738</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SSE &lt;-<span class="st"> </span><span class="dv">25564819</span>
 SST &lt;-<span class="st"> </span><span class="dv">25575327</span>
 SSG &lt;-<span class="st"> </span>SST -<span class="st"> </span>SSE
 SSG</code></pre></div>
 <pre><code>## [1] 10508</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MSG &lt;-<span class="st"> </span>SSG /<span class="st"> </span>DF_G
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MSG &lt;-<span class="st"> </span>SSG/DF_G
 MSG</code></pre></div>
 <pre><code>## [1] 2627</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MSE &lt;-<span class="st"> </span>SSE /<span class="st"> </span>DF_E
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MSE &lt;-<span class="st"> </span>SSE/DF_E
 MSE</code></pre></div>
 <pre><code>## [1] 503.8991</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fvalue &lt;-<span class="st"> </span>MSG /<span class="st"> </span>MSE
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fvalue &lt;-<span class="st"> </span>MSG/MSE
 fvalue</code></pre></div>
 <pre><code>## [1] 5.213345</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pf</span>(fvalue, DF_G, DF_E, <span class="dt">lower.tail =</span> F)</code></pre></div>
@@ -322,41 +310,22 @@ fvalue</code></pre></div>
 <div id="work-hours-and-education." class="section level4">
 <h4>5.48 Work hours and education.</h4>
 <p>The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents. Using ANOVA, we can consider educational attainment levels for all 1,172 respondents at once. Below are the distributions of hours worked by educational attainment and relevant summary statistics that will be helpful in carrying out this analysis.</p>
-<p>Educational attainment</p>
-<pre><code>  Less than HS  HS      Jr Coll Bachelor's  Graduate Total</code></pre>
-<p>Mean 38.67 39.6 41.39 42.55 40.85 40.45 SD 15.81 14.97 18.1 13.62 15.51 15.17 n 121 546 97 253 155 1,172</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Write hypotheses for evaluating whether the average number of hours worked varies across the five groups. <span class="math inline">\(H_{0}:\)</span> The population mean of each group is equal to the others <span class="math inline">\(H_{A}:\)</span> At least one pair of means is different</p></li>
-<li><p>Check conditions and describe any assumptions you must make to proceed with the test. <strong>We are given very little information about the conditions. We are going to have to assume the following.</strong></p></li>
-<li><p>Below is part of the output associated with this test. Fill in the empty cells.</p></li>
+<li>Write hypotheses for evaluating whether the average number of hours worked varies across the five groups.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">k &lt;-<span class="st"> </span><span class="dv">5</span> <span class="co">#groups</span>
-n &lt;-<span class="st"> </span><span class="dv">50739</span> <span class="co">#total sample</span>
-
-DF_G &lt;-<span class="st"> </span>k -<span class="st"> </span><span class="dv">1</span>
-DF_E &lt;-<span class="st"> </span>n -<span class="st"> </span>k
-DF_T &lt;-<span class="st"> </span>DF_G +<span class="st"> </span>DF_E
-
-DF_G;DF_E;DF_T</code></pre></div>
-<pre><code>## [1] 4</code></pre>
-<pre><code>## [1] 50734</code></pre>
-<pre><code>## [1] 50738</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SSE &lt;-<span class="st"> </span><span class="dv">25564819</span>
-SST &lt;-<span class="st"> </span><span class="dv">25575327</span>
-SSG &lt;-<span class="st"> </span>SST -<span class="st"> </span>SSE
-SSG</code></pre></div>
-<pre><code>## [1] 10508</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MSG &lt;-<span class="st"> </span>SSG /<span class="st"> </span>DF_G
-MSG</code></pre></div>
-<pre><code>## [1] 2627</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MSE &lt;-<span class="st"> </span>SSE /<span class="st"> </span>DF_E
-MSE</code></pre></div>
-<pre><code>## [1] 503.8991</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fvalue &lt;-<span class="st"> </span>MSG /<span class="st"> </span>MSE
-fvalue</code></pre></div>
-<pre><code>## [1] 5.213345</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pf</span>(fvalue, DF_G, DF_E, <span class="dt">lower.tail =</span> F)</code></pre></div>
-<pre><code>## [1] 0.0003391831</code></pre>
+<p><strong><span class="math inline">\(H_{0}:\)</span> The population mean of each group is equal to the others</strong></p>
+<p><strong><span class="math inline">\(H_{A}:\)</span> At least one pair of means is different</strong></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Check conditions and describe any assumptions you must make to proceed with the test. <strong>We are given very little information about the conditions. We are going to have to assume the following:</strong></li>
+</ol>
+<ul>
+<li>The observations were collected by a simple random sample. It is obviously less than 10% of the population.</li>
+<li>All of the group sample sizes are rather large so we can relax the normality assumption.</li>
+<li>We can’t be completely certain that the variance in the groups are about equal. The SDs are similiar except for Jr Coll.</li>
+</ul>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Below is part of the output associated with this test. Fill in the empty cells.</li>
+</ol>
 <table>
 <thead>
 <tr class="header">
@@ -370,65 +339,327 @@ fvalue</code></pre></div>
 </thead>
 <tbody>
 <tr class="odd">
-<td>coffee</td>
-<td></td>
-<td></td>
+<td>degree</td>
+<td>4</td>
+<td>2006.16</td>
 <td>501.54</td>
-<td></td>
+<td>2.188992</td>
 <td>0.0682</td>
 </tr>
 <tr class="even">
 <td>Residuals</td>
-<td></td>
+<td>1167</td>
 <td>267382</td>
-<td>X</td>
+<td>229.1191</td>
 <td></td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>Total</td>
-<td></td>
-<td></td>
+<td>1171</td>
+<td>269388.2</td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
 </tbody>
 </table>
-<p>Df Sum Sq Mean Sq F value Pr(&gt;F) degree XXXXX XXXXX 501.54 XXXXX 0.0682 Residuals XXXXX 267382 XXXXX Total XXXXX XXXXX</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
+k &lt;-<span class="st"> </span><span class="dv">5</span>  <span class="co">#groups</span>
+n &lt;-<span class="st"> </span><span class="dv">1172</span>  <span class="co">#total sample</span>
+SSE &lt;-<span class="st"> </span><span class="dv">267382</span>
+MSG &lt;-<span class="st"> </span><span class="fl">501.54</span>
+
+<span class="co"># calcs</span>
+DF_G &lt;-<span class="st"> </span>k -<span class="st"> </span><span class="dv">1</span>
+DF_E &lt;-<span class="st"> </span>n -<span class="st"> </span>k
+DF_T &lt;-<span class="st"> </span>DF_G +<span class="st"> </span>DF_E
+DF_G</code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DF_E</code></pre></div>
+<pre><code>## [1] 1167</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DF_T</code></pre></div>
+<pre><code>## [1] 1171</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SSG &lt;-<span class="st"> </span>DF_G *<span class="st"> </span>MSG
+SSG</code></pre></div>
+<pre><code>## [1] 2006.16</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">SST &lt;-<span class="st"> </span>SSG +<span class="st"> </span>SSE
+SST</code></pre></div>
+<pre><code>## [1] 269388.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MSE &lt;-<span class="st"> </span>SSE/DF_E
+MSE</code></pre></div>
+<pre><code>## [1] 229.1191</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fvalue &lt;-<span class="st"> </span>MSG/MSE
+fvalue</code></pre></div>
+<pre><code>## [1] 2.188992</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pf</span>(fvalue, DF_G, DF_E, <span class="dt">lower.tail =</span> F)</code></pre></div>
+<pre><code>## [1] 0.06819325</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>What is the conclusion of the test?</li>
+</ol>
+<p><strong>Since the p-value is greater than .05, we are failing to reject the null hypothesis. The data are not convincing evidence that at least one of pair of means is different.</strong></p>
 </div>
 </div>
 <div id="chapter-6---inference-for-categorical-data" class="section level1">
 <h1>Chapter 6 - Inference for Categorical Data</h1>
-<p>Practice: 6.5, 6.11, 6.27, 6.43, 6.47 Graded: 6.6, 6.12, 6.20, 6.28, 6.44, 6.48</p>
-<p>6.5 Prop 19 in California. In a 2010 Survey USA poll, 70% of the 119 respondents between the ages of 18 and 34 said they would vote in the 2010 general election for Prop 19, which would change California law to legalize marijuana and allow it to be regulated and taxed. At a 95% confidence level, this sample has an 8% margin of error. Based on this information, determine if the following statements are true or false, and explain your reasoning.38 (a) We are 95% confident that between 62% and 78% of the California voters in this sample support Prop 19. (b) We are 95% confident that between 62% and 78% of all California voters between the ages of 18 and 34 support Prop 19. (c) If we considered many random samples of 119 California voters between the ages of 18 and 34, and we calculated 95% confidence intervals for each, 95% of them will include the true population proportion of 18-34 year old Californians who support Prop 19. (d) In order to decrease the margin of error to 4%, we would need to quadruple (multiply by 4) the sample size. (e) Based on this confidence interval, there is sucient evidence to conclude that a majority of California voters between the ages of 18 and 34 support Prop 19.</p>
-<p>6.6 2010 Healthcare Law. On June 28, 2012 the U.S. Supreme Court upheld the much debated 2010 healthcare law, declaring it constitutional. A Gallup poll released the day after this decision indicates that 46% of 1,012 Americans agree with this decision. At a 95% confidence level, this sample has a 3% margin of error. Based on this information, determine if the following statements are true or false, and explain your reasoning.39 (a) We are 95% confident that between 43% and 49% of Americans in this sample support the decision of the U.S. Supreme Court on the 2010 healthcare law. (b) We are 95% confident that between 43% and 49% of Americans support the decision of the U.S. Supreme Court on the 2010 healthcare law. (c) If we considered many random samples of 1,012 Americans, and we calculated the sample proportions of those who support the decision of the U.S. Supreme Court, 95% of those sample proportions will be between 43% and 49%. (d) The margin of error at a 90% confidence level would be higher than 3%</p>
-<p>6.11 Study abroad. A survey on 1,509 high school seniors who took the SAT and who completed an optional web survey between April 25 and April 30, 2007 shows that 55% of high school seniors are fairly certain that they will participate in a study abroad program in college.43 (a) Is this sample a representative sample from the population of all high school seniors in the US? Explain your reasoning. (b) Let’s suppose the conditions for inference are met. Even if your answer to part (a) indicated that this approach would not be reliable, this analysis may still be interesting to carry out (though not report). Construct a 90% confidence interval for the proportion of high school seniors (of those who took the SAT) who are fairly certain they will participate in a study abroad program in college, and interpret this interval in context. (c) What does “90% confidence” mean? (d) Based on this interval, would it be appropriate to claim that the majority of high school seniors are fairly certain that they will participate in a study abroad program in college? 42Gallup World, More Than One in 10 “Suffering” Worldwide, data collected throughout 2011. 43studentPOLL, College-Bound Students’ Interests in Study Abroad and Other International Learning Activities, January 2008.</p>
-<p>6.12 Legalization of marijuana, Part I. The 2010 General Social Survey asked 1,259 US residents: “Do you think the use of marijuana should be made legal, or not?” 48% of the respondents said it should be made legal.44 (a) Is 48% a sample statistic or a population parameter? Explain. (b) Construct a 95% confidence interval for the proportion of US residents who think marijuana should be made legal, and interpret it in the context of the data. (c) A critic points out that this 95% confidence interval is only accurate if the statistic follows a normal distribution, or if the normal model is a good approximation. Is this true for these data? Explain. (d) A news piece on this survey’s findings states, “Majority of Americans think marijuana should be legalized.” Based on your confidence interval, is this news piece’s statement justified? 6.13 Public option, Part I. A Washington Post article from 2009 reported that “support for a government-run health-care plan to compete with private insurers has rebounded from its summertime lows and wins clear majority support from the public.” More specifically, the article says “seven in 10 Democrats back the plan, while almost nine in 10 Republicans oppose it. Independents divide 52 percent against, 42 percent in favor of the legislation.” (6% responded with “other”.) There were 819 Democrats, 566 Republicans and 783 Independents surveyed.45 (a) A political pundit on TV claims that a majority of Independents oppose the health care public option plan. Do these data provide strong evidence to support this statement? (b) Would you expect a confidence interval for the proportion of Independents who oppose the public option plan to include 0.5? Explain.</p>
-<p>6.19 College smokers. We are interested in estimating the proportion of students at a university who smoke. Out of a random sample of 200 students from this university, 40 students smoke. (a) Calculate a 95% confidence interval for the proportion of students at this university who smoke, and interpret this interval in context. (Reminder: Check conditions.) (b) If we wanted the margin of error to be no larger than 2% at a 95% confidence level for the proportion of students who smoke, how big of a sample would we need?</p>
-<p>6.20 Legalize Marijuana, Part II. As discussed in Exercise 6.12, the 2010 General Social Survey reported a sample where about 48% of US residents thought marijuana should be made legal. If we wanted to limit the margin of error of a 95% confidence interval to 2%, about how many Americans would we need to survey ?</p>
-<p>6.27 Public Option, Part III. Exercise 6.13 presents the results of a poll evaluating support for the health care public option plan in 2009. 70% of 819 Democrats and 42% of 783 Independents support the public option. (a) Calculate a 95% confidence interval for the difference between (pD pI ) and interpret it in this context. We have already checked conditions for you. (b) True or false: If we had picked a random Democrat and a random Independent at the time of this poll, it is more likely that the Democrat would support the public option than the Independent.</p>
-<p>6.28 Sleep deprivation, CA vs. OR, Part I. According to a report on sleep deprivation by the Centers for Disease Control and Prevention, the proportion of California residents who reported insucient rest or sleep during each of the preceding 30 days is 8.0%, while this proportion is 8.8% for Oregon residents. These data are based on simple random samples of 11,545 California and 4,691 Oregon residents. Calculate a 95% confidence interval for the difference between the proportions of Californians and Oregonians who are sleep deprived and interpret it in context of the data.53</p>
-<p>6.43 Rock-paper-scissors. Rock-paper-scissors is a hand game played by two or more people where players choose to sign either rock, paper, or scissors with their hands. For your statistics class project, you want to evaluate whether players choose between these three options randomly, or if certain options are favored above others. You ask two friends to play rock-paper-scissors and count the times each option is played. The following table summarizes the data: Rock Paper Scissors 43 21 35 Use these data to evaluate whether players choose between these three options randomly, or if certain options are favored above others. Make sure to clearly outline each step of your analysis, and interpret your results in context of the data and the research question.</p>
-<p>6.44 Barking deer. Microhabitat factors associated with forage and bed sites of barking deer in Hainan Island, China were examined from 2001 to 2002. In this region woods make up 4.8% of the land, cultivated grass plot makes up 14.7%, and deciduous forests makes up 39.6%. Of the 426 sites where the deer forage, 4 were categorized as woods, 16 as cultivated grassplot, and 61 as deciduous forests. The table below summarizes these data.62 Woods Cultivated grassplot Deciduous forests Other Total 4 16 61 345 426 (a) Write the hypotheses for testing if barking deer prefer to forage in certain habitats over others. (b) What type of test can we use to answer this research question? (c) Check if the assumptions and conditions required for this test are satisfied. (d) Do these data provide convincing evidence that barking deer prefer to forage in certain habitats over others? Conduct an appropriate hypothesis test to answer this research question.</p>
-<p>6.47 Offshore drilling, Part III. The table below summarizes a data set we first encountered in Exercise 6.29 that examines the responses of a random sample of college graduates and nongraduates on the topic of oil drilling. Complete a chi-square test for these data to check whether there is a statistically significant difference in responses from college graduates and non-graduates. College Grad Yes No Support 154 132 Oppose 180 126 Do not know 104 131 Total 438 389</p>
-<p>6.48 Coffee and Depression. Researchers conducted a study investigating the relationship between caffeinated coffee consumption and risk of depression in women. They collected data on 50,739 women free of depression symptoms at the start of the study in the year 1996, and these women were followed through 2006. The researchers used questionnaires to collect data on caffeinated coffee consumption, asked each individual about physician-diagnosed depression, and also asked about the use of antidepressants. The table below shows the distribution of incidences of depression by amount of caffeinated coffee consumption.63 Caffeinated coffee consumption ??? 1 2-6 1 2-3 4 cup/week cups/week cup/day cups/day cups/day Total Clinical Yes 670 373 905 564 95 2,607 depression No 11,545 6,244 16,329 11,726 2,288 48,132 Total 12,215 6,617 17,234 12,290 2,383 50,739 (a) What type of test is appropriate for evaluating if there is an association between coffee intake and depression? (b) Write the hypotheses for the test you identified in part (a). (c) Calculate the overall proportion of women who do and do not suffer from depression. (d) Identify the expected count for the highlighted cell, and calculate the contribution of this cell to the test statistic, i.e. (Observed Expected) 2/Expected. (e) The test statistic is 2 = 20.93. What is the p-value? (f) What is the conclusion of the hypothesis test? (g) One of the authors of this study was quoted on the NYTimes as saying it was “too early to recommend that women load up on extra coffee” based on just this study.64 Do you agree with this statement? Explain your reasoning.</p>
+<p>Practice: 6.5, 6.11, 6.27, 6.43, 6.47</p>
+<p>Graded: 6.6, 6.12, 6.20, 6.28, 6.44, 6.48</p>
+<div id="healthcare-law." class="section level4">
+<h4>6.6 2010 Healthcare Law.</h4>
+<p>On June 28, 2012 the U.S. Supreme Court upheld the much debated 2010 healthcare law, declaring it constitutional. A Gallup poll released the day after this decision indicates that 46% of 1,012 Americans agree with this decision. At a 95% confidence level, this sample has a 3% margin of error. Based on this information, determine if the following statements are true or false, and explain your reasoning.</p>
+<ol style="list-style-type: lower-alpha">
+<li>We are 95% confident that between 43% and 49% of Americans in this sample support the decision of the U.S. Supreme Court on the 2010 healthcare law.</li>
+</ol>
+<p><strong>False. A CI is constructed to estimate the population proportion.</strong></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>We are 95% confident that between 43% and 49% of Americans support the decision of the U.S. Supreme Court on the 2010 healthcare law.</li>
+</ol>
+<p><strong>True. This is a correct interpretation of a CI with a 3% ME.</strong></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>If we considered many random samples of 1,012 Americans, and we calculated the sample proportions of those who support the decision of the U.S. Supreme Court, 95% of those sample proportions will be between 43% and 49%.</li>
+</ol>
+<p><strong>False. 95% of the CIs will contain the population proportion.</strong></p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>The margin of error at a 90% confidence level would be higher than 3%</li>
+</ol>
+<p><strong>False. For a 90% CI, the critical value descreases from 1.96 to 1.64. If the SE remains the same, this will decrease the ME.</strong></p>
+</div>
+<div id="legalization-of-marijuana-part-i." class="section level4">
+<h4>6.12 Legalization of marijuana, Part I.</h4>
+<p>The 2010 General Social Survey asked 1,259 US residents: “Do you think the use of marijuana should be made legal, or not?” 48% of the respondents said it should be made legal.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Is 48% a sample statistic or a population parameter? Explain.</li>
+</ol>
+<p><strong>Since it is the result of a survey, 48% is a sample statistic.</strong></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Construct a 95% confidence interval for the proportion of US residents who think marijuana should be made legal, and interpret it in the context of the data.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
+n &lt;-<span class="st"> </span><span class="dv">1259</span>
+p_hat &lt;-<span class="st"> </span><span class="fl">0.48</span>
+cL &lt;-<span class="st"> </span><span class="fl">0.95</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>cL)/<span class="dv">2</span>))
+
+<span class="co"># calculations</span>
+se &lt;-<span class="st"> </span><span class="kw">sqrt</span>(p_hat *<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span>p_hat)/n)
+me &lt;-<span class="st"> </span>se *<span class="st"> </span>cv
+
+<span class="co"># CI values</span>
+p_hat +<span class="st"> </span>me</code></pre></div>
+<pre><code>## [1] 0.5075967</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_hat -<span class="st"> </span>me</code></pre></div>
+<pre><code>## [1] 0.4524033</code></pre>
+<p><strong>We are 95% confident that between 45% and 51% of US residents think that marijuana should be legal.</strong></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>A critic points out that this 95% confidence interval is only accurate if the statistic follows a normal distribution, or if the normal model is a good approximation. Is this true for these data? Explain.</li>
+</ol>
+<p><strong>Yes. It is true if observations are indedendent, which is a reasonable assumption given the organization. Also, the sample size is sufficiently large since there are more than 10 successes and failures.</strong></p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>A news piece on this survey’s findings states, “Majority of Americans think marijuana should be legalized.” Based on your confidence interval, is this news piece’s statement justified?</li>
+</ol>
+<p><strong>No, most of the confidence interval is below 50%.</strong></p>
+</div>
+<div id="legalize-marijuana-part-ii." class="section level4">
+<h4>6.20 Legalize Marijuana, Part II.</h4>
+<p>As discussed in Exercise 6.12, the 2010 General Social Survey reported a sample where about 48% of US residents thought marijuana should be made legal. If we wanted to limit the margin of error of a 95% confidence interval to 2%, about how many Americans would we need to survey?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">max_me &lt;-<span class="st"> </span><span class="fl">0.02</span>
+cL &lt;-<span class="st"> </span><span class="fl">0.95</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>cL)/<span class="dv">2</span>))
+max_p_hat &lt;-<span class="st"> </span><span class="fl">0.48</span>
+
+se &lt;-<span class="st"> </span>max_me/cv
+n &lt;-<span class="st"> </span>max_p_hat *<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span>max_p_hat)/se^<span class="dv">2</span>
+<span class="kw">ceiling</span>(n)</code></pre></div>
+<pre><code>## [1] 2398</code></pre>
+</div>
+<div id="sleep-deprivation-ca-vs.or-part-i." class="section level4">
+<h4>6.28 Sleep deprivation, CA vs. OR, Part I.</h4>
+<p>According to a report on sleep deprivation by the Centers for Disease Control and Prevention, the proportion of California residents who reported insufficient rest or sleep during each of the preceding 30 days is 8.0%, while this proportion is 8.8% for Oregon residents. These data are based on simple random samples of 11,545 California and 4,691 Oregon residents. Calculate a 95% confidence interval for the difference between the proportions of Californians and Oregonians who are sleep deprived and interpret it in context of the data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
+n1 &lt;-<span class="st"> </span><span class="dv">11545</span>
+n2 &lt;-<span class="st"> </span><span class="dv">4691</span>
+p_hat1 &lt;-<span class="st"> </span><span class="fl">0.08</span>
+p_hat2 &lt;-<span class="st"> </span><span class="fl">0.088</span>
+cL &lt;-<span class="st"> </span><span class="fl">0.95</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>cL)/<span class="dv">2</span>))
+
+<span class="co"># calculations</span>
+p_hat_diff &lt;-<span class="st"> </span>p_hat1 -<span class="st"> </span>p_hat2
+
+se &lt;-<span class="st"> </span><span class="kw">sqrt</span>(p_hat1 *<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span>p_hat1)/n1 +<span class="st"> </span>p_hat2 *<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span>p_hat2)/n2)
+me &lt;-<span class="st"> </span>se *<span class="st"> </span>cv
+
+<span class="co"># CI values</span>
+p_hat_diff</code></pre></div>
+<pre><code>## [1] -0.008</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CI &lt;-<span class="st"> </span><span class="kw">c</span>(p_hat_diff -<span class="st"> </span>me, p_hat_diff +<span class="st"> </span>me)
+CI</code></pre></div>
+<pre><code>## [1] -0.017497954  0.001497954</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;We are 95% confident that the proportion of Californians who reported being sleep deprived is between 1.7% less than and 0.1% more than Oregon residents who reported the same.&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;We are 95% confident that the proportion of Californians who reported being sleep deprived is between 1.7% less than and 0.1% more than Oregon residents who reported the same.&quot;</code></pre>
+</div>
+<div id="barking-deer." class="section level4">
+<h4>6.44 Barking deer.</h4>
+<p>Microhabitat factors associated with forage and bed sites of barking deer in Hainan Island, China were examined from 2001 to 2002.</p>
+<p>In this region woods make up 4.8% of the land, cultivated grass plot makes up 14.7%, and deciduous forests makes up 39.6%. Of the 426 sites where the deer forage, 4 were categorized as woods, 16 as cultivated grassplot, and 61 as deciduous forests. The table below summarizes these data.</p>
+<p>Woods Cultivated grassplot Deciduous forests Other Total 4 16 61 345 426</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Write the hypotheses for testing if barking deer prefer to forage in certain habitats over others. <span class="math inline">\(H_{0}:\)</span> The barking deer have no preference in certain habitats. The observed counts refect natural sampling fluctuation. <span class="math inline">\(H_{A}:\)</span> The barking deer prefer certain habitats over others.</p></li>
+<li><p>What type of test can we use to answer this research question?</p></li>
+</ol>
+<p><strong>a chi-squared goodness of fitness test</strong></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Check if the assumptions and conditions required for this test are satisfied.</li>
+</ol>
+<p><strong>We must assumed that the researchers attempted to collect cases that were independent of each other.</strong> <strong>Each scenario has at least 5 expected cases.</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">point_estimates &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">16</span>, <span class="dv">61</span>, <span class="dv">345</span>)
+p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.048</span>, <span class="fl">0.147</span>, <span class="fl">0.396</span>)
+p &lt;-<span class="st"> </span><span class="kw">c</span>(p, <span class="dv">1</span> -<span class="st"> </span><span class="kw">sum</span>(p))
+EC &lt;-<span class="st"> </span>p *<span class="st"> </span><span class="kw">sum</span>(point_estimates)
+EC</code></pre></div>
+<pre><code>## [1]  20.448  62.622 168.696 174.234</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">EC &gt;=<span class="st"> </span><span class="dv">5</span></code></pre></div>
+<pre><code>## [1] TRUE TRUE TRUE TRUE</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Do these data provide convincing evidence that barking deer prefer to forage in certain habitats over others? Conduct an appropriate hypothesis test to answer this research question.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># manual chi-squared calc</span>
+habitat &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Woods&quot;</span>, <span class="st">&quot;Cultivated grassplot&quot;</span>, <span class="st">&quot;Deciduous forests&quot;</span>, <span class="st">&quot;Other&quot;</span>)
+
+my_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(habitat, point_estimates, p, <span class="dt">expected_cases =</span> EC, <span class="dt">zvalues =</span> (point_estimates -<span class="st"> </span>
+<span class="st">    </span>EC)/<span class="kw">sqrt</span>(EC))
+
+<span class="kw">kable</span>(my_df)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">habitat</th>
+<th align="right">point_estimates</th>
+<th align="right">p</th>
+<th align="right">expected_cases</th>
+<th align="right">zvalues</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Woods</td>
+<td align="right">4</td>
+<td align="right">0.048</td>
+<td align="right">20.448</td>
+<td align="right">-3.637372</td>
+</tr>
+<tr class="even">
+<td align="left">Cultivated grassplot</td>
+<td align="right">16</td>
+<td align="right">0.147</td>
+<td align="right">62.622</td>
+<td align="right">-5.891521</td>
+</tr>
+<tr class="odd">
+<td align="left">Deciduous forests</td>
+<td align="right">61</td>
+<td align="right">0.396</td>
+<td align="right">168.696</td>
+<td align="right">-8.291769</td>
+</tr>
+<tr class="even">
+<td align="left">Other</td>
+<td align="right">345</td>
+<td align="right">0.409</td>
+<td align="right">174.234</td>
+<td align="right">12.937041</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xsq &lt;-<span class="st"> </span><span class="kw">sum</span>(my_df$zvalues^<span class="dv">2</span>)
+
+<span class="kw">paste</span>(<span class="st">&quot;chi-squared test statistic:&quot;</span>, <span class="kw">round</span>(xsq, <span class="dv">2</span>))</code></pre></div>
+<pre><code>## [1] &quot;chi-squared test statistic: 284.06&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># using r function</span>
+a &lt;-<span class="st"> </span><span class="kw">chisq.test</span>(point_estimates, <span class="dt">p =</span> p)
+a</code></pre></div>
+<pre><code>## 
+##  Chi-squared test for given probabilities
+## 
+## data:  point_estimates
+## X-squared = 284.06, df = 3, p-value &lt; 2.2e-16</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a$p.value</code></pre></div>
+<pre><code>## [1] 2.799724e-61</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;Since the p-value is near 0, we reject the null hypothesis that the barking deer have no habitat preferences.&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;Since the p-value is near 0, we reject the null hypothesis that the barking deer have no habitat preferences.&quot;</code></pre>
+</div>
+<div id="coffee-and-depression." class="section level4">
+<h4>6.48 Coffee and Depression.</h4>
+<p>Researchers conducted a study investigating the relationship between caffeinated coffee consumption and risk of depression in women. They collected data on 50,739 women free of depression symptoms at the start of the study in the year 1996, and these women were followed through 2006. The researchers used questionnaires to collect data on caffeinated coffee consumption, asked each individual about physician-diagnosed depression, and also asked about the use of antidepressants. The table below shows the distribution of incidences of depression by amount of caffeinated coffee consumption.</p>
+<ol style="list-style-type: lower-alpha">
+<li>What type of test is appropriate for evaluating if there is an association between coffee intake and depression?</li>
+</ol>
+<p><strong>Since this is a bivariate contigency table, we will use the chi-square test of independence.</strong></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Write the hypotheses for the test you identified in part (a).</li>
+</ol>
+<p><span class="math inline">\(H_{0}:\)</span> The amount of coffee consumed has no difference in the incidences of depression. <span class="math inline">\(H_{A}:\)</span> The amount of coffee consumed has differences in the incidences of depression.</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Calculate the overall proportion of women who do and do not suffer from depression.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create matrix</span>
+values &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">670</span>, <span class="dv">373</span>, <span class="dv">905</span>, <span class="dv">564</span>, <span class="dv">95</span>, <span class="dv">11545</span>, <span class="dv">6244</span>, <span class="dv">16329</span>, <span class="dv">11726</span>, <span class="dv">2288</span>)
+coldims &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;&lt;1 cup/week&quot;</span>, <span class="st">&quot;2-6  cups/week&quot;</span>, <span class="st">&quot;1 cup/day&quot;</span>, <span class="st">&quot;2-3 cups/day&quot;</span>, <span class="st">&quot;&gt;= 4 cups/day&quot;</span>)
+rowdims &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Depression&quot;</span>, <span class="st">&quot;nDepression&quot;</span>)
+mdims &lt;-<span class="st"> </span><span class="kw">list</span>(rowdims, coldims)
+
+my_matrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(values, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>, <span class="dt">dimnames =</span> mdims)
+
+
+
+<span class="kw">sum</span>(my_matrix[<span class="dv">1</span>, ])/<span class="kw">sum</span>(my_matrix)</code></pre></div>
+<pre><code>## [1] 0.05138059</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(my_matrix[<span class="dv">2</span>, ])/<span class="kw">sum</span>(my_matrix)</code></pre></div>
+<pre><code>## [1] 0.9486194</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Identify the expected count for the highlighted cell, and calculate the contribution of this cell to the test statistic, i.e. (Observed - Expected)^2/Expected.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_value &lt;-<span class="st"> </span>my_matrix[<span class="dv">1</span>, <span class="dv">2</span>]
+EV &lt;-<span class="st"> </span><span class="kw">sum</span>(my_matrix[, <span class="dv">2</span>]) *<span class="st"> </span><span class="kw">sum</span>(my_matrix[<span class="dv">1</span>, ])/<span class="kw">sum</span>(my_matrix)
+
+(obs_value -<span class="st"> </span>EV)^<span class="dv">2</span>/EV</code></pre></div>
+<pre><code>## [1] 3.205914</code></pre>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>The test statistic is x^2 = 20.93. What is the p-value?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_chisq_test &lt;-<span class="st"> </span><span class="kw">chisq.test</span>(my_matrix)
+my_chisq_test$p.value</code></pre></div>
+<pre><code>## [1] 0.0003267104</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># my_matrix my_chisq_test$expected</span></code></pre></div>
+<ol start="6" style="list-style-type: lower-alpha">
+<li>What is the conclusion of the hypothesis test?</li>
+</ol>
+<p><strong>Because we have a tiny p-value, we will reject the null hypothesis that there is no difference</strong></p>
+<ol start="7" style="list-style-type: lower-alpha">
+<li>One of the authors of this study was quoted on the NYTimes as saying it was “too early to recommend that women load up on extra coffee” based on just this study. Do you agree with this statement? Explain your reasoning.</li>
+</ol>
+<p><strong>I agree with this statement for a few reasons</strong></p>
+<ul>
+<li><p>Because the researchers didn’t randomly assign the women into the treatment groups, the results of the study are generializiable to the population, but can only infer correlation and not causality. There may be a confounding variable not addressed in the study.</p></li>
+<li><p>There may be other negative side affects to increasing coffee consumption, and there may be more effective ways to prevent depression, like exercise.</p></li>
+</ul>
+</div>
 </div>
 <div id="practice" class="section level1">
 <h1>Practice</h1>
 <div id="working-backwards-part-i." class="section level4">
 <h4>5.5 Working backwards, Part I.</h4>
 <p>A 95% confidence interval for a population mean, µ, is given as (18.985, 21.015). This confidence interval is based on a simple random sample of 36 observations. Calculate the sample mean and standard deviation. Assume that all conditions necessary for inference are satisfied. Use the t-distribution in any calculations.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#givens</span>
-ci &lt;-<span class="st"> </span>.<span class="dv">95</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
+ci &lt;-<span class="st"> </span><span class="fl">0.95</span>
 ci_values &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">18.985</span>, <span class="fl">21.015</span>)
 n &lt;-<span class="st"> </span><span class="dv">36</span>
 
-<span class="co">#calcs</span>
-me &lt;-<span class="st"> </span>(ci_values[<span class="dv">2</span>] -<span class="st"> </span>ci_values[<span class="dv">1</span>]) /<span class="st"> </span><span class="dv">2</span>
+<span class="co"># calcs</span>
+me &lt;-<span class="st"> </span>(ci_values[<span class="dv">2</span>] -<span class="st"> </span>ci_values[<span class="dv">1</span>])/<span class="dv">2</span>
 xbar &lt;-<span class="st"> </span>ci_values[<span class="dv">1</span>] +<span class="st"> </span>me
-cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>((<span class="dv">1</span> -<span class="st"> </span>ci) /<span class="st"> </span><span class="dv">2</span>, n -<span class="st"> </span><span class="dv">1</span>))
-se &lt;-<span class="st"> </span>me /<span class="st"> </span>cv
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qt</span>((<span class="dv">1</span> -<span class="st"> </span>ci)/<span class="dv">2</span>, n -<span class="st"> </span><span class="dv">1</span>))
+se &lt;-<span class="st"> </span>me/cv
 s &lt;-<span class="st"> </span>se *<span class="st"> </span><span class="kw">sqrt</span>(n)
 
 xbar</code></pre></div>
@@ -439,15 +670,15 @@ xbar</code></pre></div>
 <div id="car-insurance-savings." class="section level4">
 <h4>5.13 Car insurance savings.</h4>
 <p>A market researcher wants to evaluate car insurance savings at a competing company. Based on past studies he is assuming that the standard deviation of savings is $100. He wants to collect data such that he can get a margin of error of no more than $10 at a 95% confidence level. How large of a sample should he collect?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#givens</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
 sigma &lt;-<span class="st"> </span><span class="dv">100</span>
-ci &lt;-<span class="st"> </span>.<span class="dv">95</span>
+ci &lt;-<span class="st"> </span><span class="fl">0.95</span>
 me &lt;-<span class="st"> </span><span class="dv">10</span>
 
-<span class="co">#calcs</span>
-cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>ci) /<span class="st"> </span><span class="dv">2</span>))
-se &lt;-<span class="st"> </span>me /<span class="st"> </span>cv
-n &lt;-<span class="st"> </span>(sigma /<span class="st"> </span>se) ^<span class="st"> </span><span class="dv">2</span>
+<span class="co"># calcs</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>ci)/<span class="dv">2</span>))
+se &lt;-<span class="st"> </span>me/cv
+n &lt;-<span class="st"> </span>(sigma/se)^<span class="dv">2</span>
 
 <span class="kw">ceiling</span>(n)</code></pre></div>
 <pre><code>## [1] 385</code></pre>
@@ -464,8 +695,8 @@ n &lt;-<span class="st"> </span>(sigma /<span class="st"> </span>se) ^<span clas
 xbar &lt;-<span class="st"> </span><span class="fl">1.1</span>
 n &lt;-<span class="st"> </span><span class="dv">51</span>
 df &lt;-<span class="st"> </span>n -<span class="st"> </span><span class="dv">1</span>
-se &lt;-<span class="st"> </span>s /<span class="st"> </span><span class="kw">sqrt</span>(n)
-t_score &lt;-<span class="st"> </span>(xbar -<span class="st"> </span><span class="dv">0</span>) /<span class="st"> </span>se
+se &lt;-<span class="st"> </span>s/<span class="kw">sqrt</span>(n)
+t_score &lt;-<span class="st"> </span>(xbar -<span class="st"> </span><span class="dv">0</span>)/se
 
 <span class="kw">pt</span>(t_score, df, <span class="dt">lower.tail =</span> F)</code></pre></div>
 <pre><code>## [1] 0.05759731</code></pre>
@@ -485,7 +716,7 @@ t_score &lt;-<span class="st"> </span>(xbar -<span class="st"> </span><span clas
 <li><p>Describe the distributions of weights of chickens that were fed linseed and horsebean. <strong>The horsebean distribution has a much lower median, lower IQR, and narrower IQR than the linseed distribution, which has a much higher median, higher IQR and wider IQR. The IQRs do not overlap.</strong></p></li>
 <li><p>Do these data provide strong evidence that the average weights of chickens that were fed linseed and horsebean are different? Use a 5% significance level.</p></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#givens</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
 n1 &lt;-<span class="st"> </span><span class="dv">10</span>
 n2 &lt;-<span class="st"> </span><span class="dv">12</span>
 xbar1 &lt;-<span class="st"> </span><span class="fl">160.2</span>
@@ -493,16 +724,16 @@ xbar2 &lt;-<span class="st"> </span><span class="fl">218.75</span>
 xbar_diff &lt;-<span class="st"> </span>xbar2 -<span class="st"> </span>xbar1
 s1 &lt;-<span class="st"> </span><span class="fl">38.63</span>
 s2 &lt;-<span class="st"> </span><span class="fl">52.24</span>
-sign_level &lt;-<span class="st"> </span>.<span class="dv">05</span>
+sign_level &lt;-<span class="st"> </span><span class="fl">0.05</span>
 null_hyp &lt;-<span class="st"> </span><span class="dv">0</span>
 
-<span class="co">#calculations</span>
+<span class="co"># calculations</span>
 se_diff &lt;-<span class="st"> </span><span class="kw">sqrt</span>(s1^<span class="dv">2</span>/n1 +<span class="st"> </span>s2^<span class="dv">2</span>/n2)
 df_diff &lt;-<span class="st"> </span><span class="kw">min</span>(n1, n2) -<span class="st"> </span><span class="dv">1</span>
-t_score &lt;-<span class="st"> </span>(xbar_diff -<span class="st"> </span>null_hyp) /<span class="st"> </span>se_diff
+t_score &lt;-<span class="st"> </span>(xbar_diff -<span class="st"> </span>null_hyp)/se_diff
 pvalue &lt;-<span class="st"> </span><span class="kw">pt</span>(t_score, df_diff, <span class="dt">lower.tail =</span> F) *<span class="st"> </span><span class="dv">2</span>
 
-<span class="co">#conclusions</span>
+<span class="co"># conclusions</span>
 <span class="kw">paste</span>(<span class="st">&quot;p-value = &quot;</span>, pvalue)</code></pre></div>
 <pre><code>## [1] &quot;p-value =  0.0145523176477712&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ifelse</span>(pvalue &lt;<span class="st"> </span>sign_level, <span class="st">&quot;Reject the null hypothesis&quot;</span>, <span class="st">&quot;Fail to reject the null hypothesis&quot;</span>)</code></pre></div>
@@ -511,6 +742,164 @@ pvalue &lt;-<span class="st"> </span><span class="kw">pt</span>(t_score, df_diff
 <li>What type of error might we have committed? Explain. <strong>Type 1</strong></li>
 <li>Would your conclusion change if we used <span class="math inline">\(\alpha\)</span> = 0.01? <strong>yes</strong></li>
 </ol>
+</div>
+<div id="prop-19-in-california." class="section level4">
+<h4>6.5 Prop 19 in California.</h4>
+<p>In a 2010 Survey USA poll, 70% of the 119 respondents between the ages of 18 and 34 said they would vote in the 2010 general election for Prop 19, which would change California law to legalize marijuana and allow it to be regulated and taxed. At a 95% confidence level, this sample has an 8% margin of error. Based on this information, determine if the following statements are true or false, and explain your reasoning.</p>
+<ol style="list-style-type: lower-alpha">
+<li>We are 95% confident that between 62% and 78% of the California voters in this sample support Prop 19.</li>
+</ol>
+<p><strong>False. A CI is constructed to estimate the population proportion.</strong></p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>We are 95% confident that between 62% and 78% of all California voters between the ages of 18 and 34 support Prop 19.</li>
+</ol>
+<p><strong>True</strong></p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>If we considered many random samples of 119 California voters between the ages of 18 and 34, and we calculated 95% confidence intervals for each, 95% of them will include the true population proportion of 18-34 year old Californians who support Prop 19.</li>
+</ol>
+<p><strong>True, that is a correct interpretation of the CI.</strong></p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>In order to decrease the margin of error to 4%, we would need to quadruple (multiply by 4) the sample size. <strong>False. Assuming the same .7 proportion, we would need to more than quadruple it to 505.</strong></li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">max_me &lt;-<span class="st"> </span><span class="fl">0.04</span>
+cL &lt;-<span class="st"> </span><span class="fl">0.95</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>cL)/<span class="dv">2</span>))
+max_p_hat &lt;-<span class="st"> </span><span class="fl">0.7</span>
+
+se &lt;-<span class="st"> </span>max_me/cv
+n &lt;-<span class="st"> </span>max_p_hat *<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span>max_p_hat)/se^<span class="dv">2</span>
+<span class="kw">ceiling</span>(n)</code></pre></div>
+<pre><code>## [1] 505</code></pre>
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Based on this confidence interval, there is sufficient evidence to conclude that a majority of California voters between the ages of 18 and 34 support Prop 19. <strong>True</strong> ####6.11 Study abroad.</li>
+</ol>
+<p>A survey on 1,509 high school seniors who took the SAT and who completed an optional web survey between April 25 and April 30, 2007 shows that 55% of high school seniors are fairly certain that they will participate in a study abroad program in college.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Is this sample a representative sample from the population of all high school seniors in the US? Explain your reasoning. <strong>No</strong></p></li>
+<li><p>Let’s suppose the conditions for inference are met. Even if your answer to part (a) indicated that this approach would not be reliable, this analysis may still be interesting to carry out (though not report). Construct a 90% confidence interval for the proportion of high school seniors (of those who took the SAT) who are fairly certain they will participate in a study abroad program in college, and interpret this interval in context.</p></li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="dv">1509</span>
+p_hat &lt;-<span class="st"> </span><span class="fl">0.55</span>
+cL &lt;-<span class="st"> </span><span class="fl">0.9</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>cL)/<span class="dv">2</span>))
+
+se &lt;-<span class="st"> </span><span class="kw">sqrt</span>(p_hat *<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span>p_hat)/n)
+me &lt;-<span class="st"> </span>se *<span class="st"> </span>cv
+
+p_hat +<span class="st"> </span>me</code></pre></div>
+<pre><code>## [1] 0.5710654</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_hat -<span class="st"> </span>me</code></pre></div>
+<pre><code>## [1] 0.5289346</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li><p>What does “90% confidence” mean? <strong>We are 90% confident that the population proportion is within the confidence interval.</strong></p></li>
+<li><p>Based on this interval, would it be appropriate to claim that the majority of high school seniors are fairly certain that they will participate in a study abroad program in college?</p></li>
+</ol>
+<p><strong>If we assume the conditions for inference are met, yes.</strong></p>
+</div>
+<div id="college-smokers." class="section level4">
+<h4>6.19 College smokers.</h4>
+<p>We are interested in estimating the proportion of students at a university who smoke. Out of a random sample of 200 students from this university, 40 students smoke.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Calculate a 95% confidence interval for the proportion of students at this university who smoke, and interpret this interval in context. (Reminder: Check conditions.)</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
+n &lt;-<span class="st"> </span><span class="dv">200</span>
+p_hat &lt;-<span class="st"> </span><span class="fl">0.2</span>
+cL &lt;-<span class="st"> </span><span class="fl">0.95</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>cL)/<span class="dv">2</span>))
+
+<span class="co"># calculations</span>
+se &lt;-<span class="st"> </span><span class="kw">sqrt</span>(p_hat *<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span>p_hat)/n)
+me &lt;-<span class="st"> </span>se *<span class="st"> </span>cv
+
+<span class="co"># CI values</span>
+p_hat +<span class="st"> </span>me</code></pre></div>
+<pre><code>## [1] 0.2554362</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_hat -<span class="st"> </span>me</code></pre></div>
+<pre><code>## [1] 0.1445638</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>If we wanted the margin of error to be no larger than 2% at a 95% confidence level for the proportion of students who smoke, how big of a sample would we need?</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">max_me &lt;-<span class="st"> </span><span class="fl">0.02</span>
+cL &lt;-<span class="st"> </span><span class="fl">0.95</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>cL)/<span class="dv">2</span>))
+max_p_hat &lt;-<span class="st"> </span><span class="fl">0.2</span>
+
+se &lt;-<span class="st"> </span>max_me/cv
+n &lt;-<span class="st"> </span>max_p_hat *<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span>max_p_hat)/se^<span class="dv">2</span>
+<span class="kw">ceiling</span>(n)</code></pre></div>
+<pre><code>## [1] 1537</code></pre>
+</div>
+<div id="public-option-part-iii." class="section level4">
+<h4>6.27 Public Option, Part III.</h4>
+<p>Exercise 6.13 presents the results of a poll evaluating support for the health care public option plan in 2009. 70% of 819 Democrats and 42% of 783 Independents support the public option.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Calculate a 95% confidence interval for the difference between (pD pI ) and interpret it in this context. We have already checked conditions for you.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># givens</span>
+n1 &lt;-<span class="st"> </span><span class="dv">819</span>
+n2 &lt;-<span class="st"> </span><span class="dv">783</span>
+p_hat1 &lt;-<span class="st"> </span><span class="fl">0.7</span>
+p_hat2 &lt;-<span class="st"> </span><span class="fl">0.42</span>
+cL &lt;-<span class="st"> </span><span class="fl">0.95</span>
+cv &lt;-<span class="st"> </span><span class="kw">abs</span>(<span class="kw">qnorm</span>((<span class="dv">1</span> -<span class="st"> </span>cL)/<span class="dv">2</span>))
+
+<span class="co"># calculations</span>
+p_hat_diff &lt;-<span class="st"> </span>p_hat1 -<span class="st"> </span>p_hat2
+
+se &lt;-<span class="st"> </span><span class="kw">sqrt</span>(p_hat1 *<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span>p_hat1)/n1 +<span class="st"> </span>p_hat2 *<span class="st"> </span>(<span class="dv">1</span> -<span class="st"> </span>p_hat2)/n2)
+me &lt;-<span class="st"> </span>se *<span class="st"> </span>cv
+
+<span class="co"># CI values</span>
+p_hat_diff</code></pre></div>
+<pre><code>## [1] 0.28</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(p_hat_diff -<span class="st"> </span>me, p_hat_diff +<span class="st"> </span>me)</code></pre></div>
+<pre><code>## [1] 0.2333084 0.3266916</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>True or false: If we had picked a random Democrat and a random Independent at the time of this poll, it is more likely that the Democrat would support the public option than the Independent. ####6.43 Rock-paper-scissors.</li>
+</ol>
+<p>Rock-paper-scissors is a hand game played by two or more people where players choose to sign either rock, paper, or scissors with their hands. For your statistics class project, you want to evaluate whether players choose between these three options randomly, or if certain options are favored above others. You ask two friends to play rock-paper-scissors and count the times each option is played. The following table summarizes the data:</p>
+<p>Rock Paper Scissors 43 21 35</p>
+<p>Use these data to evaluate whether players choose between these three options randomly, or if certain options are favored above others. Make sure to clearly outline each step of your analysis, and interpret your results in context of the data and the research question.</p>
+<p><span class="math inline">\(H_{0}: \mu_{diff}=0\)</span> <span class="math inline">\(H_{A}: \mu_{diff}\neq0\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pe &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">43</span>, <span class="dv">21</span>, <span class="dv">35</span>)
+pe_len &lt;-<span class="st"> </span><span class="kw">length</span>(pe)
+p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="kw">sum</span>(pe)/pe_len, pe_len))
+
+my_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(pe, p, <span class="dt">z =</span> (pe -<span class="st"> </span>p)/<span class="kw">sqrt</span>(p))
+
+<span class="kw">sum</span>(my_df$z^<span class="dv">2</span>)</code></pre></div>
+<pre><code>## [1] 7.515152</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">chisq.test</span>(pe)</code></pre></div>
+<pre><code>## 
+##  Chi-squared test for given probabilities
+## 
+## data:  pe
+## X-squared = 7.5152, df = 2, p-value = 0.02334</code></pre>
+</div>
+<div id="offshore-drilling-part-iii." class="section level4">
+<h4>6.47 Offshore drilling, Part III.</h4>
+<p>The table below summarizes a data set we first encountered in Exercise 6.29 that examines the responses of a random sample of college graduates and nongraduates on the topic of oil drilling. Complete a chi-square test for these data to check whether there is a statistically significant difference in responses from college graduates and non-graduates.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">values &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">154</span>, <span class="dv">132</span>, <span class="dv">180</span>, <span class="dv">126</span>, <span class="dv">104</span>, <span class="dv">131</span>)
+rowdims &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Support&quot;</span>, <span class="st">&quot;Oppose&quot;</span>, <span class="st">&quot;Do not know&quot;</span>)
+coldims &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Grad&quot;</span>, <span class="st">&quot;nGrad&quot;</span>)
+mdims &lt;-<span class="st"> </span><span class="kw">list</span>(rowdims, coldims)
+
+
+my_matrix &lt;-<span class="st"> </span><span class="kw">matrix</span>(values, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>, <span class="dt">dimnames =</span> mdims)
+
+test &lt;-<span class="st"> </span><span class="kw">chisq.test</span>(my_matrix)
+test</code></pre></div>
+<pre><code>## 
+##  Pearson's Chi-squared test
+## 
+## data:  my_matrix
+## X-squared = 11.461, df = 2, p-value = 0.003246</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">test$expected</code></pre></div>
+<pre><code>##                 Grad    nGrad
+## Support     151.4728 134.5272
+## Oppose      162.0653 143.9347
+## Do not know 124.4619 110.5381</code></pre>
 </div>
 </div>
     </section>
