@@ -1,0 +1,150 @@
+---
+title: "D606 HW Ch07 Linear Regression"
+author: "Kyle Gilde"
+date: "April 11, 2017"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+#Chapter 7 - Introduction to Linear Regression.
+
+Practice: 7.23, 7.25, 7.29, 7.39
+Graded: 7.24, 7.26, 7.30, 7.40
+
+```{r knitr_options, echo=FALSE}
+knitr::opts_chunk$set(
+                      warning = FALSE, 
+                      error = FALSE,
+                      message = FALSE,
+                      tidy = TRUE
+                      #cache = TRUE
+                      )
+```
+
+
+#Loaded Packages
+```{r load_packages, echo = FALSE, comment = ""} 
+#create vector with all needed packages
+load_packages <- c("prettydoc", "knitr", "RCurl")
+
+#see if we need to install any of them
+install_load <- function(pkg){
+  #CODE SOURCE: https://gist.github.com/stevenworthington/3178163
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE, quietly = TRUE, warn.conflicts = FALSE)
+}
+
+#excute function and display the loaded packages
+data.frame(t(t(install_load(load_packages))), fix.empty.names = FALSE)
+```
+
+#7.23 Tourism spending. 
+The Association of Turkish Travel Agencies reports the number of
+foreign tourists visiting Turkey and tourist spending by year. Three plots are provided: scatterplot showing the relationship between these two variables along with the least squares fit, residuals
+
+(a) Describe the relationship between number of tourists and spending.
+(b) What are the explanatory and response variables?
+(c) Why might we want to fit a regression line to these data?
+(d) Do the data meet the conditions required for fitting a least squares line? In addition to the
+scatterplot, use the residual plot and histogram to answer this question.
+
+
+
+```{r }
+
+```
+
+#7.24 Nutrition at Starbucks, Part I. 
+The scatterplot below shows the relationship between
+the number of calories and amount of carbohydrates (in grams) Starbucks food menu items contain.21
+Since Starbucks only lists the number of calories on the display items, we are interested in
+predicting the amount of carbs a menu item has based on its calorie content.
+
+
+
+(a) Describe the relationship between number of calories and amount of carbohydrates (in grams)
+that Starbucks food menu items contain.
+(b) In this scenario, what are the explanatory and response variables?
+(c) Why might we want to fit a regression line to these data?
+(d) Do these data meet the conditions required for fitting a least squares line?
+
+#7.25 The Coast Starlight, Part II. 
+Exercise 7.13 introduces data on the Coast Starlight Amtrak train that runs from Seattle to Los Angeles. The mean travel time from one stop to the
+next on the Coast Starlight is 129 mins, with a standard deviation of 113 minutes. The mean distance traveled from one stop to the next is 108 miles with a standard deviation of 99 miles. The correlation between travel time and distance is 0.636.
+
+(a) Write the equation of the regression line for predicting travel time.
+(b) Interpret the slope and the intercept in this context.
+(c) Calculate R2 of the regression line for predicting travel time from distance traveled for the Coast Starlight, and interpret R2 in the context of the application.
+(d) The distance between Santa Barbara and Los Angeles is 103 miles. Use the model to estimate the time it takes for the Starlight to travel between these two cities.
+(e) It actually takes the Coast Starlight about 168 mins to travel from Santa Barbara to Los Angeles. Calculate the residual and explain the meaning of this residual value.
+
+(f) Suppose Amtrak is considering adding a stop to the Coast Starlight 500 miles away from Los Angeles. Would it be appropriate to use this linear model to predict the travel time from Los Angeles to this point?
+
+
+#7.26 Body measurements, Part III. 
+Exercise 7.15 introduces data on shoulder girth and
+height of a group of individuals. The mean shoulder girth is 107.20 cm with a standard deviation
+of 10.37 cm. The mean height is 171.14 cm with a standard deviation of 9.41 cm. The correlation between height and shoulder girth is 0.67.
+(a) Write the equation of the regression line for predicting height.
+(b) Interpret the slope and the intercept in this context.
+(c) Calculate R2 of the regression line for predicting height from shoulder girth, and interpret it in the context of the application.
+(d) A randomly selected student from your class has a shoulder girth of 100 cm. Predict the height of this student using the model.
+(e) The student from part (d) is 160 cm tall. Calculate the residual, and explain what this residual means.
+(f) A one year old has a shoulder girth of 56 cm. Would it be appropriate to use this linear model to predict the height of this child?
+
+#7.29 Murders and poverty, Part I. 
+The following regression output is for predicting annual murders per million from percentage living in poverty in a random sample of 20 metropolitan areas.
+
+```{r}
+
+```
+
+
+(a) Write out the linear model.
+(b) Interpret the intercept.
+
+(c) Interpret the slope.
+(d) Interpret R2.
+(e) Calculate the correlation coecient.
+
+
+#7.30 Cats, Part I. 
+The following regression output is for predicting the heart weight (in g) of cats
+from their body weight (in kg). The coecients
+are estimated using a dataset of 144 domestic cats.
+Estimate Std. Error t value Pr(>|t|)
+(Intercept) -0.357 0.692 -0.515 0.607
+body wt 4.034 0.250 16.119 0.000
+s = 1.452 R2 = 64.66% R2
+adj = 64.41%
+(a) Write out the linear model.
+(b) Interpret the intercept.
+(c) Interpret the slope.
+(d) Interpret R2.
+(e) Calculate the correlation coecient.
+
+#7.39 Urban homeowners, Part II.
+Exercise 7.33 gives a scatterplot displaying the relationship between the percent of families that own their home and the percent of the population living in urban areas. Below is a similar scatterplot, excluding District
+of Columbia, as well as the residuals plot. There were 51 cases.
+
+(a) For these data, R2 = 0.28. What is the correlation? How can you tell if it is positive or negative?
+(b) Examine the residual plot. What do you observe? Is a simple least squares fit appropriate for these data? 
+
+#7.40 Rate my professor. 
+Many college courses conclude by giving students the opportunity
+to evaluate the course and the instructor anonymously. However, the use of these student evaluations
+as an indicator of course quality and teaching e↵ectiveness is often criticized because these
+measures may reflect the influence of non-teaching related characteristics, such as the physical appearance
+of the instructor. Researchers at University of Texas, Austin collected data on teaching
+evaluation score (higher score means better) and standardized beauty score (a score of 0 means
+average, negative score means below average, and a positive score means above average) for a sample of 463 professors.24 The scatterplot below shows the relationship between these variables,
+and also provided is a regression output for predicting teaching evaluation score from beauty score.
+
+
+(a) Given that the average standardized beauty score is -0.0883 and average teaching evaluation score is 3.9983, calculate the slope. Alternatively, the slope may be computed using just the information provided in the model summary table.
+(b) Do these data provide convincing evidence that the slope of the relationship between teaching evaluation and beauty is positive? Explain your reasoning.
+(c) List the conditions required for linear regression and check if each one is satisfied for this model based on the following diagnostic plots.
