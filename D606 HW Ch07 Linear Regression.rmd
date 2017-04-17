@@ -97,7 +97,10 @@ of 10.37 cm. The mean height is 171.14 cm with a standard deviation of 9.41 cm. 
 (f) A one year old has a shoulder girth of 56 cm. Would it be appropriate to use this linear model to predict the height of this child?
 
 #7.29 Murders and poverty, Part I. 
-The following regression output is for predicting annual murders per million from percentage living in poverty in a random sample of 20 metropolitan areas.
+###The following regression output is for predicting annual murders per million from percentage living in poverty in a random sample of 20 metropolitan areas.
+
+![](https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmoutput.PNG)
+![](https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmplot.PNG)
 
 ```{r}
 
@@ -105,6 +108,8 @@ The following regression output is for predicting annual murders per million fro
 
 
 (a) Write out the linear model.
+
+
 (b) Interpret the intercept.
 
 (c) Interpret the slope.
@@ -125,7 +130,7 @@ adj = 64.41%
 (b) Interpret the intercept.
 (c) Interpret the slope.
 (d) Interpret R2.
-(e) Calculate the correlation coecient.
+(e) Calculate the correlation coeffcient.
 
 #7.39 Urban homeowners, Part II.
 Exercise 7.33 gives a scatterplot displaying the relationship between the percent of families that own their home and the percent of the population living in urban areas. Below is a similar scatterplot, excluding District
