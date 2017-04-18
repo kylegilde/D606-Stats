@@ -7,6 +7,7 @@ output:
     theme: architect
     highlight: github
 ---
+$\^{murder} = -29.901 + 2.559 * poverty$
 
 #Chapter 7 - Introduction to Linear Regression.
 
@@ -96,25 +97,75 @@ of 10.37 cm. The mean height is 171.14 cm with a standard deviation of 9.41 cm. 
 (e) The student from part (d) is 160 cm tall. Calculate the residual, and explain what this residual means.
 (f) A one year old has a shoulder girth of 56 cm. Would it be appropriate to use this linear model to predict the height of this child?
 
-#7.29 Murders and poverty, Part I. 
-###The following regression output is for predicting annual murders per million from percentage living in poverty in a random sample of 20 metropolitan areas.
+
+Linear Regression Problem 7.29
+========================================================
+author: Kyle Gilde
+date: 4/20/2017
+autosize: true
+
+
+7.29 Murders and poverty, Part I.
+========================================================
+ 
+The following regression output is for predicting annual murders per million from percentage living in poverty in a random sample of 20 metropolitan areas.
 
 ![](https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmoutput.PNG)
+
+Scatterplot: % in Poverty as a function of Annual Murders per million
+========================================================
+
 ![](https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmplot.PNG)
-
-```{r}
-
-```
 
 
 (a) Write out the linear model.
+========================================================
+
+A linear equation is expressed as
+$y = {b}_{1}x + {b}_{0}$
+where ${b}_{1}$ is the slope of the line
+and ${b}_{0}$ is the line's y-intercept.
+
+![](https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmoutput.PNG)
+
+In our regression output:
+${b}_{1} = 2.559$ and is the slope of the line. 
+${b}_{0} = -29.901$ and is the line's y-intercept.
+
+
+$\^{murder} = -29.901 + 2.559{poverty\%}$
 
 
 (b) Interpret the intercept.
+========================================================
+
+The expected annual murders per million in metropolitan areas with no poverty is $-29.901$.
+
+Since this is not a meaningful value, it merely serves to adjust the height of the regression line.
+
 
 (c) Interpret the slope.
-(d) Interpret R2.
-(e) Calculate the correlation coecient.
+========================================================
+
+Since ${b}_{1}$ is positive, we would expect a positive relationship between the variables.
+
+For each additional $1\%$ increase in the poverty rate, we would expect the annual murders per million to increase on average by 2.6.
+
+As always, we should remember that correlation is not causation.
+
+(d) Interpret $R^2$.
+
+In our model, $R^2$ is $70.52\%$, which means that the model's least-squares line accounts for approximately $71\%$ of the variation in the annual murders per million. 
+
+
+(e) Calculate the correlation coefficient.
+
+The correlation coefficient $R$ can be calculated by taking the square root of $R^2$:
+```{r}
+r2 <- .7052
+sqrt(r2)
+```
+
 
 
 #7.30 Cats, Part I. 

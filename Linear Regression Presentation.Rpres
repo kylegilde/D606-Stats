@@ -1,8 +1,9 @@
 Linear Regression Problem 7.29
 ========================================================
 author: Kyle Gilde
-date:4/20/2017
+date: 4/20/2017
 autosize: true
+
 
 7.29 Murders and poverty, Part I.
 ========================================================
@@ -11,21 +12,30 @@ The following regression output is for predicting annual murders per million fro
 
 ![](https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmoutput.PNG)
 
-Scatterplot
+Scatterplot: % in Poverty ~ Annual Murders per million
 ========================================================
 
 ![](https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmplot.PNG)
 
 
+(a) Write out the linear model.
+========================================================
+
+![](https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmoutput.PNG)
+
+\begin{\^{murder} = -29.901 + 2.559{poverty}}
+
+$^murder = -29.901 + 2.559 * poverty$
+
+
+(b) Interpret the intercept.
 ========================================================
 
 
 
-(a) Write out the linear model.
-
-
-(b) Interpret the intercept.
 
 (c) Interpret the slope.
+========================================================
+
 (d) Interpret R2.
 (e) Calculate the correlation coecient.
