@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Linear Regression Presentation</title>
+  <title>DATA606 Linear Regression Presentation</title>
     
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -759,7 +759,7 @@ hljs.initHighlightingOnLoad();
   <div class="slides">
 
 <section data-state="section" data-transition="linear" data-transition-speed="default">
-<h1>Linear Regression Presentation</h1><p>Kyle Gilde<br/>4&#x2F;20&#x2F;2017</p>
+<h1>DATA606 Linear Regression Presentation</h1><p>Kyle Gilde<br/>4&#x2F;20&#x2F;2017</p>
 
 <div class="slideContent" >
 
@@ -767,9 +767,17 @@ hljs.initHighlightingOnLoad();
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>7.29 Murders and poverty, Part I.</h3>
+<h3>Linear Regression &amp; Murder!</h3>
+<div class="mediaOnly slideContent" >
+<p><img src="http://img13.deviantart.net/43b8/i/2006/291/6/b/464_by_blood__stock.jpg" alt=""/></p>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>7.29 Murders and Poverty, Part I.</h3>
 <div class="mediaInline slideContent" >
-<p>The following regression output is for predicting annual murders per million from percentage living in poverty in a random sample of 20 metropolitan areas.</p>
+<p>The following regression output is for predicting annual murders per million from the percentage living in poverty in a random sample of 20 metropolitan areas.</p>
 
 <p><img src="https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmoutput.PNG" alt=""/></p>
 
@@ -779,7 +787,7 @@ hljs.initHighlightingOnLoad();
 
 <p>c) Interpret the slope.</p>
 
-<p>d) Interpret \( R^2 \).</p>
+<p>d) Interpret \( \LARGE R^2 \).</p>
 
 <p>e) Calculate the correlation coecient.</p>
 
@@ -789,19 +797,19 @@ hljs.initHighlightingOnLoad();
 <section data-transition="linear" data-transition-speed="default">
 <h3>(a) Write out the linear model.</h3>
 <div class="mediaInline slideContent" >
-<p>A linear model is expressed as
-\( y = {b}_{1}x + {b}_{0} \)
-where \( {b}_{1} \) is the slope of the line
-and \( {b}_{0} \) is the line&#39;s y-intercept.</p>
+<p>A linear model is expressed as 
+\( \LARGE y = {\beta}_{1}x + {\beta}_{0} \)
+where \( \LARGE {\beta}_{1} \) is the slope of the line
+and \( \LARGE {\beta}_{0} \) is the line&#39;s y-intercept.</p>
 
 <p><img src="https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmoutput.PNG" alt=""/></p>
 
-<p>From the regression output we know that
-\( {b}_{1} = 2.559 \) and is the slope of the line. 
-\( {b}_{0} = -29.901 \) and is the line&#39;s y-intercept.</p>
+<p>From the Estimate column of the regression output, we know that
+\( \LARGE {\beta}_{0} = -29.901 \) and is the line&#39;s y-intercept.
+\( \LARGE {\beta}_{1} = 2.559 \) and is the slope of the line. </p>
 
-<p>Consequently the linear model the murder rate as a function of the poverty rate is expected as
-\( \^{murder} = -29.901 + 2.559{poverty\%} \)</p>
+<p>Consequently the linear model for the murder rate as a function of the poverty rate is expressed as
+\( \LARGE \widehat{murder} = -29.901 + 2.559*{poverty\%} \)</p>
 
 </div>
 
@@ -809,7 +817,7 @@ and \( {b}_{0} \) is the line&#39;s y-intercept.</p>
 <section data-transition="linear" data-transition-speed="default">
 <h3>Conditions for Least Squares Line</h3>
 <div class="mediaInline slideContent" >
-<p>Before continuing, let&#39;s check the required least squares conditions to the best of our ability given that we only have the scatter plot and not the raw data.</p>
+<p>Before continuing, let&#39;s stop &amp; check to the best of our ability given that we only have the scatter plot and not the raw data that the conditions for least-squares regression have been met.</p>
 
 <p><img src="https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmplot.PNG" alt=""/></p>
 
@@ -820,10 +828,10 @@ and \( {b}_{0} \) is the line&#39;s y-intercept.</p>
 <h3>Check of Conditions</h3>
 <div class="slideContent" >
 <ol>
-<li>Linearity: The points in the plot do show a linear trend.</li>
-<li>Nearly normal residuals: From the scatter plot, we don&#39;t see any outlying points.</li>
-<li>Homoscedasticity: Having only the scatter plot, the points appear to have constant variability.</li>
-<li>Independent observations: We know that the data is not from a time series, and we are probably safe to assume that the 20 metropolitan areas are independent of each other.
+<li>Linearity: The points in the plot do show a linear trend. </li>
+<li>Nearly normal residuals: From the scatter plot, we don&#39;t see any outlying points. </li>
+<li>Homoscedasticity (aka constant variability): Having only the scatter plot, the points appear to have constant variability.</li>
+<li>Independent observations: The data are from a random sample, and they are not from a time series.
 <img src="https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmplot.PNG" alt=""/></li>
 </ol>
 
@@ -833,9 +841,9 @@ and \( {b}_{0} \) is the line&#39;s y-intercept.</p>
 <section data-transition="linear" data-transition-speed="default">
 <h3>(b) Interpret the intercept.</h3>
 <div class="slideContent" >
-<p>The expected annual murders per million in metropolitan areas with no poverty is \( -29.901 \).</p>
+<p>The expected annual murders per million in metropolitan areas with no poverty is \( \LARGE -29.901 \).</p>
 
-<p>Since this is not a meaningful value, it merely serves to adjust the height of the regression line.</p>
+<p>However, since this is not a meaningful value, it merely serves to adjust the height of the regression line.</p>
 
 </div>
 
@@ -843,9 +851,9 @@ and \( {b}_{0} \) is the line&#39;s y-intercept.</p>
 <section data-transition="linear" data-transition-speed="default">
 <h3>(c) Interpret the slope.</h3>
 <div class="slideContent" >
-<p>Since \( {b}_{1} \) is positive, we would expect a positive relationship between the variables.</p>
+<p>Since \( \LARGE {b}_{1} \) is positive, we would expect a positive relationship between the variables.</p>
 
-<p>For each additional \( 1\% \) increase in the poverty rate, we would expect the annual murders per million to increase on average by 2.6.</p>
+<p>For each additional \( \LARGE 1\% \) increase in the poverty rate, we would expect the annual murders per million to increase on average by 2.6.</p>
 
 <p>As always, we should remember that correlation is not causation.</p>
 
@@ -853,9 +861,9 @@ and \( {b}_{0} \) is the line&#39;s y-intercept.</p>
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>(d) Interpret $R^2$.</h3>
+<h3>(d) Interpret R-Squared.</h3>
 <div class="slideContent" >
-<p>In our model, \( R^2 \) is \( 70.52\% \), which means that the model&#39;s least-squares line accounts for approximately \( 71\% \) of the variation in the annual murders per million. </p>
+<p>In our model, \( \LARGE R^2 \) is \( \LARGE 70.52\% \), which means that the model&#39;s least-squares line accounts for approximately \( \LARGE 71\% \) of the variation in the annual murders per million. </p>
 
 </div>
 
@@ -863,14 +871,16 @@ and \( {b}_{0} \) is the line&#39;s y-intercept.</p>
 <section data-transition="linear" data-transition-speed="default">
 <h3>(e) Calculate the correlation coefficient.</h3>
 <div class="slideContent" >
-<p>The correlation coefficient \( R \) can be calculated by taking the square root of \( R^2 \):</p>
+<p>The correlation coefficient \( \LARGE R \) can be calculated by taking the square root of \( \LARGE R^2 \):</p>
 
 <pre><code class="r">r2 &lt;- .7052
-sqrt(r2)
+paste(&quot;R is approximately&quot;, round(sqrt(r2), 2))
 </code></pre>
 
-<pre><code>[1] 0.8397619
+<pre><code>[1] &quot;R is approximately 0.84&quot;
 </code></pre>
+
+<p>THE END!</p>
 
 </div>
 

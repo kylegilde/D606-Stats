@@ -1,11 +1,16 @@
-Linear Regression Presentation
+DATA606 Linear Regression Presentation
 ========================================================
 author: Kyle Gilde
 date: 4/20/2017
 autosize: true
 
+Linear Regression & Murder!
+========================================================
 
-7.29 Murders and poverty, Part I.
+![](http://img13.deviantart.net/43b8/i/2006/291/6/b/464_by_blood__stock.jpg)
+
+
+7.29 Murders and Poverty, Part I.
 ========================================================
  
 The following regression output is for predicting annual murders per million from the percentage living in poverty in a random sample of 20 metropolitan areas.
@@ -60,7 +65,7 @@ Check of Conditions
 
 The expected annual murders per million in metropolitan areas with no poverty is $\LARGE -29.901$.
 
-Since this is not a meaningful value, it merely serves to adjust the height of the regression line.
+However, since this is not a meaningful value, it merely serves to adjust the height of the regression line.
 
 
 (c) Interpret the slope.
@@ -86,9 +91,12 @@ The correlation coefficient $\LARGE R$ can be calculated by taking the square ro
 
 ```r
 r2 <- .7052
-sqrt(r2)
+paste("R is approximately", round(sqrt(r2), 2))
 ```
 
 ```
-[1] 0.8397619
+[1] "R is approximately 0.84"
 ```
+
+
+THE END!
