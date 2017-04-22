@@ -781,13 +781,19 @@ hljs.initHighlightingOnLoad();
 
 <p><img src="https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmoutput.PNG" alt=""/></p>
 
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>5-Part Question</h3>
+<div class="slideContent" >
 <p>a) Write out the linear model.</p>
 
 <p>b) Interpret the intercept.</p>
 
 <p>c) Interpret the slope.</p>
 
-<p>d) Interpret \( \LARGE R^2 \).</p>
+<p>d) Interpret \( R^2 \).</p>
 
 <p>e) Calculate the correlation coecient.</p>
 
@@ -798,18 +804,18 @@ hljs.initHighlightingOnLoad();
 <h3>(a) Write out the linear model.</h3>
 <div class="mediaInline slideContent" >
 <p>A linear model is expressed as 
-\( \LARGE y = {\beta}_{1}x + {\beta}_{0} \)
-where \( \LARGE {\beta}_{1} \) is the slope of the line
-and \( \LARGE {\beta}_{0} \) is the line&#39;s y-intercept.</p>
+\( y = {\beta}_{1}x + {\beta}_{0} \)
+where \( {\beta}_{1} \) is the slope of the line
+and \( {\beta}_{0} \) is the line&#39;s y-intercept.</p>
 
 <p><img src="https://raw.githubusercontent.com/kylegilde/D606-Stats/master/lmoutput.PNG" alt=""/></p>
 
 <p>From the Estimate column of the regression output, we know that
-\( \LARGE {\beta}_{0} = -29.901 \) and is the line&#39;s y-intercept.
-\( \LARGE {\beta}_{1} = 2.559 \) and is the slope of the line. </p>
+\( {\beta}_{0} = -29.901 \) and is the line&#39;s y-intercept.
+\( {\beta}_{1} = 2.559 \) and is the slope of the line. </p>
 
-<p>Consequently the linear model for the murder rate as a function of the poverty rate is expressed as
-\( \LARGE \widehat{murder} = -29.901 + 2.559*{poverty\%} \)</p>
+<p>Consequently, the linear model for the murder rate as a function of the poverty rate is expressed as
+\( \widehat{murder} = -29.901 + 2.559*{poverty\%} \)</p>
 
 </div>
 
@@ -841,7 +847,7 @@ and \( \LARGE {\beta}_{0} \) is the line&#39;s y-intercept.</p>
 <section data-transition="linear" data-transition-speed="default">
 <h3>(b) Interpret the intercept.</h3>
 <div class="slideContent" >
-<p>The expected annual murders per million in metropolitan areas with no poverty is \( \LARGE -29.901 \).</p>
+<p>The expected annual murders per million in metropolitan areas with no poverty is \( -29.901 \).</p>
 
 <p>However, since this is not a meaningful value, it merely serves to adjust the height of the regression line.</p>
 
@@ -851,9 +857,9 @@ and \( \LARGE {\beta}_{0} \) is the line&#39;s y-intercept.</p>
 <section data-transition="linear" data-transition-speed="default">
 <h3>(c) Interpret the slope.</h3>
 <div class="slideContent" >
-<p>Since \( \LARGE {b}_{1} \) is positive, we would expect a positive relationship between the variables.</p>
+<p>Since \( {b}_{1} \) is positive, we would expect a positive relationship between the variables.</p>
 
-<p>For each additional \( \LARGE 1\% \) increase in the poverty rate, we would expect the annual murders per million to increase on average by 2.6.</p>
+<p>For each additional \( 1\% \) increase in the poverty rate, we would expect the annual murders per million to increase on average by 2.6.</p>
 
 <p>As always, we should remember that correlation is not causation.</p>
 
@@ -863,7 +869,7 @@ and \( \LARGE {\beta}_{0} \) is the line&#39;s y-intercept.</p>
 <section data-transition="linear" data-transition-speed="default">
 <h3>(d) Interpret R-Squared.</h3>
 <div class="slideContent" >
-<p>In our model, \( \LARGE R^2 \) is \( \LARGE 70.52\% \), which means that the model&#39;s least-squares line accounts for approximately \( \LARGE 71\% \) of the variation in the annual murders per million. </p>
+<p>In our model, \( R^2 \) is \( 70.52\% \), which means that the model&#39;s least-squares line accounts for approximately \( 71\% \) of the variation in the annual murders per million. </p>
 
 </div>
 
@@ -871,7 +877,7 @@ and \( \LARGE {\beta}_{0} \) is the line&#39;s y-intercept.</p>
 <section data-transition="linear" data-transition-speed="default">
 <h3>(e) Calculate the correlation coefficient.</h3>
 <div class="slideContent" >
-<p>The correlation coefficient \( \LARGE R \) can be calculated by taking the square root of \( \LARGE R^2 \):</p>
+<p>The correlation coefficient \( R \) can be calculated by taking the square root of \( R^2 \):</p>
 
 <pre><code class="r">r2 &lt;- .7052
 paste(&quot;R is approximately&quot;, round(sqrt(r2), 2))
@@ -939,8 +945,8 @@ function commandsForSlide(indexh) {
       transition: 'linear',
       transitionSpeed: 'default',
       rtl: false,
-      width: 960,
-      height: 700,
+      width: 1500,
+      height: 1080,
     
       dependencies: []
     });
