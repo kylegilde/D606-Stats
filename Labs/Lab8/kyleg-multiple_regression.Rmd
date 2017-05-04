@@ -1,7 +1,5 @@
 ---
-title: "Lab 8 - Multiple linear regression"
-date: "May 1, 2017"
-student: "Kyle Gilde"
+title: "Multiple linear regression"
 output:
   html_document:
     css: ./lab.css
@@ -32,7 +30,7 @@ into a positive professor evaluation.
 
 The data were gathered from end of semester student evaluations for a large 
 sample of professors from the University of Texas at Austin. In addition, six 
-students rated the professors' physical appearance. (This is aslightly modified 
+students rated the professors' physical appearance. (This is a slightly modified 
 version of the original data set that was released as part of the replication 
 data for *Data Analysis Using Regression and Multilevel/Hierarchical Models* 
 (Gelman and Hill, 2007).) The result is a data frame where each row contains a 
@@ -72,14 +70,38 @@ variable         | description
     question posed in the paper is whether beauty leads directly to the
     differences in course evaluations. Given the study design, is it possible to
     answer this question as it is phrased? If not, rephrase the question.
-
+    
+    **It is an observational study and not an experiment because the students were not randomly assigned to a class/professor. A modified question is appropriate: Is  beauty correlated with the differences in course evaluation.**
+    
 2.  Describe the distribution of `score`. Is the distribution skewed? What does 
     that tell you about how students rate courses? Is this what you expected to 
     see? Why, or why not?
+    
+    **The distribution is skewed to the left and its center is between 4 and 5. This means that the students rated many of the courses very highly. Since we are in a class that focuses on normal distributions, I was expecting a normal distribution.** 
+    
+```{r}
+hist(evals$score)
+summary(evals$score)
+```
 
 3.  Excluding `score`, select two other variables and describe their relationship 
     using an appropriate visualization (scatterplot, side-by-side boxplots, or 
     mosaic plot).
+    
+**The age of the professors isn't very normally distributed. It's more like a plateau that begins suddenly at 30 and ends after 65. The is a slight peak at age 50.**
+
+
+```{r}
+hist(evals$age)
+```
+
+**The distribution of the average beauty rating of the professor is right skewed with a center near 3 and 4 out of 8.**
+
+
+```{r}
+hist(evals$bty_avg)
+```
+
 
 ## Simple linear regression
 
@@ -96,9 +118,26 @@ Before we draw conclusions about the trend, compare the number of observations
 in the data frame with the approximate number of points on the scatterplot. 
 Is anything awry?
 
+**It doesn't appear to have 463 points.**
+
+```{r}
+nrow(evals)
+
+```
+
+
 4.  Replot the scatterplot, but this time use the function `jitter()` on the
     $y$- or the $x$-coordinate. (Use `?jitter` to learn more.) What was
     misleading about the initial scatterplot?
+    
+    **There are many overlapping values.**
+    
+```{r}
+
+plot(evals$score ~ jitter(evals$bty_avg))
+
+
+```
 
 5.  Let's see if the apparent trend in the plot is something more than
     natural variation. Fit a linear model called `m_bty` to predict average
@@ -107,9 +146,36 @@ Is anything awry?
     interpret the slope. Is average beauty score a statistically significant
     predictor? Does it appear to be a practically significant predictor?
 
+**score_hat = .06664 * bty_avg + 3.88034**
+**For a one-point increase in the beauty average, we would expect on average a .07 increase in the professor rating.**
+**The p-value is near zero, so we would reject the null hypothesis that the $B_1 = 0$. However, R-squared is only 0.03502, so bty_avg accounts for very little of the variation in score.**
+
+```{r}
+m_bty <- lm(evals$score ~ evals$bty_avg)
+plot(evals$score ~ evals$bty_avg)
+abline(m_bty)
+summary(m_bty)
+```
+
+
 6.  Use residual plots to evaluate whether the conditions of least squares
     regression are reasonable. Provide plots and comments for each one (see
     the Simple Regression Lab for a reminder of how to make these).
+    
+    **Linearity: There doesn't appear to a particular pattern, which supports linearity.**
+```{r}
+plot(m_bty$residuals ~ jitter(evals$bty_avg))
+abline(h = 0, lty = 3) 
+```
+
+**Nearly normal residuals: They aren't nearly normal. The distribution is left-skewed.**
+```{r}
+hist(m_bty$residuals)
+qqnorm(m_bty$residuals)
+qqline(m_bty$residuals)
+```
+
+**Constant variability: No, the residuals appear to decrease with higher beauty scores.**
 
 ## Multiple linear regression
 
@@ -150,6 +216,21 @@ summary(m_bty_gen)
 7.  P-values and parameter estimates should only be trusted if the
     conditions for the regression are reasonable. Verify that the conditions
     for this model are reasonable using diagnostic plots.
+    
+    **Linearity: There doesn't appear to a particular pattern, which supports linearity.**
+```{r}
+plot(m_bty_gen$residuals ~ jitter(evals$bty_avg))
+abline(h = 0, lty = 3) 
+```
+
+**Nearly normal residuals: They aren't nearly normal. The distribution is left-skewed.**
+```{r}
+hist(m_bty_gen$residuals)
+qqnorm(m_bty_gen$residuals)
+qqline(m_bty_gen$residuals)
+```
+
+**Constant variability: No, the residuals appear to decrease with higher beauty scores.**
 
 8.  Is `bty_avg` still a significant predictor of `score`? Has the addition
     of `gender` to the model changed the parameter estimate for `bty_avg`?
