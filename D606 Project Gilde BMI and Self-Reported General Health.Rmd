@@ -1,0 +1,424 @@
+---
+title: "DATA 606 Final Project: BMI & Self-Reported General Health" 
+author: "Kyle Gilde"
+date: "May 13, 2017"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+    toc: true
+    toc_depth: 2
+---
+<style type="text/css">
+body{
+  font-family: Helvetica;
+  font-size: 14pt;
+}
+</style>
+<body>
+```{r knitr_options, echo=FALSE}
+knitr::opts_chunk$set(
+                      warning = FALSE
+                      ,error = FALSE
+                      ,message = FALSE
+                      ,tidy = TRUE
+                      ,cache = TRUE
+                      )
+```
+
+# Part 1 - Introduction
+
+##Research Question
+
+Does the Body Mass Index (BMI) fluctuate with the self-reported level of general health?
+
+Is the Body Mass Index (BMI) predictive of the self-reported level of general health?
+Is the self-reported level of general health predictive of Body Mass Index (BMI)?
+
+
+##Rationale
+
+Do U.S. adults have a subjective or misconceived perception of their own health, or does the self-reported level of general health correspond to an empirical measure of their health such as BMI?
+
+# Part 2 - Data
+
+##Data collection
+
+The data were collected as a collaborative project between the U.S. states and territories and the Centers for Disease Control and Prevention (CDC) in their Behavioral Rick Factor Surveillance System (BRFSS) telephone survey. Given the rise of cellular telephone-only households, the survey began sampling both land-line and cellular phone numbers in 2011.
+
+The American Community Survey fund that nearly 98% of U.S. households had telephone survice available. The BRFSS did not attempt to survey non-telephone residents. They used a weighting method instead. 
+
+**Note:** Despite a thorough search, I could not find specific instructions on how to use the weighted variable `_LLCPWT`
+
+State health departments conduct the surveys, and most states use a stratified sampling method that divides land-line phone numbers into 2 groups: high-density or medium-density populations
+
+[2015 BRFSS Overview](https://www.cdc.gov/brfss/annual_data/2015/pdf/overview_2015.pdf)
+
+[BRFSS Zip File](https://www.cdc.gov/brfss/annual_data/2015/files/LLCP2015XPT.zip)
+
+
+##The Cases 
+
+The cases are adult U.S. residents, specifically "non-institutionalized adults who reside in each of the states and selected U.S. territories." There are 441,456 cases in the 2015 survey, and 404,030 of the cases gave measurable responses for the 2 selected variables.
+
+[Module Data for Analysis for 2015 BRFSS](https://www.cdc.gov/brfss/annual_data/2015/pdf/2015moduleanalysis.pdf)
+
+##The Variables
+
+###Explanatory Variable
+
++ The explanatory variable is `GENHLTH`, which is self-reported level of general health response to the following question.
+
+**Question: Would you say that in general your health is...**
+
++ The General Health variable is categorical variable that has been stored as an integer. In the study, nearly all categorical variables were stored in a numeric format.
+
++ This categorical variable has an ordinal scale because its values of Excellent through Poor have an order to them. However, it is not an interval scale, so we cannot assume that the intervals between adjacent values are of equal length.
+
+Value | Value Label
+------|-------------
+1     | Excellent
+2     | Very Good
+3     | Good
+4     | Fair
+5     | Poor
+7     | Don't know/Note Sure
+9     | Refused
+BLANK | Not asked or Missing
+
+###Response Variable
+
++ The response variable is the Body Mass Index originally labeled as `X_BMI5`. The World Health Organization (WHO) describes the BMI as a "simple index of weight-for-height that is commonly used to classify underweight, overweight and obesity in adults."
+
++ It is a numeric and continuous variable (although the study only records it to 2 decimal places) that was multiplied by 100 and stored as an integer. 
+
++ The BRFSS calculated the respondents' BMI by converting the reported heights and weights to meters and kilograms and then dividing the weight by the square of the height.
+
++ The WHO lists the primary classification of the BMI as follows:
+
+Class	      | BMI Range
+------------|-----------
+Underweight	| <18.50
+Normal range|	18.50 - 24.99
+Overweight	| 25.00 - 29.99
+Obese	      | +30.00
+
+[WHO: BMI](http://apps.who.int/bmi/index.jsp?introPage=intro_3.html)
+
+##Type of study
+
+The BRFSS is an observational study because there was no experiment with subjects being randomly assigned to treatment and control groups.
+
+##Scope of inference
+
+###Generalizability:
+
+The population of interest is adult U.S. residents. Since random sampling was used, the findings can be generalized to the population.
+
+Weighting was used to account for residents without telephone access.
+
+###Causality: 
+
+Because this is an observation study and not an experimental one, no random assignment was used, and therefore, these data cannot be used to establish causal links between the variables of interest.
+
+# Part 3 - Exploratory data analysis
+
+Required Packages
+```{r packages} 
+load_packages <- c("psych","prettydoc", "dplyr", "tidyr", "foreign", "knitr", "ggplot2")
+
+#see if we need to install any of them
+install_load <- function(pkg){
+  #CODE SOURCE: https://gist.github.com/stevenworthington/3178163
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE, quietly = TRUE, warn.conflicts = FALSE)
+}
+
+#excute function and display the loaded packages
+data.frame(t(t(install_load(load_packages))), fix.empty.names = FALSE)
+```
+
+Download & Read Data
+```{r get_data}
+url_data <- "https://www.cdc.gov/brfss/annual_data/2015/files/LLCP2015XPT.zip"
+brfss_file <- "brfss.zip"
+
+#download file if it isn't already
+#unzip and read if is isn't already
+if (!exists("brfss_raw")){  
+  download.file(url_data, brfss_file)
+  brfss_raw <- read.xport(unzip(brfss_file))
+}
+
+```
+
+
+##Tidy & format the data 
++ The non-ordinal values of "Don't know/Note Sure" and `BLANK` were removed from `GENHLTH`. They represented only a tiny fraction of 1 percent.
+
++ Concatenated the friendly names to the `GENHLTH` integers
+
++ Divided the BMI integer by 100
+
++ Incomplete observations were removed.
+
+```{r format, tidy=F}
+
+
+bmi_gen_health <- brfss_raw %>% 
+  filter(GENHLTH < 6) %>% 
+  transmute(BMI = X_BMI5/100, 
+            reported_general_health = 
+              as.factor(paste(GENHLTH, 
+                    sapply(GENHLTH,
+                           function(x) switch(x,
+                            "1"     = "Excellent",
+                            "2"     = "Very Good",
+                            "3"     = "Good",
+                            "4"     = "Fair",
+                            "5"     = "Poor")))
+              )) %>% 
+  na.omit()
+```
+
+##Summary Statistics
+
+###Entire Sample
+```{r}
+options(scipen=999)
+kable(t(round(describe(bmi_gen_health$BMI), 4)))
+```
+
+###By General Health Response
+```{r}
+stats_by_grp <- describeBy(bmi_gen_health$BMI, bmi_gen_health$reported_general_health)
+
+kable(sapply(stats_by_grp, function(x) rbind(x)))
+
+# glimpse(brfss_raw)
+# dim(brfss_raw)
+# glimpse(bmi_gen_health)
+```
+
+###Distribution of the General Health Responses
+```{r}
+ggplot(bmi_gen_health, aes(x=reported_general_health)) + geom_bar()
+```
+
+
+###Boxplots by Reported General Health
+```{r exploration}
+boxplot(bmi_gen_health$BMI ~ bmi_gen_health$reported_general_health)
+```
+
+###BMI Histogram & Q-Q plot
+
+The BMI distribution is right-skewed.
+```{r}
+ggplot(bmi_gen_health, aes(x=BMI)) + geom_histogram()
+qqnorm(bmi_gen_health$BMI)
+qqline(bmi_gen_health$BMI)
+```
+
+
+
+
+# Part 4 - Inference
+##Confidence Intervals
+
+###Check Conditions
++ **Independence:** Yes, the data are from a stratified random sample.
+
++ **Sample Size:** Yes, the sample size is very large.
+
++ **Normal Distribution:** The distribution is right-skewed, but this condition can be relaxed since we have a massive sample size.
+
+###95% Confidence interval for the entire sample
+
+
+I used the T-distribution since the BMI distribution is right-skewed. However, the sample size and degrees of freedom are so large that it will approach the normal distribution. 
+
+```{r}
+n <- nrow(bmi_gen_health)
+df <- n - 1
+xbar <- mean(bmi_gen_health$BMI)
+sign_level <- .05
+s <- sd(bmi_gen_health$BMI)
+tstar <- qt(sign_level/2, df, lower.tail = F)
+se <- s/sqrt(n)
+me <- se * tstar
+c(xbar - me, xbar + me)
+```
+
+We are 95% confident that the BMI population mean is between 28.02216 and 28.06319.
+
+#Confidence intervals for each general health group
+
++ We are 95% confident that the BMI population mean for each of these groups are within the following intervals.
+
++ Only the intervals for the Fair and Poor group overlap.
+
+```{r}
+
+for (i in levels(bmi_gen_health$reported_general_health)){
+  genhlth_subset <- subset(bmi_gen_health, reported_general_health==i)
+  n <- nrow(genhlth_subset)
+  df <- n - 1
+  xbar <- mean(genhlth_subset$BMI)
+  sign_level <- .05
+  s <- sd(genhlth_subset$BMI)
+  tstar <- qt(sign_level/2, df, lower.tail = F)
+  se <- s/sqrt(n)
+  me <- se * tstar
+  print(paste("Confidence interval for", i, "group:", xbar - me, xbar + me) )
+}
+```
+
+
+##ANOVA
+
+Analysis of Variance is used to to compare means across several groups and uses the F-distribution. 
+
+###Check Conditions for ANOVA
+
++ **Independence:** Yes, the data are from a random sample from less than 10% of the population. Also, the groups are independent of each other.
+
++ **Approximately normal:** The Q-Q plots do not look very normal at all. However, since the sample size is so large, perhaps the normality requirement can be set aside.
+
+```{r}
+op <- par(mfrow=c(2,3))
+
+for(i in levels(bmi_gen_health$reported_general_health)){
+  tmp <- subset(bmi_gen_health$BMI, bmi_gen_health$reported_general_health==i)
+  hist(tmp,xlab="Reported General Health",main=i)
+}
+par(op)
+
+op2 <- par(mfrow=c(2,3))
+
+for(i in levels(bmi_gen_health$reported_general_health)){
+  tmp <- subset(bmi_gen_health$BMI, bmi_gen_health$reported_general_health==i)
+  qqnorm(tmp,xlab="Reported General Health",main=i)
+  qqline(tmp)
+}
+par(op2)
+#code citation: http://stackoverflow.com/questions/20781663/qqnorm-plotting-for-multiple-subsets
+
+```
+
+
++ **Constant variance:** From the 5 box plots above and the standard deviation statistics, we can see that the variability increases from the Excellent to Poor health groups. This may undermine the results of ANOVA.
+```{r}
+t(t(sapply(stats_by_grp, function(x) x$sd)))
+```
+
+###ANOVA Hypotheses
+
+$H_0:$ The average BMI is equal across all levels of self-reported general health.
+
+$H_A:$ The average BMI varies by the level of self-reported general health. At least one pair of group averages is more different than we would expect to see by chance.
+
+###ANOVA Analysis
+
+The F-statistics is quite large at 5312, which yields a p-value near zero. Consequently, we would reject the null hypothesis.
+
+```{r}
+aov_output <- aov(BMI ~ reported_general_health, bmi_gen_health)
+
+summary(aov_output)
+```
+
+
+##Multiple differences in means
+
+###Check conditions
+
++ **Independence:** Yes, the data are from a random sample of less than 10% of the population. There is independence between groups.
+
++ **Sample Size:** Yes, the sample size is very large.
+
++ **Normal Distribution:** The distribution is right-skewed, but this condition can be relaxed since we have a massive sample size.
+
+###Hypotheses
+To test the 10 differences in mean BMIs for the 5 levels of reported general health, we use the Bonferroni correction to apply a more strigent significance level for multiple comparisons.
+
+For each comparison, the null hypotheis is that there is no difference between the means, and the alternative hypotheis is that there is a difference.
+
+$H_0: \mu_diff = 0$
+
+$H_A: \mu_diff \neq 0$
+
+###Analysis
+
+For 9 out of the 10 comparisons, the p-value is less than the Bonferroni-corrected significance level of 0.005. Thus, we would reject the null hypothesis that there is no difference in means for these instances.
+
+```{r}
+H0 <- 0
+
+health_levels <- levels(bmi_gen_health$reported_general_health)
+# number of groups
+k <- length(health_levels)
+
+K <- k * (k -1) / 2
+alpha <- .05
+
+#Bonferroni correction
+alpha_star <-  alpha / K
+
+combos <- data.frame(t(combn(health_levels, 2)), stringsAsFactors = F)
+
+results <- data.frame()
+
+for (i in 1:nrow(combos)){
+  v1 <- subset(bmi_gen_health$BMI, bmi_gen_health$reported_general_health == combos[i, 1])
+  v2 <- subset(bmi_gen_health$BMI, bmi_gen_health$reported_general_health == combos[i, 2])
+  n1 <- length(v1)
+  n2 <- length(v2)
+  xbar1 <- mean(v1)
+  xbar2 <- mean(v2)
+  s1 <- sd(v1)
+  s2 <- sd(v2)
+  xbar_diff <- xbar1 - xbar2
+  
+  se_diff <- sqrt(s1^2/n1 + s2^2/n2)
+  df_diff <- min(n1, n2) - 1
+  
+  t_score <- (xbar_diff - H0) / se_diff
+  pvalue <- pt(-abs(t_score), df_diff) * 2
+  
+  results <- rbind(results, cbind(combos[i, ], xbar_diff, t_score, pvalue, pvalue < alpha_star))
+}
+
+kable(results)
+```
+
+# Part 5 - Conclusions
+
++ We have some evidence that the mean BMIs do fluctuate between the levels of self-reported general health, which means that overall U.S. adults' self-perception of their own health is affected by an empirical measure of health such as BMI.
+
++ The ANOVA may be of limited validity because the groups lack the necessary constant variability. However, the large F-statistic and tiny p-value do indicate that we would reject the null hypothesis that there is no difference between the mean BMIs of the self-reported groups. 
+
++ In the differences in means tests, all of the conditions were met, and we saw that 9 of the 10 pairs had statistically significant differences. The only pair that didn't display a significant difference is the 2 lowest self-reported levels of general health, Fair and Poor.
+
+Write a brief summary of your findings without repeating your statements from earlier. Also include a discussion of what you have learned about your research question and the data you collected. You may also want to include ideas for possible future research.
+
+
+
+
+```{r}
+#unlink(brfss_file)
+#unlink("LLCP2015.XPT")
+```
+
+
+
+# References:
+[2015 BRFSS Overview](https://www.cdc.gov/brfss/annual_data/2015/pdf/overview_2015.pdf)
+
+[BRFSS Zip File](https://www.cdc.gov/brfss/annual_data/2015/files/LLCP2015XPT.zip)
+
+[Module Data for Analysis for 2015 BRFSS](https://www.cdc.gov/brfss/annual_data/2015/pdf/2015moduleanalysis.pdf)
+
+</body>
