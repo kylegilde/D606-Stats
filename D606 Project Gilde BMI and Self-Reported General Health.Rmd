@@ -32,10 +32,6 @@ knitr::opts_chunk$set(
 
 Does the Body Mass Index (BMI) fluctuate with the self-reported level of general health?
 
-Is the Body Mass Index (BMI) predictive of the self-reported level of general health?
-Is the self-reported level of general health predictive of Body Mass Index (BMI)?
-
-
 ##Rationale
 
 Do U.S. adults have a subjective or misconceived perception of their own health, or does the self-reported level of general health correspond to an empirical measure of their health such as BMI?
@@ -46,7 +42,7 @@ Do U.S. adults have a subjective or misconceived perception of their own health,
 
 The data were collected as a collaborative project between the U.S. states and territories and the Centers for Disease Control and Prevention (CDC) in their Behavioral Rick Factor Surveillance System (BRFSS) telephone survey. Given the rise of cellular telephone-only households, the survey began sampling both land-line and cellular phone numbers in 2011.
 
-The American Community Survey fund that nearly 98% of U.S. households had telephone survice available. The BRFSS did not attempt to survey non-telephone residents. They used a weighting method instead. 
+The American Community Survey found that nearly 98% of U.S. households had telephone survice available. The BRFSS did not attempt to survey non-telephone residents. They used a weighting method instead. 
 
 **Note:** Despite a thorough search, I could not find specific instructions on how to use the weighted variable `_LLCPWT`
 
@@ -124,7 +120,7 @@ Because this is an observation study and not an experimental one, no random assi
 # Part 3 - Exploratory data analysis
 
 Required Packages
-```{r packages} 
+```{r packages, echo=F} 
 load_packages <- c("psych","prettydoc", "dplyr", "tidyr", "foreign", "knitr", "ggplot2")
 
 #see if we need to install any of them
@@ -196,10 +192,6 @@ kable(t(round(describe(bmi_gen_health$BMI), 4)))
 stats_by_grp <- describeBy(bmi_gen_health$BMI, bmi_gen_health$reported_general_health)
 
 kable(sapply(stats_by_grp, function(x) rbind(x)))
-
-# glimpse(brfss_raw)
-# dim(brfss_raw)
-# glimpse(bmi_gen_health)
 ```
 
 ###Distribution of the General Health Responses
@@ -279,7 +271,9 @@ for (i in levels(bmi_gen_health$reported_general_health)){
 
 ##ANOVA
 
-Analysis of Variance is used to to compare means across several groups and uses the F-distribution. 
++ Analysis of Variance is used to to compare means across several groups and uses the F-distribution. 
+
++ The F-statistic is calculated by dividing the **mean square between groups** by the **mean square error**, which measures the variability within the groups.
 
 ###Check Conditions for ANOVA
 
@@ -333,6 +327,10 @@ summary(aov_output)
 
 ##Multiple differences in means
 
++ To test the 10 differences in mean BMIs for the 5 levels of reported general health, we use the Bonferroni correction to apply a more strigent significance level for multiple comparisons.
+
++ The modified significance level is used to avoid committing a Type 1 error, which is rejecting the null hypothese when it is true. The Type 1 error rate increases with the number of tests conducted.
+
 ###Check conditions
 
 + **Independence:** Yes, the data are from a random sample of less than 10% of the population. There is independence between groups.
@@ -342,7 +340,6 @@ summary(aov_output)
 + **Normal Distribution:** The distribution is right-skewed, but this condition can be relaxed since we have a massive sample size.
 
 ###Hypotheses
-To test the 10 differences in mean BMIs for the 5 levels of reported general health, we use the Bonferroni correction to apply a more strigent significance level for multiple comparisons.
 
 For each comparison, the null hypotheis is that there is no difference between the means, and the alternative hypotheis is that there is a difference.
 
@@ -402,17 +399,10 @@ kable(results)
 
 + In the differences in means tests, all of the conditions were met, and we saw that 9 of the 10 pairs had statistically significant differences. The only pair that didn't display a significant difference is the 2 lowest self-reported levels of general health, Fair and Poor.
 
-Write a brief summary of your findings without repeating your statements from earlier. Also include a discussion of what you have learned about your research question and the data you collected. You may also want to include ideas for possible future research.
-
-
-
-
 ```{r}
 #unlink(brfss_file)
 #unlink("LLCP2015.XPT")
 ```
-
-
 
 # References:
 [2015 BRFSS Overview](https://www.cdc.gov/brfss/annual_data/2015/pdf/overview_2015.pdf)
