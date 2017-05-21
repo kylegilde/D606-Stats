@@ -1,0 +1,238 @@
+---
+title: "DATA 606 Final Exam" 
+author: "Kyle Gilde"
+date: "May 20, 2017"
+output: 
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+    toc: true
+    toc_depth: 1
+---
+<style type="text/css">
+body{
+  font-family: Helvetica;
+  font-size: 14pt;
+}
+</style>
+<body>
+```{r knitr_options, echo=FALSE}
+knitr::opts_chunk$set(
+                      warning = FALSE
+                      ,error = FALSE
+                      ,message = FALSE
+                      ,tidy = TRUE
+                      ,cache = TRUE
+                      )
+```
+
+
+```{r packages, echo=F} 
+load_packages <- c("prettydoc")
+
+#see if we need to install any of them
+install_load <- function(pkg){
+  #CODE SOURCE: https://gist.github.com/stevenworthington/3178163
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg)) 
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE, quietly = TRUE, warn.conflicts = FALSE)
+}
+
+#excute function and display the loaded packages
+data.frame(t(t(install_load(load_packages))), fix.empty.names = FALSE)
+```
+#Part I
+1. A student is gathering data on the driving experiences of other college students. A description of the data car color is presented below. Which of the variables are quantitative and discrete?
+
+**b. daysDrive**
+
+2. A histogram of the GPA of 132 students from this course in Fall 2012 class is presented below. Which
+estimates of the mean and median are most plausible?
+
+**a. mean = 3.3, median = 3.5**
+
+3. A researcher wants to determine if a new treatment is effective for reducing Ebola related fever. What type of study should be conducted in order to establish that the treatment does indeed cause improvement in Ebola patients?
+
+**a. Randomly assign Ebola patients to one of two groups, either the treatment or placebo group, and then compare the fever of the two groups.**
+
+4. A study is designed to test whether there is a relationship between natural hair color (brunette, blond, red) and eye color (blue, green, brown). If a large ??2 test statistic is obtained, this suggests that:
+
+**c. there is an association between natural hair color and eye color.**
+
+5. A researcher studying how monkeys remember is interested in examining the distribution of the score on a standard memory task. The researcher wants to produce a boxplot to examine this distribution. Below are summary statistics from the memory task. What values should the researcher use to determine if a particular score is a potential outlier in the boxplot?
+
+min Q1 median Q3   max mean sd   n
+26  37 45     49.8 65  44.4 8.4 50
+
+**b. 17.8 and 69.0**
+
+```{r}
+Q1 <- 37
+Q3 <- 49.8
+
+IQR <- Q3 - Q1
+IQR1.5 <- 1.5 *IQR
+
+Q1 - IQR1.5
+Q3 + IQR1.5
+```
+
+
+6. The _ are resistant to outliers, whereas the __ are not.
+
+**d. median and interquartile range; mean and standard deviation**
+
+7. Figure A below represents the distribution of an observed variable. Figure B below represents the distribution of the mean from 500 random samples of size 30 from A. The mean of A is 5.05 and the mean of B is 5.04. The standard deviations of A and B are 3.22 and 0.58, respectively.
+
+a. Describe the two distributions (2 pts).
+
+**Both figures appear to be normally distributed. However, the spread of the sampling distribution in Figure B is much less than the spread of the distribution of the observed variable in Figure A.**
+
+b. Explain why the means of these two distributions are similar but the standard deviations are not (2 pts).
+
+**Since the sample size is at least 30, the mean of the sampling distribution in Figure B will closely approximate the mean of the population in Figure A.**
+
+**However, because the sampling distribution is composed of sample means from the observed variable, i.e. the population, its spread will be less than the spread of the population distribution. The standard deviation of a sampling distribution is called the standard error and is calculated by dividing the population standard deviation by the square root of the sample size. Therefore, the standard error will always be less than the population standard deviation.**
+
+
+c. What is the statistical principal that describes this phenomenon (2 pts)?
+
+**Central Limit Theorem**
+
+#Part II
+
+Consider the four datasets, each with two columns (x and y), provided below.
+
+```{r}
+options(digits=2)
+
+data1 <- data.frame(x=c(10,8,13,9,11,14,6,4,12,7,5),
+                    y=c(8.04,6.95,7.58,8.81,8.33,9.96,7.24,4.26,10.84,4.82,5.68))
+data2 <- data.frame(x=c(10,8,13,9,11,14,6,4,12,7,5),
+                    y=c(9.14,8.14,8.74,8.77,9.26,8.1,6.13,3.1,9.13,7.26,4.74))
+data3 <- data.frame(x=c(10,8,13,9,11,14,6,4,12,7,5),
+                    y=c(7.46,6.77,12.74,7.11,7.81,8.84,6.08,5.39,8.15,6.42,5.73))
+data4 <- data.frame(x=c(8,8,8,8,8,8,8,19,8,8,8),
+                    y=c(6.58,5.76,7.71,8.84,8.47,7.04,5.25,12.5,5.56,7.91,6.89))
+
+#all_dfs <- c(data1, data2, data3, data4)
+all_dfs <- c("data1", "data2", "data3", "data4")
+
+```
+
+###For each column, calculate (to two decimal places):
+
+a. The mean (for x and y separately; 1 pt).
+
+```{r}
+for (i in all_dfs){
+  my_df <- get(i)
+  print(i)
+  print(sapply(my_df, function(x) round(mean(x), 2)))
+}
+```
+
+
+
+b. The median (for x and y separately; 1 pt).
+
+```{r}
+for (i in all_dfs){
+  my_df <- get(i)
+  print(i)
+  print(sapply(my_df, function(x) round(median(x), 2)))
+}
+```
+
+c. The standard deviation (for x and y separately; 1 pt).
+
+```{r}
+for (i in all_dfs){
+  my_df <- get(i)
+  print(i)
+  print(sapply(my_df, function(x) round(sd(x), 2)))
+}
+```
+
+###For each x and y pair, calculate (also to two decimal places; 1 pt):
+
+d. The correlation (1 pt).
+
+```{r}
+for (i in all_dfs){
+  my_df <- get(i)
+  print(i)
+  print(round(cor(my_df), 2))
+}
+```
+
+
+e. Linear regression equation (2 pts).
+
+```{r}
+m_list <- c()
+
+for (i in all_dfs){
+  i_df <- get(i)
+  i_lm <- lm(y ~ x, i_df)
+  new_var <- paste0("m_", i)
+  assign(new_var, i_lm)
+  m_list <- c(m_list, new_var)
+  intercept <- round(coef(i_lm)[1], 2)
+  slope <- round(coef(i_lm)[2], 2)
+  print(i)
+  print(paste0("y-hat = ", slope, " * x + ", intercept))
+}
+```
+
+
+f. R-Squared (2 pts).
+
+```{r}
+sapply(m_list, function(x) round(summary(get(x))$r.squared,2))
+```
+
+
+For each pair, is it appropriate to estimate a linear regression model? Why or why not? Be specific as to why for each pair and include appropriate plots! (4 pts)
+
+**We were not given any information on how or in what order the data were collected, so we cannot evaluate the Independence Condition for the 4 models.**
+
++ **data1**: No. While the plots indicate a linear trend & homoscedasticity of the residuals, the residuals are not distributed nearly normally. 
+
++ **data2**: No. The data exhibit something other than a linear relationship.
+
++ **data3**: Yes. While the data contain an influential outlier that does have some affect on the slope of the line, the data do exhibit a linear trend and nearly normal residuals. Also, the residuals would have constant variance without the affect of the influential point.
+
++ **data4**: No. The data do not have a linear trend. The influential point creates an illusion of linearity that without that point is not really there.
+
+```{r}
+op <- par(mfrow = c(2, 2))
+for (i in 1:4){
+  i_df_name <- all_dfs[i]
+  i_df <- get(i_df_name)
+  i_mod <- get(m_list[i])
+  print(paste("Check conditions for", i_df_name))
+  
+  #linearity plot
+  plot(y ~ x, i_df, main = "Linearity check")
+  abline(i_mod)
+  
+  #residual normality check
+  hist(i_mod$residuals, main = "Histogram of Residuals")
+  qqnorm(i_mod$residuals, main = "Nearly normal residual check")
+  qqline(i_mod$residuals)
+  
+  # Homoscedasticity check
+  plot(i_mod$residuals ~ i_df$x, main = "Homoscedasticity check")
+  abline(h = 0, lty = 3)
+}
+par(op)
+```
+
+
+Explain why it is important to include appropriate visualizations when analyzing data. Include any visualization(s) you create. (2 pts)
+
+**A linear model is only valid if the necessary conditions have been met, and creating visualizations is one way to check for linearity, nearly normal residuals, homoscedasticity, and sometimes even independence when the data collection order is provided. Please see the plots above.**
+
+</body>
